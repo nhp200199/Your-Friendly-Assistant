@@ -1,64 +1,79 @@
 package com.phucnguyen.khoaluantotnghiep;
 
+import android.content.Context;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.viewpager.widget.ViewPager;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
+
+import com.google.android.material.tabs.TabLayout;
+import com.phucnguyen.khoaluantotnghiep.adapters.OnboardingScreensPagerAdapter;
 
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link OnBoardingFragment#newInstance} factory method to
  * create an instance of this fragment.
+ *
  */
 public class OnBoardingFragment extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    private ViewPager vpOnboardingScreensContainer;
+    private TabLayout tabIndicator;
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    private OnboardingScreensPagerAdapter adapter;
 
-    public OnBoardingFragment() {
-        // Required empty public constructor
-    }
+    private OnboardingScreenChangesListener listener;
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment OnBoardingFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static OnBoardingFragment newInstance(String param1, String param2) {
-        OnBoardingFragment fragment = new OnBoardingFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
+    interface OnboardingScreenChangesListener{
+        void onPageScrolled(int position);
+        void onPageSelected(int position);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        View v = inflater.inflate(R.layout.fragment_on_boarding, container, false);
+        vpOnboardingScreensContainer = v.findViewById(R.id.onboardingScreensContainer);
+        tabIndicator = v.findViewById(R.id.tl_swipe);
+
+        adapter = new OnboardingScreensPagerAdapter(
+                getActivity().getSupportFragmentManager(),
+                0
+        );
+        vpOnboardingScreensContainer.setAdapter(adapter);
+        tabIndicator.setupWithViewPager(vpOnboardingScreensContainer);
+
+        vpOnboardingScreensContainer.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+                if (listener != null)
+                    listener.onPageScrolled(position);
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                if (listener != null)
+                    listener.onPageSelected(position);
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_on_boarding, container, false);
+        return v;
+    }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        listener = (OnboardingScreenChangesListener) context;
     }
 }

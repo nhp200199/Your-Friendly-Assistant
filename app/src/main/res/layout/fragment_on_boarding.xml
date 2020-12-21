@@ -20,6 +20,6 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         app:tabBackground="@drawable/tab_selector"
-        app:tabIndicatorHeight="@null" />
+        app:tabIndicatorHeight="0dp" />
 
 </androidx.appcompat.widget.LinearLayoutCompat>
