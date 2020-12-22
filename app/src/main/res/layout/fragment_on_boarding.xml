@@ -16,9 +16,9 @@
 
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tl_swipe"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
+        app:tabGravity="center"
         app:tabBackground="@drawable/tab_selector"
         app:tabIndicatorHeight="0dp" />
 
