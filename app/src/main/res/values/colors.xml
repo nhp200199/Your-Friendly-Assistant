@@ -1,16 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">@android:color/holo_blue_light</color>
-    <color name="colorPrimaryDark">@android:color/holo_blue_dark</color>
+    <color name="colorPrimary">@color/blue_500</color>
+    <color name="colorPrimaryDark">#0069c0</color>
     <color name="colorAccent">@android:color/holo_blue_light</color>
 
     <color name="purple_200">#FFBB86FC</color>
     <color name="purple_500">#FF6200EE</color>
     <color name="purple_700">#FF3700B3</color>
+
     <color name="teal_200">#FF03DAC5</color>
     <color name="teal_700">#FF018786</color>
+
     <color name="black">#FF000000</color>
+
     <color name="white">#FFFFFFFF</color>
 
-    <color name="gray">#C4C4C4</color>
+    <color name="gray_300">#E0E0E0</color>
+
+    <color name="blue_500">#2196f3</color>
+    <color name="blue_tiki">#5396FB</color>
+    <color name="blue_facebook">#1686EE</color>
+
+    <color name="green_happy">#0EFF26</color>
+
+    <color name="orange_medium">#F27027</color>
+    <color name="orange_shopee">#F27027</color>
+
+    <color name="red_sad">#F50E0E</color>
+    <color name="red_google">#EE1616</color>
+
+    <color name="purple_question">#982BB4</color>
+    
+    <color name="alpha_gray_background">#FFFCFC</color>
+
 </resources>
