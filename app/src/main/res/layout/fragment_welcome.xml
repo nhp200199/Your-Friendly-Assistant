@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -11,8 +12,8 @@
         android:id="@+id/imgBanner"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:scaleType="fitXY"
         android:adjustViewBounds="true"
+        android:scaleType="fitXY"
         android:src="@mipmap/ic_launcher" />
 
     <TextView
@@ -21,24 +22,23 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="32dp"
         android:layout_marginEnd="16dp"
-        android:text="Chào mừng bạn đến với chúng tôi"
+        android:text="@string/title_welcome"
         android:textAlignment="center"
-        android:textColor="#000000"
-        android:textSize="24sp"
+        android:textAppearance="?attr/textAppearanceHeadline5"
         android:textStyle="bold" />
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="12dp"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="8dp"
         android:layout_weight="2"
-        android:text="Chào mừng bạn đến với chúng tôi"
+        android:text="@string/text_welcome"
         android:textAlignment="center"
         android:textColor="#ACA5A5"
-        android:textSize="18sp" />
+        android:textAppearance="?attr/textAppearanceBody1"/>
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btnStartOnBoarding"
@@ -46,8 +46,10 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
-        android:text="Hãy bắt đầu nào"
+        android:backgroundTint="#39B3E8"
+        android:text="@string/button_text_start_manual"
         android:textAllCaps="false"
-        android:textSize="18sp" />
+        android:textSize="18sp"
+        app:cornerRadius="5dp" />
 
 </androidx.appcompat.widget.LinearLayoutCompat>

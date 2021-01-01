@@ -22,7 +22,7 @@
         app:tabIndicatorGravity="center"
         app:tabBackground="@drawable/tab_indicator_default"
         app:tabIndicator="@drawable/tab_indicator_selected"
-        app:tabIndicatorColor="@color/colorPrimaryDark"
+        app:tabIndicatorColor="?attr/colorPrimary"
         />
 
 </androidx.appcompat.widget.LinearLayoutCompat>

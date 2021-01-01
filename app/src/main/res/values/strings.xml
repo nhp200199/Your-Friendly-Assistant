@@ -2,4 +2,8 @@
     <string name="app_name">KhoaLuanTotNghiep</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_welcome">Chào mừng bạn đến với chúng tôi</string>
+    <string name="text_welcome">Cùng nhau đi một vòng với hướng dẫn sử dụng nhé</string>
+    <string name="button_text_start_manual">Hãy bắt đầu nào</string>
+    <string name="text_ignore_instruction">Bỏ qua</string>
 </resources>

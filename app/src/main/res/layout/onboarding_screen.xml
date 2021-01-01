@@ -22,6 +22,6 @@
         android:text="Chào mừng bạn đến với chúng tôi"
         android:textAlignment="center"
         android:textColor="#ACA5A5"
-        android:textSize="18sp" />
+        android:textAppearance="?attr/textAppearanceBody1" />
 
 </androidx.appcompat.widget.LinearLayoutCompat>
