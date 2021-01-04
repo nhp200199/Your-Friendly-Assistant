@@ -6,4 +6,10 @@
     <string name="text_welcome">Cùng nhau đi một vòng với hướng dẫn sử dụng nhé</string>
     <string name="button_text_start_manual">Hãy bắt đầu nào</string>
     <string name="text_ignore_instruction">Bỏ qua</string>
+
+    <!--    Bottom navigation's titles-->
+    <string name="home_fragment">Chính</string>
+    <string name="find_products_fragment">Tìm kiếm</string>
+    <string name="hot_products_fragment">Sản phẩm hot</string>
+    <string name="setting_fragment">Cài đặt</string>
 </resources>
