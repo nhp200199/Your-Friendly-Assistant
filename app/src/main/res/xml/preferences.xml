@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory android:title="@string/setting_category">
+
+        <ListPreference
+            android:defaultValue="1"
+            android:entries="@android:array/emailAddressTypes"
+            android:entryValues="@android:array/emailAddressTypes"
+            android:icon="@drawable/ic_global"
+            android:key="list_preference_1"
+            android:title="@string/language_item" />
+        <SwitchPreference
+            android:defaultValue="true"
+            android:icon="@drawable/ic_bell"
+            android:key="switch_preference_1"
+            android:title="@string/notification_item" />
+    </PreferenceCategory>
+    <PreferenceCategory android:title="@string/other_category">
+        <Preference
+            android:icon="@drawable/ic_information"
+            android:pointerIcon="top_right_diagonal_double_arrow"
+            android:title="@string/how_to_use_item" />
+        <Preference
+            android:icon="@drawable/ic_comment"
+            android:title="@string/leave_comment_item" />
+        <Preference
+            android:icon="@drawable/ic_share"
+            android:title="@string/share_app_item" />
+
+    </PreferenceCategory>
+</PreferenceScreen>
