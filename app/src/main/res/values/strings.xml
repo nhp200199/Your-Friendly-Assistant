@@ -13,9 +13,18 @@
     <string name="hot_products_fragment">Sản phẩm hot</string>
     <string name="setting_fragment">Cài đặt</string>
 
-<!--    MainActivity ActionBar's title-->
+    <!--    MainActivity ActionBar's title-->
     <string name="home_title">Yêu thích</string>
     <string name="search_title">Tìm sản phẩm</string>
     <string name="hot_title">Sản phẩm hot</string>
     <string name="setting_title">Cài đặt</string>
+
+    <!--    Strings for the Setting fragment-->
+    <string name="setting_category">Cài đặt</string>
+    <string name="other_category">Khác</string>
+    <string name="language_item">Ngôn ngữ</string>
+    <string name="notification_item">Thông báo</string>
+    <string name="how_to_use_item">Cách sử dụng</string>
+    <string name="leave_comment_item">Góp ý cho chúng tôi</string>
+    <string name="share_app_item">Chia sẻ ứng dụng</string>
 </resources>
