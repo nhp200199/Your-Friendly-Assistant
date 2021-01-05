@@ -8,21 +8,21 @@
     <fragment
         android:id="@+id/home_fragment"
         android:name="com.phucnguyen.khoaluantotnghiep.HomeFragment"
-        android:label="fragment_home"
+        android:label="@string/home_title"
         tools:layout="@layout/fragment_home" />
     <fragment
         android:id="@+id/find_products_fragment"
         android:name="com.phucnguyen.khoaluantotnghiep.FindProductsFragment"
-        android:label="find_products_fragment"
+        android:label="@string/search_title"
         tools:layout="@layout/find_products_fragment" />
     <fragment
         android:id="@+id/hot_products_fragment"
         android:name="com.phucnguyen.khoaluantotnghiep.HotProductsFragment"
-        android:label="fragment_hot_products"
+        android:label="@string/hot_title"
         tools:layout="@layout/fragment_hot_products" />
     <fragment
         android:id="@+id/setting_fragment"
         android:name="com.phucnguyen.khoaluantotnghiep.SettingFragment"
-        android:label="fragment_setting"
+        android:label="@string/setting_title"
         tools:layout="@layout/fragment_setting" />
 </navigation>

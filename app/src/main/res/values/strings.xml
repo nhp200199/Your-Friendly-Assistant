@@ -12,4 +12,10 @@
     <string name="find_products_fragment">Tìm kiếm</string>
     <string name="hot_products_fragment">Sản phẩm hot</string>
     <string name="setting_fragment">Cài đặt</string>
+
+<!--    MainActivity ActionBar's title-->
+    <string name="home_title">Yêu thích</string>
+    <string name="search_title">Tìm sản phẩm</string>
+    <string name="hot_title">Sản phẩm hot</string>
+    <string name="setting_title">Cài đặt</string>
 </resources>
