@@ -29,4 +29,6 @@
     <string name="share_app_item">Chia sẻ ứng dụng</string>
     <string name="log_in">đăng nhập</string>
     <string name="log_out">đăng xuất</string>
+    <string name="user_status_not_log_in">Đăng nhập để theo dõi giá bạn nhé</string>
+    <string name="user_status_logged_in">Bạn đã đăng nhập với</string>
 </resources>
