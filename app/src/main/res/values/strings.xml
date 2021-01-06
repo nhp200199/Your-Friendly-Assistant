@@ -27,4 +27,6 @@
     <string name="how_to_use_item">Cách sử dụng</string>
     <string name="leave_comment_item">Góp ý cho chúng tôi</string>
     <string name="share_app_item">Chia sẻ ứng dụng</string>
+    <string name="log_in">đăng nhập</string>
+    <string name="log_out">đăng xuất</string>
 </resources>
