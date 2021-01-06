@@ -3,4 +3,15 @@
     <style name="TextAppearance.App.Body1" parent="TextAppearance.MaterialComponents.Body1">
         <item name="android:textSize">18sp</item>
     </style>
+    <style name="Widget.MaterialComponents.Button.Facebook">
+        <item name="backgroundTint">@color/blue_facebook</item>
+        <item name="textAllCaps">false</item>
+        <item name="android:textSize">18sp</item>
+    </style>
+    <style name="Widget.MaterialComponents.Button.Google">
+        <item name="backgroundTint">@color/red_google</item>
+        <item name="android:textSize">18sp</item>
+        <item name="fontFamily">@font/product_sans</item>
+        <item name="android:textStyle">bold</item>
+    </style>
 </resources>

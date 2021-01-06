@@ -31,4 +31,9 @@
     <string name="log_out">đăng xuất</string>
     <string name="user_status_not_log_in">Đăng nhập để theo dõi giá bạn nhé</string>
     <string name="user_status_logged_in">Bạn đã đăng nhập với</string>
+
+    <!-- Strings related to login -->
+    <string name="log_in_instruction">Khi đăng nhập, bạn có thể lưu các sản phẩm yêu thích của mình một cách dễ dàng.</string>
+    <string name="prompt_log_in_method">Hãy chọn một trong hai cách dưới đây:</string>
+
 </resources>

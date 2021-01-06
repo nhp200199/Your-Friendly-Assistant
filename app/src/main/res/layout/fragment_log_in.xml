@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="32dp"
+    tools:context=".LogInFragment">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/log_in_instruction"
+        android:textAppearance="?attr/textAppearanceBody2"
+        android:textColor="#ACA5A5"
+        android:textStyle="bold" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:text="@string/prompt_log_in_method"
+        android:textAppearance="?attr/textAppearanceBody2"
+        android:textColor="#ACA5A5"
+        android:textStyle="bold" />
+
+    <Button
+        android:id="@+id/btnLogInWithGoogle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="g"
+        style="@style/Widget.MaterialComponents.Button.Google"/>
+
+    <Button
+        android:id="@+id/btnLogInWithFacebook"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="f"
+        style="@style/Widget.MaterialComponents.Button.Facebook"/>
+
+</LinearLayout>
