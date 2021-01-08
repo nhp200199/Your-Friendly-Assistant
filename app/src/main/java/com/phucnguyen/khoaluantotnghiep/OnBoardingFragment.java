@@ -1,6 +1,7 @@
 package com.phucnguyen.khoaluantotnghiep;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -15,25 +16,13 @@ import android.widget.TextView;
 import com.google.android.material.tabs.TabLayout;
 import com.phucnguyen.khoaluantotnghiep.adapters.OnboardingScreensPagerAdapter;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link OnBoardingFragment#newInstance} factory method to
- * create an instance of this fragment.
- *
- */
 public class OnBoardingFragment extends Fragment {
 
     private ViewPager vpOnboardingScreensContainer;
     private TabLayout tabIndicator;
+    private TextView tvIgnore;
 
     private OnboardingScreensPagerAdapter adapter;
-
-    private OnboardingScreenChangesListener listener;
-
-    interface OnboardingScreenChangesListener{
-        void onPageScrolled(int position);
-        void onPageSelected(int position);
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -41,6 +30,14 @@ public class OnBoardingFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_on_boarding, container, false);
         vpOnboardingScreensContainer = v.findViewById(R.id.onboardingScreensContainer);
         tabIndicator = v.findViewById(R.id.tl_swipe);
+        tvIgnore = v.findViewById(R.id.tvIgnore);
+
+        tvIgnore.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(requireActivity(), MainActivity.class));
+            }
+        });
 
         adapter = new OnboardingScreensPagerAdapter(
                 getActivity().getSupportFragmentManager(),
@@ -52,14 +49,12 @@ public class OnBoardingFragment extends Fragment {
         vpOnboardingScreensContainer.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-                if (listener != null)
-                    listener.onPageScrolled(position);
+
             }
 
             @Override
             public void onPageSelected(int position) {
-                if (listener != null)
-                    listener.onPageSelected(position);
+
             }
 
             @Override
@@ -69,11 +64,5 @@ public class OnBoardingFragment extends Fragment {
         });
         // Inflate the layout for this fragment
         return v;
-    }
-
-    @Override
-    public void onAttach(@NonNull Context context) {
-        super.onAttach(context);
-        listener = (OnboardingScreenChangesListener) context;
     }
 }
