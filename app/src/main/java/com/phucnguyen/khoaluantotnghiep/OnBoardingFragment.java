@@ -49,12 +49,16 @@ public class OnBoardingFragment extends Fragment {
         vpOnboardingScreensContainer.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
+                if(position == OnboardingScreensPagerAdapter.NUMBER_OF_ONBOARDING_SCREENS - 1)
+                    tvIgnore.setText("Đã hiểu");
+                else tvIgnore.setText("Bỏ qua");
             }
 
             @Override
             public void onPageSelected(int position) {
-
+                if(position == OnboardingScreensPagerAdapter.NUMBER_OF_ONBOARDING_SCREENS - 1)
+                    tvIgnore.setText("Đã hiểu");
+                else tvIgnore.setText("Bỏ qua");
             }
 
             @Override
