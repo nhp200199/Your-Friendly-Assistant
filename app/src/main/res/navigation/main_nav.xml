@@ -31,7 +31,11 @@
             />
         <action
             android:id="@+id/action_setting_fragment_to_on_boarding_fragment"
-            app:destination="@id/on_boarding_fragment" />
+            app:destination="@id/on_boarding_fragment" >
+            <argument
+                android:name="com.phucnguyen.khoaluantotnghiep.OnBoardingFragment.IS_REVIEWING"
+                android:defaultValue="true" />
+        </action>
     </fragment>
     <fragment
         android:id="@+id/log_in_fragment"
@@ -41,5 +45,10 @@
     <fragment
         android:id="@+id/on_boarding_fragment"
         android:name="com.phucnguyen.khoaluantotnghiep.OnBoardingFragment"
-        android:label="OnBoardingFragment" />
+        android:label="OnBoardingFragment" >
+        <argument
+            android:name="com.phucnguyen.khoaluantotnghiep.OnBoardingFragment.IS_REVIEWING"
+            app:argType="boolean"
+            android:defaultValue="false" />
+    </fragment>
 </navigation>

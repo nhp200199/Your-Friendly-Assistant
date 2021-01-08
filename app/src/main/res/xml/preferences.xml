@@ -20,7 +20,7 @@
     <PreferenceCategory android:title="@string/other_category">
         <Preference
             android:icon="@drawable/ic_information"
-            android:pointerIcon="top_right_diagonal_double_arrow"
+            app:key="instruction"
             android:title="@string/how_to_use_item" />
         <Preference
             android:icon="@drawable/ic_comment"

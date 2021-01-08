@@ -17,6 +17,7 @@ import com.google.android.material.tabs.TabLayout;
 import com.phucnguyen.khoaluantotnghiep.adapters.OnboardingScreensPagerAdapter;
 
 public class OnBoardingFragment extends Fragment {
+    public static final String EXTRA_IS_REVIEWING_USAGE = "com.phucnguyen.khoaluantotnghiep.OnBoardingFragment.IS_REVIEWING";
 
     private ViewPager vpOnboardingScreensContainer;
     private TabLayout tabIndicator;
@@ -35,7 +36,9 @@ public class OnBoardingFragment extends Fragment {
         tvIgnore.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(requireActivity(), MainActivity.class));
+                if (getArguments() != null && getArguments().getBoolean(EXTRA_IS_REVIEWING_USAGE)) {
+                    requireActivity().onBackPressed();
+                } else startActivity(new Intent(requireActivity(), MainActivity.class));
             }
         });
 
@@ -49,14 +52,14 @@ public class OnBoardingFragment extends Fragment {
         vpOnboardingScreensContainer.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-                if(position == OnboardingScreensPagerAdapter.NUMBER_OF_ONBOARDING_SCREENS - 1)
+                if (position == OnboardingScreensPagerAdapter.NUMBER_OF_ONBOARDING_SCREENS - 1)
                     tvIgnore.setText("Đã hiểu");
                 else tvIgnore.setText("Bỏ qua");
             }
 
             @Override
             public void onPageSelected(int position) {
-                if(position == OnboardingScreensPagerAdapter.NUMBER_OF_ONBOARDING_SCREENS - 1)
+                if (position == OnboardingScreensPagerAdapter.NUMBER_OF_ONBOARDING_SCREENS - 1)
                     tvIgnore.setText("Đã hiểu");
                 else tvIgnore.setText("Bỏ qua");
             }
