@@ -1,12 +1,16 @@
 package com.phucnguyen.khoaluantotnghiep;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.NavController;
+import androidx.navigation.NavDestination;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import android.os.Bundle;
+import android.view.View;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -14,6 +18,7 @@ public class MainActivity extends AppCompatActivity {
     private AppBarConfiguration appBarConfiguration;
     private NavHostFragment navHostFragment;
     private NavController navController;
+    private BottomNavigationView bottomNav;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +37,15 @@ public class MainActivity extends AppCompatActivity {
 
         setUpBotNavigation();
         setUpActionBar();
+
+        navController.addOnDestinationChangedListener(new NavController.OnDestinationChangedListener() {
+            @Override
+            public void onDestinationChanged(@NonNull NavController controller, @NonNull NavDestination destination, @Nullable Bundle arguments) {
+                if (destination.getId() == R.id.on_boarding_fragment)
+                    bottomNav.setVisibility(View.GONE);
+                else bottomNav.setVisibility(View.VISIBLE);
+            }
+        });
     }
 
     private void setUpActionBar() {
@@ -39,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setUpBotNavigation() {
-        BottomNavigationView bottomNav = findViewById(R.id.bttm_nav);
+        bottomNav = findViewById(R.id.bttm_nav);
         NavigationUI.setupWithNavController(bottomNav,
                 navHostFragment.getNavController());
     }
