@@ -24,5 +24,22 @@
         android:id="@+id/setting_fragment"
         android:name="com.phucnguyen.khoaluantotnghiep.SettingFragment"
         android:label="@string/setting_title"
-        tools:layout="@layout/fragment_setting" />
+        tools:layout="@layout/fragment_setting" >
+        <action
+            android:id="@+id/action_setting_fragment_to_logInFragment"
+            app:destination="@id/log_in_fragment"
+            />
+        <action
+            android:id="@+id/action_setting_fragment_to_on_boarding_fragment"
+            app:destination="@id/on_boarding_fragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/log_in_fragment"
+        android:name="com.phucnguyen.khoaluantotnghiep.LogInFragment"
+        android:label="Đăng nhập"
+        tools:layout="@layout/fragment_log_in" />
+    <fragment
+        android:id="@+id/on_boarding_fragment"
+        android:name="com.phucnguyen.khoaluantotnghiep.OnBoardingFragment"
+        android:label="OnBoardingFragment" />
 </navigation>

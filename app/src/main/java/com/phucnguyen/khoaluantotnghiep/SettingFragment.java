@@ -15,6 +15,9 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 public class SettingFragment extends Fragment {
+    private static final String LOGTAG = SettingFragment.class.getSimpleName();
+
+    private TextView tvLogInStatus;
 
     public SettingFragment() {
         // Required empty public constructor
@@ -33,7 +36,16 @@ public class SettingFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        View v = inflater.inflate(R.layout.fragment_setting, container, false);
+        tvLogInStatus = v.findViewById(R.id.tvLoginStatus);
+        tvLogInStatus.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Navigation.findNavController(requireActivity(), R.id.nav_host_fragment)
+                .navigate(R.id.action_setting_fragment_to_logInFragment);
+            }
+        });
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_setting, container, false);
+        return v;
     }
 }
