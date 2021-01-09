@@ -9,25 +9,27 @@
             android:entries="@android:array/emailAddressTypes"
             android:entryValues="@android:array/emailAddressTypes"
             android:icon="@drawable/ic_global"
-            android:key="list_preference_1"
+            android:key="language_pref"
             android:title="@string/language_item" />
         <SwitchPreference
             android:defaultValue="true"
             android:icon="@drawable/ic_bell"
-            android:key="switch_preference_1"
+            android:key="notification_pref"
             android:title="@string/notification_item" />
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/other_category">
         <Preference
             android:icon="@drawable/ic_information"
-            app:key="instruction"
+            app:key="instruction_pref"
             android:title="@string/how_to_use_item" />
         <Preference
             android:icon="@drawable/ic_comment"
-            android:title="@string/leave_comment_item" />
+            android:title="@string/leave_comment_item"
+            android:key="comment_pref"/>
         <Preference
             android:icon="@drawable/ic_share"
-            android:title="@string/share_app_item" />
+            android:title="@string/share_app_item"
+            android:key="share_pref"/>
 
     </PreferenceCategory>
 </PreferenceScreen>
