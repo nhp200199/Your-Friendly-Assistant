@@ -36,4 +36,9 @@
     <string name="log_in_instruction">Khi đăng nhập, bạn có thể lưu các sản phẩm yêu thích của mình một cách dễ dàng.</string>
     <string name="prompt_log_in_method">Hãy chọn một trong hai cách dưới đây:</string>
 
+    <!--    Strings for the notification dialog-->
+    <string name="notification_dialog_text">Đã tắt thông báo. Bạn sẽ không nhận được thông tin về giá của các sản phẩm. Bạn có muốn bật lại không?</string>
+    <string name="notification_dialog_positive_text">Nhận thông báo</string>
+    <string name="notification_dialog_negative_text">Vẫn tiếp tục</string>
+
 </resources>
