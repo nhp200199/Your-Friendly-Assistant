@@ -1,4 +1,4 @@
-package com.phucnguyen.khoaluantotnghiep;
+package com.phucnguyen.khoaluantotnghiep.adapters;
 
 import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -10,7 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.phucnguyen.khoaluantotnghiep.dummy.DummyContent.DummyItem;
+import com.phucnguyen.khoaluantotnghiep.R;
 
 import java.util.Arrays;
 import java.util.List;

@@ -1,24 +1,17 @@
 package com.phucnguyen.khoaluantotnghiep;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
-import androidx.preference.Preference;
-import androidx.preference.PreferenceFragmentCompat;
-import androidx.preference.PreferenceManager;
-import androidx.preference.PreferenceScreen;
-import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.phucnguyen.khoaluantotnghiep.dummy.DummyContent;
+import com.phucnguyen.khoaluantotnghiep.adapters.MyLanguageItemRecyclerViewAdapter;
 
 /**
  * A fragment representing a list of Items.
