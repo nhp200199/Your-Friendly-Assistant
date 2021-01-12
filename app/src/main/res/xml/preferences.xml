@@ -4,12 +4,12 @@
 
     <PreferenceCategory android:title="@string/setting_category">
 
-        <ListPreference
-            android:defaultValue="1"
-            android:entries="@android:array/emailAddressTypes"
-            android:entryValues="@android:array/emailAddressTypes"
+        <Preference
+            app:fragment="com.phucnguyen.khoaluantotnghiep.LanguageSettingFragment"
             android:icon="@drawable/ic_global"
             android:key="language_pref"
+            app:defaultValue="Vietnamese"
+            app:useSimpleSummaryProvider="true"
             android:title="@string/language_item" />
         <SwitchPreference
             android:defaultValue="true"

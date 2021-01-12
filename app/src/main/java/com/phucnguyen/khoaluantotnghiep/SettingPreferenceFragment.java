@@ -1,5 +1,6 @@
 package com.phucnguyen.khoaluantotnghiep;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 
@@ -12,11 +13,13 @@ import androidx.preference.SwitchPreference;
 public class SettingPreferenceFragment extends PreferenceFragmentCompat
         implements ConfirmActionDialog.onConfirmActionListener {
     private SwitchPreference notificationPref;
+    private Preference languagePref;
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         setPreferencesFromResource(R.xml.preferences, rootKey);
         notificationPref = findPreference("notification_pref");
+        languagePref = findPreference("language_pref");
     }
 
     @Override
@@ -28,15 +31,19 @@ public class SettingPreferenceFragment extends PreferenceFragmentCompat
     @Override
     public boolean onPreferenceTreeClick(Preference preference) {
         switch (preference.getKey()) {
+            case "language_pref":
+                Navigation.findNavController(requireActivity(), R.id.nav_host_fragment)
+                        .navigate(R.id.action_setting_fragment_to_language_setting_fragment);
+                return true;
             case "instruction_pref":
                 Navigation.findNavController(requireActivity(), R.id.nav_host_fragment)
                         .navigate(R.id.action_setting_fragment_to_on_boarding_fragment);
                 return true;
             case "notification_pref":
                 if (!notificationPref.isChecked())
-                    new ConfirmActionDialog("Đã tắt thông báo. Bạn sẽ không nhận được thông tin về giá của các sản phẩm. Bạn có muốn bật lại không?"
-                            , "Nhận thông báo"
-                            , "Vẫn tiếp tục")
+                    new ConfirmActionDialog(getString(R.string.notification_dialog_text)
+                            , getString(R.string.notification_dialog_positive_text)
+                            , getString(R.string.notification_dialog_negative_text))
                             .show(getChildFragmentManager(), null);
                 return true;
 
@@ -53,5 +60,12 @@ public class SettingPreferenceFragment extends PreferenceFragmentCompat
     @Override
     public void onNegativeConfirmed() {
         notificationPref.setChecked(false);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        languagePref.setSummary(getPreferenceManager().getSharedPreferences()
+                .getString("language_pref", ""));
     }
 }

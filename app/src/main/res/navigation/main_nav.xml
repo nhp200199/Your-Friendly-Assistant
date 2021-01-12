@@ -36,6 +36,13 @@
                 android:name="com.phucnguyen.khoaluantotnghiep.OnBoardingFragment.IS_REVIEWING"
                 android:defaultValue="true" />
         </action>
+        <action
+            android:id="@+id/action_setting_fragment_to_language_setting_fragment"
+            app:destination="@id/language_setting_fragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
     </fragment>
     <fragment
         android:id="@+id/log_in_fragment"
@@ -51,4 +58,9 @@
             app:argType="boolean"
             android:defaultValue="false" />
     </fragment>
+    <fragment
+        android:id="@+id/language_setting_fragment"
+        android:name="com.phucnguyen.khoaluantotnghiep.LanguageSettingFragment"
+        android:label="fragment_language_setting"
+        tools:layout="@layout/fragment_language_setting" />
 </navigation>

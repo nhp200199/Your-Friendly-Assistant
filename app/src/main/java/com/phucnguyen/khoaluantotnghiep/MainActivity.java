@@ -8,7 +8,9 @@ import androidx.navigation.NavDestination;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
+import androidx.preference.PreferenceManager;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 
@@ -41,7 +43,8 @@ public class MainActivity extends AppCompatActivity {
         navController.addOnDestinationChangedListener(new NavController.OnDestinationChangedListener() {
             @Override
             public void onDestinationChanged(@NonNull NavController controller, @NonNull NavDestination destination, @Nullable Bundle arguments) {
-                if (destination.getId() == R.id.on_boarding_fragment)
+                if (destination.getId() == R.id.on_boarding_fragment ||
+                        destination.getId() == R.id.language_setting_fragment)
                     bottomNav.setVisibility(View.GONE);
                 else bottomNav.setVisibility(View.VISIBLE);
             }
