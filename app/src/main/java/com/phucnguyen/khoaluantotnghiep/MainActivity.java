@@ -47,6 +47,9 @@ public class MainActivity extends AppCompatActivity {
                         destination.getId() == R.id.language_setting_fragment)
                     bottomNav.setVisibility(View.GONE);
                 else bottomNav.setVisibility(View.VISIBLE);
+                if (destination.getId() == R.id.on_boarding_fragment)
+                    getSupportActionBar().hide();
+                else getSupportActionBar().show();
             }
         });
     }

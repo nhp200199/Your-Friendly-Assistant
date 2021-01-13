@@ -14,4 +14,16 @@
         <item name="fontFamily">@font/product_sans</item>
         <item name="android:textStyle">bold</item>
     </style>
+    <style name="Widget.App.ActionBar" parent="Widget.MaterialComponents.ActionBar.Primary">
+        <item name="background">@color/white</item>
+        <item name="titleTextStyle">@style/TextAppearance.AppCompat.Widget.ActionBar.Title.Black</item>
+    </style>
+    <style name="TextAppearance.AppCompat.Widget.ActionBar.Title.Black">
+        <item name="android:textColor">@color/black</item>
+    </style>
+    <style name="Theme.MyApp.AppBarOverlay" parent="ThemeOverlay.MaterialComponents.Dark.ActionBar" >
+
+        <item name="android:textColorPrimary">@color/purple_200</item>
+    </style>
+
 </resources>
