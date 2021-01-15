@@ -3,16 +3,16 @@ package com.phucnguyen.khoaluantotnghiep;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.navigation.NavController;
 import androidx.navigation.NavDestination;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
-import androidx.preference.PreferenceManager;
 
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.TextView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -21,12 +21,14 @@ public class MainActivity extends AppCompatActivity {
     private NavHostFragment navHostFragment;
     private NavController navController;
     private BottomNavigationView bottomNav;
+    private Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        toolbar = findViewById(R.id.toolbar);
         navHostFragment = (NavHostFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.nav_host_fragment);
         navController = navHostFragment.getNavController();
@@ -38,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
         ).build();
 
         setUpBotNavigation();
-        setUpActionBar();
+        setUpToolbar();
 
         navController.addOnDestinationChangedListener(new NavController.OnDestinationChangedListener() {
             @Override
@@ -48,25 +50,24 @@ public class MainActivity extends AppCompatActivity {
                     bottomNav.setVisibility(View.GONE);
                 else bottomNav.setVisibility(View.VISIBLE);
                 if (destination.getId() == R.id.on_boarding_fragment)
-                    getSupportActionBar().hide();
-                else getSupportActionBar().show();
+                    toolbar.setVisibility(View.GONE);
+                else toolbar.setVisibility(View.VISIBLE);
+
+                //change the toolbar title according to the fragment
+                TextView toolbarTitle = (TextView) toolbar.findViewById(R.id.tv_toolbar_title);
+                toolbarTitle.setText(toolbar.getTitle());
+                toolbar.setTitle("");
             }
         });
     }
 
-    private void setUpActionBar() {
-        NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
+    private void setUpToolbar() {
+        NavigationUI.setupWithNavController(toolbar, navController, appBarConfiguration);
     }
 
     private void setUpBotNavigation() {
         bottomNav = findViewById(R.id.bttm_nav);
         NavigationUI.setupWithNavController(bottomNav,
                 navHostFragment.getNavController());
-    }
-
-    @Override
-    public boolean onSupportNavigateUp() {
-        return NavigationUI.navigateUp(navController, appBarConfiguration)
-                || super.onSupportNavigateUp();
     }
 }
