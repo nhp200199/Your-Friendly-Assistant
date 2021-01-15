@@ -69,7 +69,6 @@
                         android:src="@mipmap/ic_launcher"
                         android:visibility="gone" />
                 </LinearLayout>
-
             </LinearLayout>
 
             <TextView
@@ -79,6 +78,7 @@
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
                 android:textAllCaps="true"
+                android:text="@string/log_in"
                 android:textAppearance="?attr/textAppearanceBody1" />
         </RelativeLayout>
 

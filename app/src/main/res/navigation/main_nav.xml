@@ -28,10 +28,17 @@
         <action
             android:id="@+id/action_setting_fragment_to_logInFragment"
             app:destination="@id/log_in_fragment"
-            />
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
         <action
             android:id="@+id/action_setting_fragment_to_on_boarding_fragment"
-            app:destination="@id/on_boarding_fragment" >
+            app:destination="@id/on_boarding_fragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right">
             <argument
                 android:name="com.phucnguyen.khoaluantotnghiep.OnBoardingFragment.IS_REVIEWING"
                 android:defaultValue="true" />
@@ -61,6 +68,6 @@
     <fragment
         android:id="@+id/language_setting_fragment"
         android:name="com.phucnguyen.khoaluantotnghiep.LanguageSettingFragment"
-        android:label="fragment_language_setting"
+        android:label="Ngôn ngữ"
         tools:layout="@layout/fragment_language_setting" />
 </navigation>
