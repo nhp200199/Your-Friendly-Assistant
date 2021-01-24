@@ -23,6 +23,7 @@ public class MainActivity extends AppCompatActivity {
     private NavController navController;
     private BottomNavigationView bottomNav;
     private Toolbar toolbar;
+    private TextView mToolbarTitle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +41,8 @@ public class MainActivity extends AppCompatActivity {
                 R.id.setting_fragment
         ).build();
 
+        mToolbarTitle = (TextView) toolbar.findViewById(R.id.tv_toolbar_title);
+
         setUpBotNavigation();
         setUpToolbar();
 
@@ -55,8 +58,7 @@ public class MainActivity extends AppCompatActivity {
                 else toolbar.setVisibility(View.VISIBLE);
 
                 //change the toolbar title according to the fragment
-                TextView toolbarTitle = (TextView) toolbar.findViewById(R.id.tv_toolbar_title);
-                toolbarTitle.setText(toolbar.getTitle());
+                mToolbarTitle.setText(toolbar.getTitle());
                 getSupportActionBar().setTitle("");
             }
         });
