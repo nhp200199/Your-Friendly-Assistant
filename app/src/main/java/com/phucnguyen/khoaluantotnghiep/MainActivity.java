@@ -11,6 +11,7 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import android.os.Bundle;
+import android.view.Menu;
 import android.view.View;
 import android.widget.TextView;
 
@@ -56,12 +57,13 @@ public class MainActivity extends AppCompatActivity {
                 //change the toolbar title according to the fragment
                 TextView toolbarTitle = (TextView) toolbar.findViewById(R.id.tv_toolbar_title);
                 toolbarTitle.setText(toolbar.getTitle());
-                toolbar.setTitle("");
+                getSupportActionBar().setTitle("");
             }
         });
     }
 
     private void setUpToolbar() {
+        setSupportActionBar(toolbar);
         NavigationUI.setupWithNavController(toolbar, navController, appBarConfiguration);
     }
 
