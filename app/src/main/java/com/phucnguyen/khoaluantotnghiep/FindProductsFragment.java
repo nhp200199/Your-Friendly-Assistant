@@ -1,6 +1,7 @@
 package com.phucnguyen.khoaluantotnghiep;
 
 import android.app.SearchManager;
+import android.content.ComponentName;
 import android.content.Context;
 import android.os.Bundle;
 
@@ -46,17 +47,14 @@ public class FindProductsFragment extends Fragment {
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.menu_search, menu);
+        // Get the SearchView and set the searchable configuration
+        SearchManager searchManager = (SearchManager) requireActivity().getSystemService(Context.SEARCH_SERVICE);
         SearchView searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
-        searchView.setImeOptions(EditorInfo.IME_ACTION_SEARCH);
-    }
+        // Assumes current activity is the searchable activity
+        searchView.setSearchableInfo(searchManager.getSearchableInfo(new ComponentName(requireActivity(),
+                SearchableActivity.class)));
 
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()){
-            case R.id.action_search:
-                Toast.makeText(requireActivity(), "hello", Toast.LENGTH_SHORT).show();
-                return true;
-        }
-        return super.onOptionsItemSelected(item);
+        searchView.setImeOptions(EditorInfo.IME_ACTION_SEARCH);
+        searchView.setQueryHint("Tìm kiếm sản phẩm");
     }
 }
