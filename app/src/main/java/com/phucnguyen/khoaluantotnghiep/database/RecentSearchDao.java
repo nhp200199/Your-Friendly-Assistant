@@ -1,5 +1,6 @@
 package com.phucnguyen.khoaluantotnghiep.database;
 
+import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
@@ -7,16 +8,18 @@ import androidx.room.Query;
 
 import java.util.List;
 
+import static androidx.room.OnConflictStrategy.REPLACE;
+
 @Dao
 public interface RecentSearchDao {
-    @Insert
-    void insert(RecentSearchs recentSearchs);
+    @Insert(onConflict = REPLACE)
+    void insert(RecentSearch recentSearch);
 
     @Delete
-    void delete(RecentSearchs recentSearchs);
+    void delete(RecentSearch recentSearch);
 
     @Query("SELECT * FROM recent_searchs " +
             "ORDER BY timestamps DESC " +
             "LIMIT 5")
-    List<RecentSearchs> getRecentSearchsForHistory();
+    LiveData<List<RecentSearch>> getRecentSearchsForHistory();
 }

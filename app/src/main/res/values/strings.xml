@@ -41,4 +41,9 @@
     <string name="notification_dialog_positive_text">Nhận thông báo</string>
     <string name="notification_dialog_negative_text">Vẫn tiếp tục</string>
 
+    <!--String for Find fragment-->
+    <string name="find_introduction">Hãy tìm kiếm sản phẩm bạn thích từ hai sàn thương mại điện tử Tiki và Shopee nhé</string>
+    <string name="title_history">Lịch sử</string>
+    <string name="find_guide">Tìm kiếm sản phẩm</string>
+
 </resources>

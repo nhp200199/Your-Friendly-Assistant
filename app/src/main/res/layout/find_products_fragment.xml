@@ -7,8 +7,40 @@
 
     <!-- TODO: Update blank fragment layout -->
     <TextView
+        android:id="@+id/tvFindIntroduction"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginHorizontal="64dp"
+        android:text="@string/find_introduction"
+        android:textAlignment="center"
+        android:textAppearance="?attr/textAppearanceBody1"
+        android:textColor="#ACA5A5" />
+
+    <LinearLayout
+        android:id="@+id/historySearchContainer"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="find" />
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tvFindHistoryTtle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="16dp"
+            android:layout_marginStart="16dp"
+            android:text="@string/title_history"
+            android:textAppearance="?attr/textAppearanceBody2"
+            android:textColor="#ACA5A5" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rcvSearch"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingStart="16dp"
+            android:paddingEnd="8dp"
+            tools:listitem="@layout/history_search_item" />
+    </LinearLayout>
+
 
 </FrameLayout>
