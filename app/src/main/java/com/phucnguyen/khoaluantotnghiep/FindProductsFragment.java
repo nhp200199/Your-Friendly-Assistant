@@ -3,6 +3,8 @@ package com.phucnguyen.khoaluantotnghiep;
 import android.app.SearchManager;
 import android.content.ComponentName;
 import android.content.Context;
+import android.content.Intent;
+import android.database.Cursor;
 import android.os.AsyncTask;
 import android.os.Bundle;
 
@@ -10,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SearchView;
 import androidx.core.view.inputmethod.EditorInfoCompat;
+import androidx.cursoradapter.widget.CursorAdapter;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
@@ -114,15 +117,16 @@ public class FindProductsFragment extends Fragment {
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.menu_search, menu);
-        // Get the SearchView and set the searchable configuration
-        SearchManager searchManager = (SearchManager) requireActivity().getSystemService(Context.SEARCH_SERVICE);
-        SearchView searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
-        // Assumes current activity is the searchable activity
-        searchView.setSearchableInfo(searchManager.getSearchableInfo(new ComponentName(requireActivity(),
-                SearchableActivity.class)));
+    }
 
-        searchView.setImeOptions(EditorInfo.IME_ACTION_SEARCH);
-        searchView.setQueryHint(getString(R.string.find_guide));
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.action_search:
+                startActivity(new Intent(requireActivity(), SearchableActivity.class));
+                return true;
+            default: return super.onOptionsItemSelected(item);
+        }
     }
 
     private static class DeleteRecentSearchAsyncTask extends AsyncTask<RecentSearch, Void, Void> {

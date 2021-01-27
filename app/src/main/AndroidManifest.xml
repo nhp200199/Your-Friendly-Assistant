@@ -12,18 +12,7 @@
         <activity android:name=".SearchableActivity"
             android:launchMode="singleTop"
             android:parentActivityName=".MainActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.SEARCH" />
-            </intent-filter>
-            <meta-data android:name="android.app.searchable"
-                android:resource="@xml/searchable"/>
         </activity>
-
-        <provider
-            android:name=".MySearchSuggestionProvider"
-            android:authorities="com.phucnguyen.khoaluantotnghiep.MySearchSuggestionProvider"
-             />
-
         <activity android:name=".OnBoardingActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -34,10 +23,6 @@
         <activity android:name=".MainActivity"
             android:launchMode="singleTop"
             android:windowSoftInputMode="adjustPan">
-            <!-- enable the search dialog to send searches to SearchableActivity -->
-            <meta-data android:name="android.app.default_searchable"
-                android:value=".SearchableActivity" />
-
         </activity>
     </application>
 
