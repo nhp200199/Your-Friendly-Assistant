@@ -54,6 +54,7 @@
     <string name="fab_fav_des">thêm vào yêu thích</string>
     <string name="fab_go_to_store_des">đến trang cung cấp</string>
     <string name="img_product_ava_des">hình sản phẩm</string>
+    <string name="img_seller_rate_icon_des">đánh giá shop</string>
 
     <!--General strings-->
     <string name="default_text_placeholder">---</string>

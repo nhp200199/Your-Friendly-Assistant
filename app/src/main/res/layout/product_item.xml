@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:layout_gravity="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginHorizontal="8dp"
     android:layout_marginTop="8dp"
+    android:clickable="true"
     app:cardCornerRadius="5dp"
     app:cardElevation="5dp">
 
@@ -28,7 +30,7 @@
             android:layout_alignTop="@id/imgProduct"
             android:layout_marginStart="12dp"
             android:layout_toEndOf="@+id/imgProduct"
-            android:text="----"
+            android:text="@string/default_text_placeholder"
             android:textAppearance="?attr/textAppearanceBody2"
             android:textColor="@color/gray_300" />
 
@@ -39,7 +41,9 @@
             android:layout_below="@id/tvPrice"
             android:layout_alignStart="@id/tvPrice"
             android:layout_marginTop="8dp"
-            android:text="----"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:text="@string/default_text_placeholder"
             android:textAppearance="?attr/textAppearanceCaption"
             android:textColor="@color/black" />
 
@@ -49,7 +53,6 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/tvProductTitle"
             android:layout_alignStart="@id/tvPrice"
-            android:layout_alignBottom="@id/imgProduct"
             android:layout_marginTop="12dp"
             android:orientation="horizontal">
 
@@ -64,24 +67,43 @@
                 android:id="@+id/imgSellerRateIcon"
                 android:layout_width="12dp"
                 android:layout_height="12dp"
-                android:layout_gravity="bottom"
-                android:layout_marginStart="8dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="4dp"
                 android:layout_marginEnd="12dp"
+                android:contentDescription="@string/img_seller_rate_icon_des"
                 android:scaleType="fitXY"
                 android:src="@mipmap/ic_launcher" />
 
             <TextView
-                android:id="@+id/tvPriceDifference"
+                android:id="@+id/tvProductRate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="-2000"
+                android:text="4.5"
                 android:textAppearance="?attr/textAppearanceBody2" />
+
+            <ImageView
+                android:layout_width="12dp"
+                android:layout_height="12dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="4dp"
+                android:layout_marginEnd="12dp"
+                android:contentDescription="@string/img_seller_rate_icon_des"
+                android:scaleType="centerCrop"
+                android:src="@drawable/ic_star" />
+
+            <TextView
+                android:id="@+id/tvProductItemSoldQuantities"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Đã bán 131"
+                android:textAppearance="?attr/textAppearanceBody2" />
+
         </LinearLayout>
 
         <LinearLayout
-            android:layout_width="100dp"
+            android:layout_width="75dp"
             android:layout_height="wrap_content"
-            android:layout_alignBottom="@id/imgProduct"
+            android:layout_alignBottom="@id/productDetailContainer"
             android:layout_alignParentEnd="true"
             android:layout_marginEnd="4dp"
             android:orientation="horizontal">
@@ -91,13 +113,15 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
-                android:layout_weight="2" />
+                android:layout_weight="2"
+                android:text="Tiki"
+                android:textAppearance="?attr/textAppearanceBody2" />
 
             <ImageView
                 android:id="@+id/imgActionMore"
                 android:layout_width="12dp"
                 android:layout_height="12dp"
-                android:layout_gravity="bottom"
+                android:layout_gravity="center_vertical"
                 android:src="@mipmap/ic_launcher" />
 
         </LinearLayout>
