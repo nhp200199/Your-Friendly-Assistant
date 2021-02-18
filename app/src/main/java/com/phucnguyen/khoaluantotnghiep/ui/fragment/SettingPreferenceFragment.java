@@ -1,14 +1,16 @@
-package com.phucnguyen.khoaluantotnghiep;
+package com.phucnguyen.khoaluantotnghiep.ui.fragment;
 
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 
 import androidx.annotation.Nullable;
 import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.SwitchPreference;
+
+import com.phucnguyen.khoaluantotnghiep.R;
 
 public class SettingPreferenceFragment extends PreferenceFragmentCompat
         implements ConfirmActionDialog.onConfirmActionListener {
@@ -45,6 +47,10 @@ public class SettingPreferenceFragment extends PreferenceFragmentCompat
                             , getString(R.string.notification_dialog_positive_text)
                             , getString(R.string.notification_dialog_negative_text))
                             .show(getChildFragmentManager(), null);
+                return true;
+            case "comment_pref":
+                NavHostFragment.findNavController(this)
+                        .navigate(R.id.product_item_fragment);
                 return true;
 
             default:

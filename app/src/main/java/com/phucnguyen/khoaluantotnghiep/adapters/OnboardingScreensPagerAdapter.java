@@ -1,45 +1,59 @@
 package com.phucnguyen.khoaluantotnghiep.adapters;
 
+import android.content.Context;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
+
 import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.viewpager.widget.PagerAdapter;
 
-import com.phucnguyen.khoaluantotnghiep.ScreenFour;
-import com.phucnguyen.khoaluantotnghiep.ScreenFive;
-import com.phucnguyen.khoaluantotnghiep.ScreenOne;
-import com.phucnguyen.khoaluantotnghiep.ScreenSix;
-import com.phucnguyen.khoaluantotnghiep.ScreenThree;
-import com.phucnguyen.khoaluantotnghiep.ScreenTwo;
+import com.phucnguyen.khoaluantotnghiep.R;
+import com.phucnguyen.khoaluantotnghiep.model.OnBoardingScreenItem;
 
-public class OnboardingScreensPagerAdapter extends FragmentPagerAdapter {
+import java.util.List;
+
+public class OnboardingScreensPagerAdapter extends PagerAdapter {
     public static final int NUMBER_OF_ONBOARDING_SCREENS = 6;
-    public OnboardingScreensPagerAdapter(@NonNull FragmentManager fm, int behavior) {
-        super(fm, behavior);
+    private List<OnBoardingScreenItem> mOnBoardingScreenItems;
+    private Context mContext;
+
+    public OnboardingScreensPagerAdapter(List<OnBoardingScreenItem> onBoardingScreenItems, Context context) {
+        mContext = context;
+        mOnBoardingScreenItems = onBoardingScreenItems;
     }
 
     @NonNull
     @Override
-    public Fragment getItem(int position) {
-        switch (position){
-            case 0:
-                return new ScreenOne();
-            case 1:
-                return new ScreenTwo();
-            case 2:
-                return new ScreenThree();
-            case 3:
-                return new ScreenFour();
-            case 4:
-                return new ScreenFive();
-            case 5:
-                return new ScreenSix();
-        }
-        return null;
+    public Object instantiateItem(@NonNull ViewGroup container, int position) {
+        LayoutInflater inflater = (LayoutInflater) mContext.getSystemService((Context.LAYOUT_INFLATER_SERVICE));
+        View v = inflater.inflate(R.layout.onboarding_screen, null);
+
+        ImageView imgDes = v.findViewById(R.id.imgBanner);
+        TextView tvDes = v.findViewById(R.id.tvDes);
+
+        tvDes.setText(mOnBoardingScreenItems.get(position).getDescription());
+        imgDes.setImageResource(mOnBoardingScreenItems.get(position).getImageRsc());
+
+        container.addView(v);
+
+        return v;
     }
 
     @Override
     public int getCount() {
-        return NUMBER_OF_ONBOARDING_SCREENS;
+        return mOnBoardingScreenItems.size();
+    }
+
+    @Override
+    public boolean isViewFromObject(@NonNull View view, @NonNull Object object) {
+        return view == object;
+    }
+
+    @Override
+    public void destroyItem(@NonNull ViewGroup container, int position, @NonNull Object object) {
+        container.removeView((View) object);
     }
 }

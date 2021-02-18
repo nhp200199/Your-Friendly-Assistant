@@ -1,13 +1,11 @@
-package com.phucnguyen.khoaluantotnghiep;
+package com.phucnguyen.khoaluantotnghiep.ui.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.TextView;
 
-import com.phucnguyen.khoaluantotnghiep.adapters.OnboardingScreensPagerAdapter;
+import com.phucnguyen.khoaluantotnghiep.R;
+import com.phucnguyen.khoaluantotnghiep.ui.fragment.WelcomeFragment;
 
 public class OnBoardingActivity extends AppCompatActivity {
 

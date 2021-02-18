@@ -1,10 +1,8 @@
-package com.phucnguyen.khoaluantotnghiep;
+package com.phucnguyen.khoaluantotnghiep.ui.fragment;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
@@ -14,10 +12,16 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.google.android.material.tabs.TabLayout;
+import com.phucnguyen.khoaluantotnghiep.model.OnBoardingScreenItem;
+import com.phucnguyen.khoaluantotnghiep.ui.activity.MainActivity;
+import com.phucnguyen.khoaluantotnghiep.R;
 import com.phucnguyen.khoaluantotnghiep.adapters.OnboardingScreensPagerAdapter;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class OnBoardingFragment extends Fragment {
-    public static final String EXTRA_IS_REVIEWING_USAGE = "com.phucnguyen.khoaluantotnghiep.OnBoardingFragment.IS_REVIEWING";
+    public static final String EXTRA_IS_REVIEWING_USAGE = "com.phucnguyen.khoaluantotnghiep.ui.fragment.OnBoardingFragment.IS_REVIEWING";
 
     private ViewPager vpOnboardingScreensContainer;
     private TabLayout tabIndicator;
@@ -42,9 +46,17 @@ public class OnBoardingFragment extends Fragment {
             }
         });
 
+        List<OnBoardingScreenItem> screenItems = new ArrayList<OnBoardingScreenItem>();
+        screenItems.add(new OnBoardingScreenItem("1", R.drawable.ic_happy_face_96px));
+        screenItems.add(new OnBoardingScreenItem("2", R.drawable.ic_happy_face_96px));
+        screenItems.add(new OnBoardingScreenItem("3", R.drawable.ic_happy_face_96px));
+        screenItems.add(new OnBoardingScreenItem("4", R.drawable.ic_happy_face_96px));
+        screenItems.add(new OnBoardingScreenItem("5", R.drawable.ic_happy_face_96px));
+        screenItems.add(new OnBoardingScreenItem("6", R.drawable.ic_happy_face_96px));
+
         adapter = new OnboardingScreensPagerAdapter(
-                getActivity().getSupportFragmentManager(),
-                0
+           screenItems,
+           requireContext()
         );
         vpOnboardingScreensContainer.setAdapter(adapter);
         tabIndicator.setupWithViewPager(vpOnboardingScreensContainer);

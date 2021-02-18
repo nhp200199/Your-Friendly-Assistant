@@ -7,22 +7,22 @@
 
     <fragment
         android:id="@+id/home_fragment"
-        android:name="com.phucnguyen.khoaluantotnghiep.HomeFragment"
+        android:name="com.phucnguyen.khoaluantotnghiep.ui.fragment.HomeFragment"
         android:label="@string/home_title"
         tools:layout="@layout/fragment_home" />
     <fragment
         android:id="@+id/find_products_fragment"
-        android:name="com.phucnguyen.khoaluantotnghiep.FindProductsFragment"
+        android:name="com.phucnguyen.khoaluantotnghiep.ui.fragment.FindProductsFragment"
         android:label="@string/search_title"
         tools:layout="@layout/find_products_fragment" />
     <fragment
         android:id="@+id/hot_products_fragment"
-        android:name="com.phucnguyen.khoaluantotnghiep.HotProductsFragment"
+        android:name="com.phucnguyen.khoaluantotnghiep.ui.fragment.HotProductsFragment"
         android:label="@string/hot_title"
         tools:layout="@layout/fragment_hot_products" />
     <fragment
         android:id="@+id/setting_fragment"
-        android:name="com.phucnguyen.khoaluantotnghiep.SettingFragment"
+        android:name="com.phucnguyen.khoaluantotnghiep.ui.fragment.SettingFragment"
         android:label="@string/setting_title"
         tools:layout="@layout/fragment_setting" >
         <action
@@ -40,7 +40,7 @@
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right">
             <argument
-                android:name="com.phucnguyen.khoaluantotnghiep.OnBoardingFragment.IS_REVIEWING"
+                android:name="com.phucnguyen.khoaluantotnghiep.ui.fragment.OnBoardingFragment.IS_REVIEWING"
                 android:defaultValue="true" />
         </action>
         <action
@@ -53,12 +53,12 @@
     </fragment>
     <fragment
         android:id="@+id/log_in_fragment"
-        android:name="com.phucnguyen.khoaluantotnghiep.LogInFragment"
+        android:name="com.phucnguyen.khoaluantotnghiep.ui.fragment.LogInFragment"
         android:label="Đăng nhập"
         tools:layout="@layout/fragment_log_in" />
     <fragment
         android:id="@+id/on_boarding_fragment"
-        android:name="com.phucnguyen.khoaluantotnghiep.OnBoardingFragment"
+        android:name="com.phucnguyen.khoaluantotnghiep.ui.fragment.OnBoardingFragment"
         android:label="OnBoardingFragment" >
         <argument
             android:name="com.phucnguyen.khoaluantotnghiep.OnBoardingFragment.IS_REVIEWING"
@@ -67,7 +67,13 @@
     </fragment>
     <fragment
         android:id="@+id/language_setting_fragment"
-        android:name="com.phucnguyen.khoaluantotnghiep.LanguageSettingFragment"
+        android:name="com.phucnguyen.khoaluantotnghiep.ui.fragment.LanguageSettingFragment"
         android:label="Ngôn ngữ"
         tools:layout="@layout/fragment_language_setting" />
+    <fragment
+        android:id="@+id/product_item_fragment"
+        android:name="com.phucnguyen.khoaluantotnghiep.ui.fragment.ProductItemFragment"
+        android:label="fragment_product_item"
+        tools:layout="@layout/fragment_product_item" />
+    <action android:id="@+id/action_global_productItemFragment" app:destination="@id/product_item_fragment" />
 </navigation>

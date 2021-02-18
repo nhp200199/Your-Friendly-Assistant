@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:layout_marginBottom="16dp"
     android:orientation="vertical"
-    tools:context=".WelcomeFragment">
+    tools:context=".ui.fragment.WelcomeFragment">
 
     <ImageView
         android:id="@+id/imgBanner"

@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginBottom="16dp"
-        tools:context=".OnBoardingFragment">
+        tools:context=".ui.fragment.OnBoardingFragment">
 
         <TextView
             android:id="@+id/tvIgnore"
@@ -24,7 +24,7 @@
             android:textAppearance="?attr/textAppearanceBody1"
             android:textColor="#39B3E8" />
 
-        <com.phucnguyen.khoaluantotnghiep.customviews.WrapContentHeightViewPager
+        <com.phucnguyen.khoaluantotnghiep.ui.customviews.WrapContentHeightViewPager
             android:id="@+id/onboardingScreensContainer"
             android:layout_width="match_parent"
             android:layout_height="match_parent"

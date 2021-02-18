@@ -1,4 +1,4 @@
-package com.phucnguyen.khoaluantotnghiep.customviews;
+package com.phucnguyen.khoaluantotnghiep.ui.customviews;
 
 import android.content.Context;
 import android.util.AttributeSet;

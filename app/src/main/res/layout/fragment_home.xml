@@ -4,7 +4,7 @@
     android:id="@+id/productItemsContainer"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".HomeFragment"
+    tools:context=".ui.fragment.HomeFragment"
     tools:listitem="@layout/product_item">
 
 </androidx.recyclerview.widget.RecyclerView>

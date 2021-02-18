@@ -1,4 +1,4 @@
-package com.phucnguyen.khoaluantotnghiep;
+package com.phucnguyen.khoaluantotnghiep.ui.activity;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -16,6 +16,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.phucnguyen.khoaluantotnghiep.R;
 
 public class MainActivity extends AppCompatActivity {
     private AppBarConfiguration appBarConfiguration;

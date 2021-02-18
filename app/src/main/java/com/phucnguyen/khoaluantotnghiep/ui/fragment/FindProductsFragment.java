@@ -1,23 +1,14 @@
-package com.phucnguyen.khoaluantotnghiep;
+package com.phucnguyen.khoaluantotnghiep.ui.fragment;
 
-import android.app.SearchManager;
-import android.content.ComponentName;
-import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
 import android.os.AsyncTask;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.widget.SearchView;
-import androidx.core.view.inputmethod.EditorInfoCompat;
-import androidx.cursoradapter.widget.CursorAdapter;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
-import androidx.navigation.Navigation;
-import androidx.navigation.ui.NavigationUI;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -27,19 +18,17 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.EditorInfo;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import com.phucnguyen.khoaluantotnghiep.R;
+import com.phucnguyen.khoaluantotnghiep.ui.activity.SearchableActivity;
 import com.phucnguyen.khoaluantotnghiep.adapters.SearchHistoryRecyclerViewAdapter;
 import com.phucnguyen.khoaluantotnghiep.database.RecentSearch;
 import com.phucnguyen.khoaluantotnghiep.database.RecentSearchDao;
 import com.phucnguyen.khoaluantotnghiep.database.SearchDatabase;
 
 import java.util.List;
-
-import static androidx.core.content.ContextCompat.getSystemService;
 
 public class FindProductsFragment extends Fragment {
     private RecyclerView mRecyclerView;

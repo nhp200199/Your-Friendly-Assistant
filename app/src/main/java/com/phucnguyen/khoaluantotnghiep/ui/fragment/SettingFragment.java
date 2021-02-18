@@ -1,18 +1,17 @@
-package com.phucnguyen.khoaluantotnghiep;
+package com.phucnguyen.khoaluantotnghiep.ui.fragment;
 
-import android.app.Activity;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
-import androidx.preference.PreferenceFragmentCompat;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import com.phucnguyen.khoaluantotnghiep.R;
 
 public class SettingFragment extends Fragment {
     private static final String LOGTAG = SettingFragment.class.getSimpleName();

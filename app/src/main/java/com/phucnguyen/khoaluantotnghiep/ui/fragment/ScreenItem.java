@@ -1,4 +1,4 @@
-package com.phucnguyen.khoaluantotnghiep;
+package com.phucnguyen.khoaluantotnghiep.ui.fragment;
 
 public class ScreenItem {
     private String title;

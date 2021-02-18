@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="32dp"
-    tools:context=".LogInFragment">
+    tools:context=".ui.fragment.LogInFragment">
 
     <TextView
         android:layout_width="match_parent"

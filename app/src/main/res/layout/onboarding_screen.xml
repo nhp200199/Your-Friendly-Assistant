@@ -17,6 +17,7 @@
         android:src="@mipmap/ic_launcher" />
 
     <TextView
+        android:id="@+id/tvDes"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"

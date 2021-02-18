@@ -10,18 +10,18 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.KhoaLuanTotNghiep">
-        <activity android:name=".SearchableActivity"
+        <activity android:name=".ui.activity.SearchableActivity"
             android:launchMode="singleTop"
-            android:parentActivityName=".MainActivity">
+            android:parentActivityName=".ui.activity.MainActivity">
         </activity>
-        <activity android:name=".OnBoardingActivity">
+        <activity android:name=".ui.activity.OnBoardingActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MainActivity"
+        <activity android:name=".ui.activity.MainActivity"
             android:launchMode="singleTop"
             android:windowSoftInputMode="adjustPan">
         </activity>

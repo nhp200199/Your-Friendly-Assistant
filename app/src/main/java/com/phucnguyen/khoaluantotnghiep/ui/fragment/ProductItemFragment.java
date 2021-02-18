@@ -1,9 +1,7 @@
-package com.phucnguyen.khoaluantotnghiep;
+package com.phucnguyen.khoaluantotnghiep.ui.fragment;
 
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
@@ -17,6 +15,7 @@ import android.widget.TextView;
 
 import com.google.android.material.tabs.TabItem;
 import com.google.android.material.tabs.TabLayout;
+import com.phucnguyen.khoaluantotnghiep.R;
 
 public class ProductItemFragment extends Fragment {
 
@@ -95,7 +94,7 @@ public class ProductItemFragment extends Fragment {
         public Fragment getItem(int position) {
             switch (position) {
                 case 0:
-                    return new SellerRateFragment();
+                    return new WelcomeFragment.SellerRateFragment();
                 case 1:
                     return new ProductPriceHistoryFragment();
                 case 2:

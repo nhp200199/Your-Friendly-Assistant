@@ -1,16 +1,17 @@
-package com.phucnguyen.khoaluantotnghiep;
+package com.phucnguyen.khoaluantotnghiep.ui.fragment;
 
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-public class LogInFragment extends Fragment {
+import androidx.fragment.app.Fragment;
 
-    public LogInFragment() {
+import com.phucnguyen.khoaluantotnghiep.R;
+
+public class SellerRateFragment extends Fragment {
+
+    public SellerRateFragment() {
         // Required empty public constructor
     }
 
@@ -18,6 +19,6 @@ public class LogInFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_log_in, container, false);
+        return inflater.inflate(R.layout.fragment_seller_rate, container, false);
     }
 }

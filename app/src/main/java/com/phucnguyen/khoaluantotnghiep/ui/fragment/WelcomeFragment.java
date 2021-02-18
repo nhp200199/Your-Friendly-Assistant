@@ -1,19 +1,30 @@
-package com.phucnguyen.khoaluantotnghiep;
+package com.phucnguyen.khoaluantotnghiep.ui.fragment;
 
+import android.app.Dialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
+import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.android.material.button.MaterialButton;
+import com.phucnguyen.khoaluantotnghiep.R;
+
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link ScreenThree#newInstance} factory method to
+ * Use the {@link WelcomeFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class ScreenThree extends Fragment {
+public class WelcomeFragment extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -24,7 +35,7 @@ public class ScreenThree extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    public ScreenThree() {
+    public WelcomeFragment() {
         // Required empty public constructor
     }
 
@@ -34,11 +45,11 @@ public class ScreenThree extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment ScreenThree.
+     * @return A new instance of fragment WelcomeFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static ScreenThree newInstance(String param1, String param2) {
-        ScreenThree fragment = new ScreenThree();
+    public static WelcomeFragment newInstance(String param1, String param2) {
+        WelcomeFragment fragment = new WelcomeFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -58,7 +69,20 @@ public class ScreenThree extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        View v = inflater.inflate(R.layout.fragment_welcome, container, false);
+        MaterialButton btnStartOnBoarding = v.findViewById(R.id.btnStartOnBoarding);
+
+        btnStartOnBoarding.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                getActivity().getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.onboardingContainer, new OnBoardingFragment())
+                        .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                        .commit();
+            }
+        });
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.onboarding_screen, container, false);
+        return v;
     }
 }

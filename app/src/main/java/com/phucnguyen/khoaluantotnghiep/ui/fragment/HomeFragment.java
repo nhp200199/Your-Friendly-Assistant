@@ -1,26 +1,23 @@
-package com.phucnguyen.khoaluantotnghiep;
+package com.phucnguyen.khoaluantotnghiep.ui.fragment;
 
-import android.app.Activity;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
+import androidx.paging.PagedList;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.phucnguyen.khoaluantotnghiep.R;
 import com.phucnguyen.khoaluantotnghiep.adapters.ProductItemsAdapter;
 import com.phucnguyen.khoaluantotnghiep.model.ProductItem;
 import com.phucnguyen.khoaluantotnghiep.repository.ProductItemRepo;
-
-import java.util.List;
 
 public class HomeFragment extends Fragment {
     private static final String LOGTAG = HomeFragment.class.getSimpleName();
@@ -52,10 +49,10 @@ public class HomeFragment extends Fragment {
         ProductItemsAdapter adapter = new ProductItemsAdapter(view.getContext());
         productItemContainer.setAdapter(adapter);
         productItemContainer.setLayoutManager(new LinearLayoutManager(getContext()));
-        mProductItemRepo.getProductItems().observe(getActivity(), new Observer<List<ProductItem>>() {
+        mProductItemRepo.getProductItems().observe(requireActivity(), new Observer<PagedList<ProductItem>>() {
             @Override
-            public void onChanged(List<ProductItem> productItems) {
-                adapter.setProductItems(productItems);
+            public void onChanged(PagedList<ProductItem> productItems) {
+                adapter.submitList(productItems);
             }
         });
     }

@@ -1,6 +1,7 @@
 package com.phucnguyen.khoaluantotnghiep.model;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
@@ -112,5 +113,11 @@ public class ProductItem {
 
     public void setSellerRate(int sellerRate) {
         mSellerRate = sellerRate;
+    }
+
+    @Override
+    public boolean equals(@Nullable Object obj) {
+        ProductItem comparedItem = (ProductItem) obj;
+        return this.name.equals(comparedItem.categoryId);
     }
 }

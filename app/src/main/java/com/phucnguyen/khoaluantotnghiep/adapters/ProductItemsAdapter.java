@@ -10,6 +10,8 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.res.ResourcesCompat;
+import androidx.paging.PagedListAdapter;
+import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -19,11 +21,11 @@ import com.phucnguyen.khoaluantotnghiep.model.ProductItem;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ProductItemsAdapter extends RecyclerView.Adapter<ProductItemsAdapter.ProductItemViewHolder> {
+public class ProductItemsAdapter extends PagedListAdapter<ProductItem, ProductItemsAdapter.ProductItemViewHolder> {
     private Context mContext;
-    private List<ProductItem> mProductItems = new ArrayList<>();
 
     public ProductItemsAdapter(Context context) {
+        super(DIFF_CALLBACK);
         mContext = context;
     }
 
@@ -37,7 +39,7 @@ public class ProductItemsAdapter extends RecyclerView.Adapter<ProductItemsAdapte
 
     @Override
     public void onBindViewHolder(@NonNull ProductItemViewHolder holder, int position) {
-        ProductItem item = mProductItems.get(position);
+        ProductItem item = getItem(position);
         holder.tvProductRate.setText(String.valueOf(item.getRating()));
         holder.tvProductTitle.setText(item.getName());
         holder.tvPrice.setText(String.valueOf(item.getProductPrice()));
@@ -70,16 +72,6 @@ public class ProductItemsAdapter extends RecyclerView.Adapter<ProductItemsAdapte
                 .into(holder.imgSellerRateIcon);
     }
 
-    @Override
-    public int getItemCount() {
-        return mProductItems.size();
-    }
-
-    public void setProductItems(List<ProductItem> productItems) {
-        mProductItems = productItems;
-        notifyDataSetChanged();
-    }
-
     public static class ProductItemViewHolder extends RecyclerView.ViewHolder {
         private ImageView imgProduct;
         private TextView tvPrice;
@@ -100,4 +92,16 @@ public class ProductItemsAdapter extends RecyclerView.Adapter<ProductItemsAdapte
             tvProductItemSoldQuantities = (TextView)itemView.findViewById(R.id.tvProductItemSoldQuantities);
         }
     }
+
+    private static DiffUtil.ItemCallback<ProductItem> DIFF_CALLBACK = new DiffUtil.ItemCallback<ProductItem>() {
+        @Override
+        public boolean areItemsTheSame(@NonNull ProductItem oldItem, @NonNull ProductItem newItem) {
+            return Integer.parseInt(oldItem.getId()) == Integer.parseInt(newItem.getId());
+        }
+
+        @Override
+        public boolean areContentsTheSame(@NonNull ProductItem oldItem, @NonNull ProductItem newItem) {
+            return oldItem.equals(newItem);
+        }
+    };
 }

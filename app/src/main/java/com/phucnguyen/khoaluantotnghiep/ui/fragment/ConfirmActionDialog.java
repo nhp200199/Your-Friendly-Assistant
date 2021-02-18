@@ -1,4 +1,4 @@
-package com.phucnguyen.khoaluantotnghiep;
+package com.phucnguyen.khoaluantotnghiep.ui.fragment;
 
 import android.app.Dialog;
 import android.content.Context;
