@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.phucnguyen.khoaluantotnghiep">
     <uses-permission android:name="android.permission.INTERNET"/>
 
@@ -14,7 +15,8 @@
             android:launchMode="singleTop"
             android:parentActivityName=".ui.activity.MainActivity">
         </activity>
-        <activity android:name=".ui.activity.OnBoardingActivity">
+        <activity android:name=".ui.activity.OnBoardingActivity"
+            >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -22,8 +24,15 @@
             </intent-filter>
         </activity>
         <activity android:name=".ui.activity.MainActivity"
-            android:launchMode="singleTop"
+            android:launchMode="singleTask"
             android:windowSoftInputMode="adjustPan">
+            <intent-filter>
+                <action android:name="android.intent.action.SEND"/>
+
+                <category android:name="android.intent.category.DEFAULT"/>
+
+                <data android:mimeType="text/plain"/>
+            </intent-filter>
         </activity>
     </application>
 

@@ -50,7 +50,7 @@ public class SettingPreferenceFragment extends PreferenceFragmentCompat
                 return true;
             case "comment_pref":
                 NavHostFragment.findNavController(this)
-                        .navigate(R.id.product_item_fragment);
+                        .navigate(R.id.action_global_productItemFragment);
                 return true;
 
             default:

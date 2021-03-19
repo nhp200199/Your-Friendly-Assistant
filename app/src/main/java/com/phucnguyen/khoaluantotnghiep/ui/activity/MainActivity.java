@@ -10,6 +10,8 @@ import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
+import android.content.ClipData;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
@@ -25,6 +27,13 @@ public class MainActivity extends AppCompatActivity {
     private BottomNavigationView bottomNav;
     private Toolbar toolbar;
     private TextView mToolbarTitle;
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        if (intent.getAction().equals(Intent.ACTION_SEND))
+            moveToProductItem();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +56,9 @@ public class MainActivity extends AppCompatActivity {
         setUpBotNavigation();
         setUpToolbar();
 
+        //move to product item screen only when there is a product link coming
+        moveToProductItem();
+
         navController.addOnDestinationChangedListener(new NavController.OnDestinationChangedListener() {
             @Override
             public void onDestinationChanged(@NonNull NavController controller, @NonNull NavDestination destination, @Nullable Bundle arguments) {
@@ -63,6 +75,21 @@ public class MainActivity extends AppCompatActivity {
                 getSupportActionBar().setTitle("");
             }
         });
+    }
+
+    private void moveToProductItem() {
+        ClipData productUrlClipData = null;
+        Intent intent = getIntent();
+        if (intent.getAction() != null && intent.getAction().equals(Intent.ACTION_SEND)
+                && intent.getClipData() != null) {
+            productUrlClipData = intent.getClipData();
+
+            String productUrlString = productUrlClipData.getItemAt(0).getText().toString();
+            Bundle bundle = new Bundle();
+            bundle.putString("productUrl", productUrlString);
+
+            navController.navigate(R.id.action_global_productItemFragment, bundle);
+        }
     }
 
     private void setUpToolbar() {

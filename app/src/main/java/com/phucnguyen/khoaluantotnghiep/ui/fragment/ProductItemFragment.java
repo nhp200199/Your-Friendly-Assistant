@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.material.tabs.TabItem;
 import com.google.android.material.tabs.TabLayout;
@@ -94,7 +95,7 @@ public class ProductItemFragment extends Fragment {
         public Fragment getItem(int position) {
             switch (position) {
                 case 0:
-                    return new WelcomeFragment.SellerRateFragment();
+                    return new SellerRateFragment();
                 case 1:
                     return new ProductPriceHistoryFragment();
                 case 2:

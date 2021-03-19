@@ -74,6 +74,11 @@
         android:id="@+id/product_item_fragment"
         android:name="com.phucnguyen.khoaluantotnghiep.ui.fragment.ProductItemFragment"
         android:label="fragment_product_item"
-        tools:layout="@layout/fragment_product_item" />
+        tools:layout="@layout/fragment_product_item">
+        <argument
+            android:name="productUrl"
+            app:argType="string"
+            android:defaultValue="none" />
+    </fragment>
     <action android:id="@+id/action_global_productItemFragment" app:destination="@id/product_item_fragment" />
 </navigation>
