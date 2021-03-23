@@ -82,9 +82,11 @@ public class MainActivity extends AppCompatActivity implements ProductItemFragme
         ClipData productUrlClipData = null;
         if (intent.getAction() != null && intent.getAction().equals(Intent.ACTION_SEND)
                 && intent.getClipData() != null) {
-            productUrlClipData = intent.getClipData();
 
-            String productUrlString = productUrlClipData.getItemAt(0).getText().toString();
+            String productUrlString = null;
+            if(intent.hasExtra(Intent.EXTRA_TEXT)){
+                productUrlString = intent.getStringExtra(Intent.EXTRA_TEXT);
+            }
             Bundle bundle = new Bundle();
             bundle.putString("productUrl", productUrlString);
 

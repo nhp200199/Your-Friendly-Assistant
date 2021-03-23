@@ -24,7 +24,7 @@
         android:id="@+id/setting_fragment"
         android:name="com.phucnguyen.khoaluantotnghiep.ui.fragment.SettingFragment"
         android:label="@string/setting_title"
-        tools:layout="@layout/fragment_setting" >
+        tools:layout="@layout/fragment_setting">
         <action
             android:id="@+id/action_setting_fragment_to_logInFragment"
             app:destination="@id/log_in_fragment"
@@ -59,11 +59,11 @@
     <fragment
         android:id="@+id/on_boarding_fragment"
         android:name="com.phucnguyen.khoaluantotnghiep.ui.fragment.OnBoardingFragment"
-        android:label="OnBoardingFragment" >
+        android:label="OnBoardingFragment">
         <argument
             android:name="com.phucnguyen.khoaluantotnghiep.OnBoardingFragment.IS_REVIEWING"
-            app:argType="boolean"
-            android:defaultValue="false" />
+            android:defaultValue="false"
+            app:argType="boolean" />
     </fragment>
     <fragment
         android:id="@+id/language_setting_fragment"
@@ -84,5 +84,11 @@
             android:defaultValue="Không tìm thấy"
             app:argType="string" />
     </fragment>
-    <action android:id="@+id/action_global_productItemFragment" app:destination="@id/product_item_fragment" />
+    <action
+        android:id="@+id/action_global_productItemFragment"
+        app:destination="@id/product_item_fragment"
+        app:enterAnim="@anim/slide_in_right"
+        app:exitAnim="@anim/slide_out_left"
+        app:popEnterAnim="@anim/slide_in_left"
+        app:popExitAnim="@anim/slide_out_right" />
 </navigation>
