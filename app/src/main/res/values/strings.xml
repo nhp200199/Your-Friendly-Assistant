@@ -44,7 +44,7 @@
     <!--String for Find fragment-->
     <string name="find_introduction">Hãy tìm kiếm sản phẩm bạn thích từ hai sàn thương mại điện tử Tiki và Shopee nhé</string>
     <string name="title_history">Lịch sử</string>
-    <string name="find_guide">Tìm kiếm sản phẩm</string>
+    <string name="find_guide">Nhập đường dẫn hoặc tên sản phẩm</string>
 
     <!--Strings for Product Item Fragment-->
     <string name="product_seller_tab">nhà cung cấp</string>
@@ -55,6 +55,7 @@
     <string name="fab_go_to_store_des">đến trang cung cấp</string>
     <string name="img_product_ava_des">hình sản phẩm</string>
     <string name="img_seller_rate_icon_des">đánh giá shop</string>
+    <string name="price_currency">đ</string>
 
     <!--General strings-->
     <string name="default_text_placeholder">---</string>

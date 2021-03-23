@@ -13,14 +13,14 @@ import androidx.navigation.ui.NavigationUI;
 import android.content.ClipData;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.Menu;
 import android.view.View;
 import android.widget.TextView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.phucnguyen.khoaluantotnghiep.R;
+import com.phucnguyen.khoaluantotnghiep.ui.fragment.ProductItemFragment;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements ProductItemFragment.ProductItemListener {
     private AppBarConfiguration appBarConfiguration;
     private NavHostFragment navHostFragment;
     private NavController navController;
@@ -32,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
         if (intent.getAction().equals(Intent.ACTION_SEND))
-            moveToProductItem();
+            moveToProductItem(intent);
     }
 
     @Override
@@ -57,13 +57,14 @@ public class MainActivity extends AppCompatActivity {
         setUpToolbar();
 
         //move to product item screen only when there is a product link coming
-        moveToProductItem();
+        moveToProductItem(getIntent());
 
         navController.addOnDestinationChangedListener(new NavController.OnDestinationChangedListener() {
             @Override
             public void onDestinationChanged(@NonNull NavController controller, @NonNull NavDestination destination, @Nullable Bundle arguments) {
                 if (destination.getId() == R.id.on_boarding_fragment ||
-                        destination.getId() == R.id.language_setting_fragment)
+                        destination.getId() == R.id.language_setting_fragment ||
+                        destination.getId() == R.id.product_item_fragment)
                     bottomNav.setVisibility(View.GONE);
                 else bottomNav.setVisibility(View.VISIBLE);
                 if (destination.getId() == R.id.on_boarding_fragment)
@@ -77,9 +78,8 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void moveToProductItem() {
+    private void moveToProductItem(Intent intent) {
         ClipData productUrlClipData = null;
-        Intent intent = getIntent();
         if (intent.getAction() != null && intent.getAction().equals(Intent.ACTION_SEND)
                 && intent.getClipData() != null) {
             productUrlClipData = intent.getClipData();
@@ -101,5 +101,10 @@ public class MainActivity extends AppCompatActivity {
         bottomNav = findViewById(R.id.bttm_nav);
         NavigationUI.setupWithNavController(bottomNav,
                 navHostFragment.getNavController());
+    }
+
+    @Override
+    public void onProductItemReceive(String productName) {
+        mToolbarTitle.setText(productName);
     }
 }

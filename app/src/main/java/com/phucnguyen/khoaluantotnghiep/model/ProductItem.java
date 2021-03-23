@@ -5,6 +5,8 @@ import androidx.annotation.Nullable;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
+import com.google.gson.annotations.SerializedName;
+
 @Entity(tableName = "products")
 public class ProductItem {
     @PrimaryKey
@@ -13,10 +15,12 @@ public class ProductItem {
     private String name;
     private String categoryId;
     private String sellerId;
+    private String platform;
     private float rating;
     private String productUrl;
     private String thumbnailUrl;
     private int totalReview;
+    @SerializedName("currentPrice")
     private int mProductPrice;
     private int mSellerRate;
 
@@ -113,6 +117,14 @@ public class ProductItem {
 
     public void setSellerRate(int sellerRate) {
         mSellerRate = sellerRate;
+    }
+
+    public String getPlatform() {
+        return platform;
+    }
+
+    public void setPlatform(String platform) {
+        this.platform = platform;
     }
 
     @Override

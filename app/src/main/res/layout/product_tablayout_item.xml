@@ -7,22 +7,16 @@
         android:id="@+id/imgTabIcon"
         android:layout_width="24dp"
         android:layout_height="24dp"
+        android:layout_centerHorizontal="true"
         android:src="@mipmap/ic_launcher" />
 
-    <TextView
-        android:id="@+id/tvTabDetail"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_toEndOf="@id/imgTabIcon"
-        android:text="@string/default_text_placeholder"
-        android:textAppearance="?attr/textAppearanceBody1" />
+
 
     <TextView
         android:id="@+id/tvTabTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/tvTabDetail"
+        android:layout_below="@id/imgTabIcon"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="8dp"
         android:ellipsize="end"

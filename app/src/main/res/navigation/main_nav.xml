@@ -73,12 +73,16 @@
     <fragment
         android:id="@+id/product_item_fragment"
         android:name="com.phucnguyen.khoaluantotnghiep.ui.fragment.ProductItemFragment"
-        android:label="fragment_product_item"
+        android:label="{productName}"
         tools:layout="@layout/fragment_product_item">
         <argument
             android:name="productUrl"
-            app:argType="string"
-            android:defaultValue="none" />
+            android:defaultValue="none"
+            app:argType="string" />
+        <argument
+            android:name="productName"
+            android:defaultValue="Không tìm thấy"
+            app:argType="string" />
     </fragment>
     <action android:id="@+id/action_global_productItemFragment" app:destination="@id/product_item_fragment" />
 </navigation>
