@@ -1,8 +1,11 @@
 package com.phucnguyen.khoaluantotnghiep.ui.fragment;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
@@ -16,6 +19,7 @@ import com.phucnguyen.khoaluantotnghiep.model.OnBoardingScreenItem;
 import com.phucnguyen.khoaluantotnghiep.ui.activity.MainActivity;
 import com.phucnguyen.khoaluantotnghiep.R;
 import com.phucnguyen.khoaluantotnghiep.adapters.OnboardingScreensPagerAdapter;
+import com.phucnguyen.khoaluantotnghiep.ui.activity.OnBoardingActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,6 +32,13 @@ public class OnBoardingFragment extends Fragment {
     private TextView tvIgnore;
 
     private OnboardingScreensPagerAdapter adapter;
+    private SharedPreferences mSharedPreferences;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        mSharedPreferences = requireActivity().getSharedPreferences("app_refs", Context.MODE_PRIVATE);
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -42,7 +53,12 @@ public class OnBoardingFragment extends Fragment {
             public void onClick(View view) {
                 if (getArguments() != null && getArguments().getBoolean(EXTRA_IS_REVIEWING_USAGE)) {
                     requireActivity().onBackPressed();
-                } else startActivity(new Intent(requireActivity(), MainActivity.class));
+                } else {
+                    mSharedPreferences.edit()
+                            .putBoolean(OnBoardingActivity.HAS_SEEN_ONBOARDING_REF, true)
+                            .apply();
+                    startActivity(new Intent(requireActivity(), MainActivity.class));
+                }
             }
         });
 
@@ -55,8 +71,8 @@ public class OnBoardingFragment extends Fragment {
         screenItems.add(new OnBoardingScreenItem("6", R.drawable.ic_happy_face_96px));
 
         adapter = new OnboardingScreensPagerAdapter(
-           screenItems,
-           requireContext()
+                screenItems,
+                requireContext()
         );
         vpOnboardingScreensContainer.setAdapter(adapter);
         tabIndicator.setupWithViewPager(vpOnboardingScreensContainer);

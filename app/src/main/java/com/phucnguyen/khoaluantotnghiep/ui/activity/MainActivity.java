@@ -12,6 +12,7 @@ import androidx.navigation.ui.NavigationUI;
 
 import android.content.ClipData;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
@@ -39,6 +40,12 @@ public class MainActivity extends AppCompatActivity implements ProductItemFragme
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        SharedPreferences sharedPreferences = getSharedPreferences("app_refs", MODE_PRIVATE);
+        if (!sharedPreferences.getBoolean(OnBoardingActivity.HAS_SEEN_ONBOARDING_REF, false)) {
+            startActivity(new Intent(this, OnBoardingActivity.class));
+            finish();
+        }
 
         toolbar = findViewById(R.id.toolbar);
         navHostFragment = (NavHostFragment) getSupportFragmentManager()
@@ -84,7 +91,7 @@ public class MainActivity extends AppCompatActivity implements ProductItemFragme
                 && intent.getClipData() != null) {
 
             String productUrlString = null;
-            if(intent.hasExtra(Intent.EXTRA_TEXT)){
+            if (intent.hasExtra(Intent.EXTRA_TEXT)) {
                 productUrlString = intent.getStringExtra(Intent.EXTRA_TEXT);
             }
             Bundle bundle = new Bundle();
