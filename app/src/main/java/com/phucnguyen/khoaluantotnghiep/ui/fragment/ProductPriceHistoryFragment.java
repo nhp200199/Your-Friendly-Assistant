@@ -16,6 +16,7 @@ import android.text.style.BulletSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.github.mikephil.charting.charts.LineChart;
@@ -41,6 +42,7 @@ import java.util.List;
 
 public class ProductPriceHistoryFragment extends Fragment {
     private LineChart mChartPriceHistory;
+    private ProgressBar pbLoadingBar;
 
     private ProductItemViewModel mProductItemViewModel;
 
@@ -59,13 +61,18 @@ public class ProductPriceHistoryFragment extends Fragment {
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_product_price_history, container, false);
         mChartPriceHistory = (LineChart) v.findViewById(R.id.chartPriceHistory);
+        pbLoadingBar = v.findViewById(R.id.pbLoadingBar);
 
         setUpChart();
 
         mProductItemViewModel.getProductPriceHistory().observe(getViewLifecycleOwner(), new Observer<List<Price>>() {
             @Override
             public void onChanged(List<Price> prices) {
-                populateChartWithPrice(prices);
+                pbLoadingBar.setVisibility(View.GONE);
+                if (prices != null){
+                    mChartPriceHistory.setVisibility(View.VISIBLE);
+                    populateChartWithPrice(prices);
+                }
             }
 
             private void populateChartWithPrice(List<Price> prices) {

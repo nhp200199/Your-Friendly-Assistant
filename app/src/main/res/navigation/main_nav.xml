@@ -81,7 +81,7 @@
             app:argType="string" />
         <argument
             android:name="productName"
-            android:defaultValue="Không tìm thấy"
+            android:defaultValue="Đang tìm sản phẩm"
             app:argType="string" />
     </fragment>
     <action

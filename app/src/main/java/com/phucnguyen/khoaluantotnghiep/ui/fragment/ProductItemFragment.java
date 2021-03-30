@@ -63,7 +63,7 @@ public class ProductItemFragment extends Fragment {
         super.onCreate(savedInstanceState);
         mItemViewModel = new ViewModelProvider(this).get(ProductItemViewModel.class);
         mProductUrl = getArguments().getString("productUrl");
-        mItemViewModel.makeApiCallToReceiveProductItem(mProductUrl, "item, seller, price");
+        mItemViewModel.makeApiCallToReceiveProductItem(mProductUrl, "item,price,seller,image");
     }
 
     @Override
@@ -117,6 +117,8 @@ public class ProductItemFragment extends Fragment {
                     public void onChanged(ProductItem productItem) {
                         if (productItem != null)
                             populateProductItemView(productItem);
+                        else
+                            mProductItemListener.onProductItemReceive("Không tìm thấy");
                     }
 
                     private void populateProductItemView(ProductItem productItem) {

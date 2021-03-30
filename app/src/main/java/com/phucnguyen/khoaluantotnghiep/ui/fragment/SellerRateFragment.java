@@ -7,6 +7,7 @@ import android.text.style.BulletSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
@@ -32,6 +33,8 @@ public class SellerRateFragment extends Fragment {
     private TextView tvSellerFollwers;
     private TextView tvSellerResponseRate;
     private TextView tvTotalItems;
+    private TextView tvSellerResonseStatus;
+    private ProgressBar pbLoadingBar;
 
     public SellerRateFragment() {
         // Required empty public constructor
@@ -56,12 +59,21 @@ public class SellerRateFragment extends Fragment {
         tvSellerDateCreated = v.findViewById(R.id.tvSellerDateCreated);
         tvSellerResponseRate = v.findViewById(R.id.tvSellerResponseRate);
         tvTotalItems = v.findViewById(R.id.tvSellerTotalItems);
+        tvSellerResonseStatus = v.findViewById(R.id.tvSellerResponseStatus);
+        pbLoadingBar = v.findViewById(R.id.pbLoadingBar);
 
         mProductItemViewModel.getSeller().observe(getViewLifecycleOwner(), new Observer<Seller>() {
             @Override
             public void onChanged(Seller seller) {
-                if (seller != null)
+                if (seller != null) {
+                    pbLoadingBar.setVisibility(View.GONE);
                     populateSellerInfoView(seller);
+                }
+                else{
+                    pbLoadingBar.setVisibility(View.GONE);
+                    tvSellerResonseStatus.setVisibility(View.VISIBLE);
+                    tvSellerResonseStatus.setText("Không tìm thấy nhà bán");
+                }
             }
 
             //long long code to show information of seller

@@ -42,12 +42,15 @@ public class ProductItemRepo {
     public LiveData<PagedList<ProductItem>> getProductItems() {
         return mProductItems;
     }
-    public void getItem(String url, String include){
+
+    public void getItem(String url, String include) {
         Call<ProductItemResponse> productItem = mProductItemService.getItem(url, include);
         productItem.enqueue(new Callback<ProductItemResponse>() {
             @Override
             public void onResponse(Call<ProductItemResponse> call, Response<ProductItemResponse> response) {
-                mProductItemResponseMutableLiveData.postValue(response.body());
+                if (response.isSuccessful())
+                    mProductItemResponseMutableLiveData.postValue(response.body());
+                else mProductItemResponseMutableLiveData.postValue(null);
             }
 
             @Override
@@ -65,7 +68,7 @@ public class ProductItemRepo {
     public LiveData<ProductItem> getProductItem() {
         return Transformations.map(
                 mProductItemResponseMutableLiveData,
-                (response) -> response.getProductItem()
+                (response) -> response == null ? null : response.getProductItem()
         );
     }
 
@@ -73,17 +76,26 @@ public class ProductItemRepo {
         return Transformations.map(
                 mProductItemResponseMutableLiveData,
                 (response) -> {
-                    Seller seller = response.getSeller();
-                    seller.setPlatform(response.getProductItem().getPlatform());
-                    return seller;
+                    if (response == null)
+                        return null;
+                    else {
+                        Seller seller = response.getSeller();
+                        seller.setPlatform(response.getProductItem().getPlatform());
+                        return seller;
+                    }
                 }
         );
     }
 
-    public LiveData<List<Price>> getProductPriceHistory(){
+    public LiveData<List<Price>> getProductPriceHistory() {
         return Transformations.map(
                 mProductItemResponseMutableLiveData,
-                (response) -> response.getPriceHistory()
+                (response) -> response == null? null : response.getPriceHistory()
         );
     }
+
+//    public LiveData<List<String>> getProductImageUrls(){
+//        return Transformations.map(mProductItemResponseMutableLiveData,
+//                response -> response.getImageUrls());
+//    }
 }
