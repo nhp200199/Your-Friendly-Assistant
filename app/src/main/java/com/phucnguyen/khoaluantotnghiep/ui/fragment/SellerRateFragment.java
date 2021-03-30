@@ -7,6 +7,7 @@ import android.text.style.BulletSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -35,6 +36,7 @@ public class SellerRateFragment extends Fragment {
     private TextView tvTotalItems;
     private TextView tvSellerResonseStatus;
     private ProgressBar pbLoadingBar;
+    private LinearLayout sellerContainer;
 
     public SellerRateFragment() {
         // Required empty public constructor
@@ -61,12 +63,14 @@ public class SellerRateFragment extends Fragment {
         tvTotalItems = v.findViewById(R.id.tvSellerTotalItems);
         tvSellerResonseStatus = v.findViewById(R.id.tvSellerResponseStatus);
         pbLoadingBar = v.findViewById(R.id.pbLoadingBar);
+        sellerContainer = v.findViewById(R.id.sellerContainer);
 
         mProductItemViewModel.getSeller().observe(getViewLifecycleOwner(), new Observer<Seller>() {
             @Override
             public void onChanged(Seller seller) {
                 if (seller != null) {
                     pbLoadingBar.setVisibility(View.GONE);
+                    sellerContainer.setVisibility(View.VISIBLE);
                     populateSellerInfoView(seller);
                 }
                 else{
