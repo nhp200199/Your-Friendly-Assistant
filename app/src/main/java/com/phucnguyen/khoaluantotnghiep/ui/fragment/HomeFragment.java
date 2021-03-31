@@ -1,5 +1,6 @@
 package com.phucnguyen.khoaluantotnghiep.ui.fragment;
 
+import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -10,7 +11,10 @@ import androidx.paging.PagedList;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -32,6 +36,8 @@ public class HomeFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mProductItemRepo = new ProductItemRepo(getContext());
+        Log.i("HomeFragment", "onCreate called");
+        setHasOptionsMenu(true);
     }
 
     @Override
@@ -55,9 +61,55 @@ public class HomeFragment extends Fragment {
                 adapter.submitList(productItems);
             }
         });
+        Log.i("HomeFragment", "onViewCreated called");
+
     }
 
     private void connectViews(View view) {
         productItemContainer = (RecyclerView) view.findViewById(R.id.productItemsContainer);
+    }
+
+//    @Override
+//    public void onAttach(Context context) {
+//        super.onAttach(context);
+//        Log.i("HomeFragment", "onAttach called");
+//    }
+//
+//    @Override
+//    public void onStart() {
+//        super.onStart();
+//        Log.i("HomeFragment", "onStart called");
+//    }
+//    @Override
+//    public void onResume() {
+//        super.onResume();
+//        Log.i("HomeFragment", "onResume called");
+//    }
+//    @Override
+//    public void onPause() {
+//        super.onPause();
+//        Log.i("HomeFragment", "onPause called");
+//    }
+//    @Override
+//    public void onStop() {
+//        super.onStop();
+//        Log.i("HomeFragment", "onStop called");
+//    }
+//    @Override
+//    public void onDestroyView() {
+//        super.onDestroyView();
+//        Log.i("HomeFragment", "onDestroyView called");
+//    }
+//    @Override
+//    public void onDetach() {
+//        super.onDetach();
+//        Log.i("HomeFragment", "onDetach called");
+//    }
+
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.menu_search_for_real, menu);
+        menu.clear();
     }
 }

@@ -34,12 +34,12 @@ public class SettingPreferenceFragment extends PreferenceFragmentCompat
     public boolean onPreferenceTreeClick(Preference preference) {
         switch (preference.getKey()) {
             case "language_pref":
-                Navigation.findNavController(requireActivity(), R.id.nav_host_fragment)
-                        .navigate(R.id.action_setting_fragment_to_language_setting_fragment);
+//                Navigation.findNavController(requireActivity(), R.id.nav_host_fragment)
+//                        .navigate(R.id.action_setting_fragment_to_language_setting_fragment);
                 return true;
             case "instruction_pref":
-                Navigation.findNavController(requireActivity(), R.id.nav_host_fragment)
-                        .navigate(R.id.action_setting_fragment_to_on_boarding_fragment);
+//                Navigation.findNavController(requireActivity(), R.id.nav_host_fragment)
+//                        .navigate(R.id.action_setting_fragment_to_on_boarding_fragment);
                 return true;
             case "notification_pref":
                 if (!notificationPref.isChecked())

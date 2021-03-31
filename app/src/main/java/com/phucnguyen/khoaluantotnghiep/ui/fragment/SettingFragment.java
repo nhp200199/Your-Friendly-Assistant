@@ -2,11 +2,14 @@ package com.phucnguyen.khoaluantotnghiep.ui.fragment;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -30,6 +33,7 @@ public class SettingFragment extends Fragment {
                     .beginTransaction()
                     .add(R.id.settingPreferenceContainer, new SettingPreferenceFragment())
                     .commit();
+        setHasOptionsMenu(true);
     }
 
     @Override
@@ -40,8 +44,8 @@ public class SettingFragment extends Fragment {
         tvLogInStatus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Navigation.findNavController(requireActivity(), R.id.nav_host_fragment)
-                .navigate(R.id.action_setting_fragment_to_logInFragment);
+//                Navigation.findNavController(requireActivity(), R.id.nav_host_fragment)
+//                .navigate(R.id.action_setting_fragment_to_logInFragment);
             }
         });
         // Inflate the layout for this fragment

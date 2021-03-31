@@ -1,5 +1,6 @@
 package com.phucnguyen.khoaluantotnghiep.ui.fragment;
 
+import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 
@@ -13,6 +14,8 @@ import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -20,6 +23,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -37,6 +41,7 @@ public class FindProductsFragment extends Fragment {
     private TextView tvFindIntroduction;
     private LinearLayout historySearchContainer;
     private SearchView mSearchView;
+    private EditText edtProductSearch;
 
     private SearchHistoryRecyclerViewAdapter mRecyclerViewAdapter;
     private LiveData<List<RecentSearch>> mRecentSearchs;
@@ -53,6 +58,7 @@ public class FindProductsFragment extends Fragment {
         mRecentSearchDao = SearchDatabase.getInstance(requireContext())
                 .recentSearchDao();
         mRecentSearchs = mRecentSearchDao.getRecentSearchsForHistory();
+        Log.i("FindFragment", "onCreate called");
     }
 
     @Override
@@ -61,6 +67,7 @@ public class FindProductsFragment extends Fragment {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.find_products_fragment, container, false);
         connectViews(v);
+        Log.i("FindFragment", "onCreate called");
 
         //decide which layout to show
         mRecentSearchs.observe(getViewLifecycleOwner(), new Observer<List<RecentSearch>>() {
@@ -68,11 +75,11 @@ public class FindProductsFragment extends Fragment {
             public void onChanged(List<RecentSearch> recentSearches) {
                 mRecyclerViewAdapter.setRecentSearches(recentSearches);
 
-                if (mRecentSearchs == null || mRecentSearchs.getValue().size() == 0){
+                if (mRecentSearchs == null || mRecentSearchs.getValue().size() == 0) {
                     //hide the search history and show introduction
                     tvFindIntroduction.setVisibility(View.VISIBLE);
                     historySearchContainer.setVisibility(View.GONE);
-                }else {
+                } else {
                     //otherwise show search history
                     tvFindIntroduction.setVisibility(View.GONE);
                     historySearchContainer.setVisibility(View.VISIBLE);
@@ -85,11 +92,27 @@ public class FindProductsFragment extends Fragment {
     private void connectViews(View v) {
         mRecyclerView = (RecyclerView) v.findViewById(R.id.rcvSearch);
         tvFindIntroduction = (TextView) v.findViewById(R.id.tvFindIntroduction);
+        edtProductSearch = (EditText) v.findViewById(R.id.edtSearchProduct);
         historySearchContainer = (LinearLayout) v.findViewById(R.id.historySearchContainer);
 
         mRecyclerViewAdapter = new SearchHistoryRecyclerViewAdapter(requireContext());
 
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(requireActivity()){
+        edtProductSearch.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView textView, int actionId, KeyEvent keyEvent) {
+                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                    Bundle bundle = new Bundle();
+                    bundle.putString("productUrl", edtProductSearch.getText().toString().trim());
+                    NavHostFragment.findNavController(FindProductsFragment.this)
+                            .navigate(R.id.action_global_productItemFragment, bundle);
+                    return true;
+                }
+                return false;
+            }
+        });
+
+        //we dont want the recycler view to be scroll
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(requireActivity()) {
             @Override
             public boolean canScrollVertically() {
                 return false;
@@ -105,64 +128,65 @@ public class FindProductsFragment extends Fragment {
         });
     }
 
-    @Override
-    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
-        inflater.inflate(R.menu.menu_search_for_real, menu);
-        MenuItem menuItem = menu.findItem(R.id.action_search);
-        // Get the SearchView
-        mSearchView = (SearchView) menuItem.getActionView();
-
-        mSearchView.setMaxWidth(Integer.MAX_VALUE);
-        //update the query in search view
-        mSearchView.setImeOptions(EditorInfo.IME_ACTION_SEARCH);
-        mSearchView.setIconifiedByDefault(false);
-        mSearchView.setQueryHint(getString(R.string.find_guide));
-
-        //remove search icon
-        mSearchView.setIconified(false); // this is important to hide the search hint icon
-        ImageView icon = (ImageView) mSearchView.findViewById(androidx.appcompat.R.id.search_mag_icon);
-        icon.setVisibility(View.GONE);
-
-        mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                //close keyboard
-//                InputMethodManager imm = (InputMethodManager) SearchableActivity.this.getSystemService(Activity.INPUT_METHOD_SERVICE);
-//                //Find the currently focused view, so we can grab the correct window token from it.
-//                View view = SearchableActivity.this.getCurrentFocus();
-//                //If no view currently has focus, create a new one, just so we can grab a window token from it
-//                if (view == null) {
-//                    view = new View(SearchableActivity.this);
-//                }
-//                imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
-
-                //TODO: use the query to search your data somehow
-                //store the search to database
-//                SearchDatabase searchDatabase = SearchDatabase.getInstance(getApplicationContext());
-//                mRecentSearchDao = searchDatabase.recentSearchDao();
-//                RecentSearch recentSearch = new RecentSearch(query, String.valueOf(new Date().getTime()));
-//                new InsertRecentSearchAsyncTask(mRecentSearchDao).execute(recentSearch);
-                Bundle bundle = new Bundle();
-                bundle.putString("productUrl", query);
-                NavHostFragment.findNavController(FindProductsFragment.this)
-                        .navigate(R.id.action_global_productItemFragment, bundle);
-                return true;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                return false;
-            }
-        });
-    }
+//    @Override
+//    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+//        super.onCreateOptionsMenu(menu, inflater);
+//        inflater.inflate(R.menu.menu_search_for_real, menu);
+//        MenuItem menuItem = menu.findItem(R.id.action_search);
+//        // Get the SearchView
+//        mSearchView = (SearchView) menuItem.getActionView();
+//
+//        mSearchView.setMaxWidth(Integer.MAX_VALUE);
+//        //update the query in search view
+//        mSearchView.setImeOptions(EditorInfo.IME_ACTION_SEARCH);
+//        mSearchView.setIconifiedByDefault(true);
+//        mSearchView.setQueryHint(getString(R.string.find_guide));
+//
+//        //remove search icon
+////        mSearchView.setIconified(false); // this is important to hide the search hint icon
+////        ImageView icon = (ImageView) mSearchView.findViewById(androidx.appcompat.R.id.search_mag_icon);
+////        icon.setVisibility(View.GONE);
+//
+//        mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+//            @Override
+//            public boolean onQueryTextSubmit(String query) {
+//                //close keyboard
+////                InputMethodManager imm = (InputMethodManager) SearchableActivity.this.getSystemService(Activity.INPUT_METHOD_SERVICE);
+////                //Find the currently focused view, so we can grab the correct window token from it.
+////                View view = SearchableActivity.this.getCurrentFocus();
+////                //If no view currently has focus, create a new one, just so we can grab a window token from it
+////                if (view == null) {
+////                    view = new View(SearchableActivity.this);
+////                }
+////                imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+//
+//                //TODO: use the query to search your data somehow
+//                //store the search to database
+////                SearchDatabase searchDatabase = SearchDatabase.getInstance(getApplicationContext());
+////                mRecentSearchDao = searchDatabase.recentSearchDao();
+////                RecentSearch recentSearch = new RecentSearch(query, String.valueOf(new Date().getTime()));
+////                new InsertRecentSearchAsyncTask(mRecentSearchDao).execute(recentSearch);
+//                Bundle bundle = new Bundle();
+//                bundle.putString("productUrl", query);
+//                NavHostFragment.findNavController(FindProductsFragment.this)
+//                        .navigate(R.id.action_global_productItemFragment, bundle);
+//                return true;
+//            }
+//
+//            @Override
+//            public boolean onQueryTextChange(String newText) {
+//                return false;
+//            }
+//        });
+//    }
 
     private static class DeleteRecentSearchAsyncTask extends AsyncTask<RecentSearch, Void, Void> {
         private RecentSearchDao recentSearchDao;
 
-        private DeleteRecentSearchAsyncTask(RecentSearchDao recentSearchDao){
+        private DeleteRecentSearchAsyncTask(RecentSearchDao recentSearchDao) {
             this.recentSearchDao = recentSearchDao;
         }
+
         @Override
         protected Void doInBackground(RecentSearch... recentSearchs) {
             recentSearchDao.delete(recentSearchs[0]);

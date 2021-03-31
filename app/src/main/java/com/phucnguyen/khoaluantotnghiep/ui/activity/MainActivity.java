@@ -6,15 +6,16 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.navigation.NavController;
 import androidx.navigation.NavDestination;
+import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
-import android.content.ClipData;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -23,11 +24,16 @@ import com.phucnguyen.khoaluantotnghiep.ui.fragment.ProductItemFragment;
 
 public class MainActivity extends AppCompatActivity implements ProductItemFragment.ProductItemListener {
     private AppBarConfiguration appBarConfiguration;
-    private NavHostFragment navHostFragment;
-    private NavController navController;
+    private NavHostFragment curNavHostFragment;
+    private NavController curNavController;
     private BottomNavigationView bottomNav;
     private Toolbar toolbar;
     private TextView mToolbarTitle;
+    private FrameLayout frameHome, frameFind, frameHot, frameSetting;
+    private NavHostFragment homeNavHostFragment;
+    private NavHostFragment findNavHostFragment;
+    private NavHostFragment hotNavHostFragment;
+    private NavHostFragment settingNavHostFragment;
 
     @Override
     protected void onNewIntent(Intent intent) {
@@ -47,26 +53,37 @@ public class MainActivity extends AppCompatActivity implements ProductItemFragme
             finish();
         }
 
+        homeNavHostFragment = (NavHostFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.home_navigation_host_fragment);
+        findNavHostFragment = (NavHostFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.find_navigation_host_fragment);
+        hotNavHostFragment = (NavHostFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.hot_navigation_host_fragment);
+        settingNavHostFragment = (NavHostFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.setting_navigation_host_fragment);
+        frameHome = findViewById(R.id.frame_home);
+        frameFind = findViewById(R.id.frame_find);
+        frameHot = findViewById(R.id.frame_hot);
+        frameSetting = findViewById(R.id.frame_setting);
+        bottomNav = findViewById(R.id.bttm_nav);
         toolbar = findViewById(R.id.toolbar);
-        navHostFragment = (NavHostFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.nav_host_fragment);
-        navController = navHostFragment.getNavController();
-        appBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.home_fragment,
-                R.id.find_products_fragment,
-                R.id.hot_products_fragment,
-                R.id.setting_fragment
-        ).build();
-
         mToolbarTitle = (TextView) toolbar.findViewById(R.id.tv_toolbar_title);
 
-        setUpBotNavigation();
-        setUpToolbar();
+        if (savedInstanceState == null) {
+            //setup botnav and nav controller at the beginning
+            //if saveInstanceState != null then need to operate this thing on onRestoreInstanceState
+            curNavHostFragment = homeNavHostFragment;
+            curNavController = curNavHostFragment.getNavController();
+            setUpBotNavigationAssociatedWithNavController();
+            setUpToolbar();
+            //move to product item screen only when there is a product link coming
+            moveToProductItem(getIntent());
+            handleChangesToDestination();
+        }
+    }
 
-        //move to product item screen only when there is a product link coming
-        moveToProductItem(getIntent());
-
-        navController.addOnDestinationChangedListener(new NavController.OnDestinationChangedListener() {
+    private void handleChangesToDestination() {
+        curNavController.addOnDestinationChangedListener(new NavController.OnDestinationChangedListener() {
             @Override
             public void onDestinationChanged(@NonNull NavController controller, @NonNull NavDestination destination, @Nullable Bundle arguments) {
                 if (destination.getId() == R.id.on_boarding_fragment ||
@@ -85,8 +102,49 @@ public class MainActivity extends AppCompatActivity implements ProductItemFragme
         });
     }
 
+    @Override
+    protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        //if this activity is restored from previous state,
+        //we will have the ItemId of botnav the has been selected
+        //so that we can set up nav controller accordingly
+        switch (bottomNav.getSelectedItemId()) {
+            case R.id.home_fragment:
+                curNavHostFragment = homeNavHostFragment;
+                frameHome.setVisibility(View.VISIBLE);
+                frameFind.setVisibility(View.GONE);
+                frameHot.setVisibility(View.GONE);
+                frameSetting.setVisibility(View.GONE);
+                break;
+            case R.id.find_products_fragment:
+                curNavHostFragment = findNavHostFragment;
+                frameFind.setVisibility(View.VISIBLE);
+                frameHome.setVisibility(View.GONE);
+                frameHot.setVisibility(View.GONE);
+                frameSetting.setVisibility(View.GONE);
+                break;
+            case R.id.hot_products_fragment:
+                curNavHostFragment = hotNavHostFragment;
+                frameHot.setVisibility(View.VISIBLE);
+                frameHome.setVisibility(View.GONE);
+                frameFind.setVisibility(View.GONE);
+                frameSetting.setVisibility(View.GONE);
+                break;
+            case R.id.setting_fragment:
+                curNavHostFragment = settingNavHostFragment;
+                frameSetting.setVisibility(View.VISIBLE);
+                frameHome.setVisibility(View.GONE);
+                frameFind.setVisibility(View.GONE);
+                frameHot.setVisibility(View.GONE);
+                break;
+        }
+        curNavController = curNavHostFragment.getNavController();
+        setUpBotNavigationAssociatedWithNavController();
+        setUpToolbar();
+        handleChangesToDestination();
+    }
+
     private void moveToProductItem(Intent intent) {
-        ClipData productUrlClipData = null;
         if (intent.getAction() != null && intent.getAction().equals(Intent.ACTION_SEND)
                 && intent.getClipData() != null) {
 
@@ -97,23 +155,74 @@ public class MainActivity extends AppCompatActivity implements ProductItemFragme
             Bundle bundle = new Bundle();
             bundle.putString("productUrl", productUrlString);
 
-            navController.navigate(R.id.action_global_productItemFragment, bundle);
+            curNavController.navigate(R.id.action_global_productItemFragment, bundle);
         }
     }
 
     private void setUpToolbar() {
+        appBarConfiguration = new AppBarConfiguration.Builder(curNavController.getGraph()).build();
         setSupportActionBar(toolbar);
-        NavigationUI.setupWithNavController(toolbar, navController, appBarConfiguration);
+        NavigationUI.setupWithNavController(toolbar, curNavController, appBarConfiguration);
+
+//        NavigationUI.setupWithNavController(toolbar, curNavController);
     }
 
-    private void setUpBotNavigation() {
-        bottomNav = findViewById(R.id.bttm_nav);
-        NavigationUI.setupWithNavController(bottomNav,
-                navHostFragment.getNavController());
+    private void setUpBotNavigationAssociatedWithNavController() {
+        bottomNav.setOnNavigationItemSelectedListener(item -> {
+            switch (item.getItemId()) {
+                case R.id.home_fragment:
+                    curNavHostFragment = homeNavHostFragment;
+                    frameHome.setVisibility(View.VISIBLE);
+                    frameFind.setVisibility(View.GONE);
+                    frameHot.setVisibility(View.GONE);
+                    frameSetting.setVisibility(View.GONE);
+                    break;
+                case R.id.find_products_fragment:
+                    curNavHostFragment = findNavHostFragment;
+                    frameFind.setVisibility(View.VISIBLE);
+                    frameHome.setVisibility(View.GONE);
+                    frameHot.setVisibility(View.GONE);
+                    frameSetting.setVisibility(View.GONE);
+                    break;
+                case R.id.hot_products_fragment:
+                    curNavHostFragment = hotNavHostFragment;
+                    frameHot.setVisibility(View.VISIBLE);
+                    frameHome.setVisibility(View.GONE);
+                    frameFind.setVisibility(View.GONE);
+                    frameSetting.setVisibility(View.GONE);
+                    break;
+                case R.id.setting_fragment:
+                    curNavHostFragment = settingNavHostFragment;
+                    frameSetting.setVisibility(View.VISIBLE);
+                    frameHome.setVisibility(View.GONE);
+                    frameFind.setVisibility(View.GONE);
+                    frameHot.setVisibility(View.GONE);
+                    break;
+            }
+            curNavController = curNavHostFragment.getNavController();
+            //this is for setting the toolbar and destination changes listener when the back stack is change
+            setUpToolbar();
+            handleChangesToDestination();
+            return true;
+        });
     }
 
     @Override
     public void onProductItemReceive(String productName) {
         mToolbarTitle.setText(productName);
+    }
+
+    @Override
+    public void onBackPressed() {
+        //handle backpress. If there is nothing to navigateUp, destroy the activity
+        if (!onSupportNavigateUp())
+            super.onBackPressed();
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        NavController navController = curNavController;
+        return NavigationUI.navigateUp(navController, appBarConfiguration)
+                || super.onSupportNavigateUp();
     }
 }
