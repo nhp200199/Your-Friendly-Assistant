@@ -100,10 +100,7 @@ public class SellerRateFragment extends Fragment {
 
                 SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy");
                 String dateFormattedString = simpleDateFormat.format(
-                        new Date(seller.getPlatform().equals("shopee") ?
-                                seller.getCreated() * 1000
-                                :
-                                seller.getCreated()));
+                        new Date(seller.getCreated()));
                 String joinDate = "Ngày tạo: " + dateFormattedString;
                 SpannableString joinDateString = new SpannableString(joinDate);
                 joinDateString.setSpan(bulletSpan, 0, joinDate.length(),

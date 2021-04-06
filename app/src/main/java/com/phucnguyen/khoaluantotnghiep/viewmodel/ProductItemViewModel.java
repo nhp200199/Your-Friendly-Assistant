@@ -17,14 +17,16 @@ import java.util.List;
 
 public class ProductItemViewModel extends AndroidViewModel {
     private ProductItemRepo mProductItemRepo;
+    private LiveData<ProductItem> productItem;
 
     public ProductItemViewModel(@NonNull Application application) {
         super(application);
         mProductItemRepo = new ProductItemRepo(application);
+        productItem = mProductItemRepo.getProductItem();
     }
 
     public LiveData<ProductItem> getProductItem(){
-        return mProductItemRepo.getProductItem();
+        return productItem;
     }
 
     public LiveData<Seller> getSeller(){

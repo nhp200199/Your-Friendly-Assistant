@@ -23,6 +23,13 @@
             android:name="productName"
             android:defaultValue="Đang tìm sản phẩm"
             app:argType="string" />
+        <action
+            android:id="@+id/action_product_item_fragment_to_mediaPlayerFragment"
+            app:destination="@id/media_player_fragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
     </fragment>
     <action
         android:id="@+id/action_global_productItemFragment"
@@ -31,4 +38,15 @@
         app:exitAnim="@anim/slide_out_left"
         app:popEnterAnim="@anim/slide_in_left"
         app:popExitAnim="@anim/slide_out_right" />
+    <fragment
+        android:id="@+id/media_player_fragment"
+        android:name="com.phucnguyen.khoaluantotnghiep.ui.fragment.MediaPlayerFragment"
+        android:label="Hình ảnh"
+        tools:layout="@layout/fragment_media_player">
+        <argument
+            android:name="url"
+            android:defaultValue="null"
+            app:argType="string"
+            app:nullable="true" />
+    </fragment>
 </navigation>

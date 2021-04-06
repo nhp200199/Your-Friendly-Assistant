@@ -12,7 +12,7 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class RetrofitInstance {
-    public static final String BASE_URL = "http://8acdb80b3e274611805ce735bfbc0397-0-s-80.vlab.uit.edu.vn/";
+    public static final String BASE_URL = "https://519bb137df6144dcbeda18e87d53ad8a-0-s-80.vlab.uit.edu.vn/";
     private static Retrofit mRetrofitInstance;
 
     public static Retrofit getInstance(){
