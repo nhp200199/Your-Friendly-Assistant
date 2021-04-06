@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Transformations;
+import androidx.paging.PagedList;
 
 import com.phucnguyen.khoaluantotnghiep.model.Price;
 import com.phucnguyen.khoaluantotnghiep.model.ProductItem;
@@ -18,10 +19,12 @@ import java.util.List;
 public class ProductItemViewModel extends AndroidViewModel {
     private ProductItemRepo mProductItemRepo;
     private LiveData<ProductItem> productItem;
+    private LiveData<PagedList<ProductItem>> productItems;
 
     public ProductItemViewModel(@NonNull Application application) {
         super(application);
         mProductItemRepo = new ProductItemRepo(application);
+        productItems = mProductItemRepo.getProductItems();
         productItem = mProductItemRepo.getProductItem();
     }
 
@@ -42,5 +45,9 @@ public class ProductItemViewModel extends AndroidViewModel {
     }
     public LiveData<List<Price>> getProductPriceHistory(){
         return mProductItemRepo.getProductPriceHistory();
+    }
+
+    public LiveData<PagedList<ProductItem>> getProductItems() {
+        return productItems;
     }
 }

@@ -28,7 +28,6 @@ import com.google.android.material.tabs.TabItem;
 import com.google.android.material.tabs.TabLayout;
 import com.phucnguyen.khoaluantotnghiep.R;
 import com.phucnguyen.khoaluantotnghiep.model.ProductItem;
-import com.phucnguyen.khoaluantotnghiep.model.ProductItemResponse;
 import com.phucnguyen.khoaluantotnghiep.viewmodel.ProductItemViewModel;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -81,7 +80,7 @@ public class ProductItemFragment extends Fragment {
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_product_item, container, false);
         mImgProductItem = v.findViewById(R.id.imgProductItem);
-        mTvProductItemPrice = v.findViewById(R.id.tvProductItemPrice);
+        mTvProductItemPrice = v.findViewById(R.id.tvPrice);
         mTvProductItemRate = v.findViewById(R.id.tvProductItemRate);
         mTvProductItemReview = v.findViewById(R.id.tvProductItemReview);
         mTvPriceCurrency = v.findViewById(R.id.tvPriceCurrency);
