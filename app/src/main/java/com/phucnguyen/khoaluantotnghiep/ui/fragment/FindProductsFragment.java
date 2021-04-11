@@ -99,6 +99,25 @@ public class FindProductsFragment extends Fragment {
 
             }
         });
+        mFindProductViewModel.getSuggestedProducts().observe(getViewLifecycleOwner(), new Observer<List<ProductItem>>() {
+            @Override
+            public void onChanged(List<ProductItem> items) {
+                if (items != null) {
+                    if (items.size() > 0) {
+                        productsContainer.setVisibility(View.VISIBLE);
+                        tvNoProductFound.setVisibility(View.INVISIBLE);
+                        //set the items for suggested products adapter
+                        mProductItemsAdapter.setProductItems(items);
+                    } else if (items.size() == 0) {
+                        productsContainer.setVisibility(View.INVISIBLE);
+                        tvNoProductFound.setVisibility(View.VISIBLE);
+                    }
+                } else {
+                    productsContainer.setVisibility(View.INVISIBLE);
+                    tvNoProductFound.setVisibility(View.VISIBLE);
+                }
+            }
+        });
         mFindProductViewModel.getLoadingState().observe(getViewLifecycleOwner(), new Observer<Contants.LoadingState>() {
             @Override
             public void onChanged(Contants.LoadingState loadingState) {
@@ -137,6 +156,8 @@ public class FindProductsFragment extends Fragment {
                 if (edtProductSearch.getText().toString().equals("")) {
                     historySearchContainer.setVisibility(View.VISIBLE);
                     icClearSearch.setVisibility(View.INVISIBLE);
+                    if (mFindProductViewModel.getRecentSearchs().getValue().size() == 0)
+                        tvFindIntroduction.setVisibility(View.INVISIBLE);
                 } else {
                     historySearchContainer.setVisibility(View.INVISIBLE);
                     icClearSearch.setVisibility(View.VISIBLE);
@@ -204,6 +225,15 @@ public class FindProductsFragment extends Fragment {
             }
         });
         productsContainer.setLayoutManager(new LinearLayoutManager(requireActivity()));
+        mProductItemsAdapter.setListener(new ProductItemsAdapter.Listener() {
+            @Override
+            public void onItemClicked(String url) {
+                Bundle bundle = new Bundle();
+                bundle.putString("productUrl", url);
+                NavHostFragment.findNavController(FindProductsFragment.this)
+                        .navigate(R.id.action_global_productItemFragment, bundle);
+            }
+        });
         productsContainer.setAdapter(mProductItemsAdapter);
     }
 
@@ -217,25 +247,6 @@ public class FindProductsFragment extends Fragment {
         } else {
             //call api with the query string to receive product.
             mFindProductViewModel.setQuery(query);
-            mFindProductViewModel.getSuggestedProducts().observe(getViewLifecycleOwner(), new Observer<List<ProductItem>>() {
-                @Override
-                public void onChanged(List<ProductItem> items) {
-                    if (items != null) {
-                        if (items.size() > 0) {
-                            productsContainer.setVisibility(View.VISIBLE);
-                            tvNoProductFound.setVisibility(View.INVISIBLE);
-                            //set the items for suggested products adapter
-                            mProductItemsAdapter.setProductItems(items);
-                        } else if (items.size() == 0) {
-                            productsContainer.setVisibility(View.INVISIBLE);
-                            tvNoProductFound.setVisibility(View.VISIBLE);
-                        }
-                    } else {
-                        productsContainer.setVisibility(View.INVISIBLE);
-                        tvNoProductFound.setVisibility(View.VISIBLE);
-                    }
-                }
-            });
             //save the query to database
             RecentSearch recentSearch = new RecentSearch(query, String.valueOf(new Date().getTime()));
             new InsertRecentSearchAsyncTask(mRecentSearchDao).execute(recentSearch);

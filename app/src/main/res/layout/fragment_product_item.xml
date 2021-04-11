@@ -84,7 +84,7 @@
                             android:layout_gravity="center_vertical"
                             android:layout_marginStart="4dp"
                             android:layout_marginEnd="48dp"
-                            android:contentDescription="@string/img_seller_rate_icon_des"
+                            android:contentDescription="@string/img_product_rate_icon_des"
                             android:scaleType="centerCrop"
                             android:src="@drawable/ic_star" />
 
@@ -101,7 +101,7 @@
                             android:layout_height="12dp"
                             android:layout_gravity="center_vertical"
                             android:layout_marginStart="4dp"
-                            android:contentDescription="@string/img_seller_rate_icon_des"
+                            android:contentDescription="@string/img_product_reviews_quantities_icon_des"
                             android:scaleType="centerCrop"
                             android:src="@drawable/ic_comment" />
                     </LinearLayout>

@@ -23,9 +23,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ProductItemsAdapter extends RecyclerView.Adapter<ProductItemsAdapter.ProductItemViewHolder> {
+    public interface Listener{
+        void onItemClicked(String url);
+    }
     private Context mContext;
     private int mResId;
     private List<ProductItem> mProductItems = new ArrayList<>();
+    private Listener mListener;
 
     public ProductItemsAdapter(Context context, int resId) {
         mContext = context;
@@ -62,10 +66,24 @@ public class ProductItemsAdapter extends RecyclerView.Adapter<ProductItemsAdapte
         else
             holder.tvPlatform.setTextColor(mContext.getResources().getColor(R.color.orange_shopee));
 
-        //bind views for relevant's products layout
-        if (mResId == R.layout.product_item_grid) {
-
+        //bind views for product_item layout
+        if (mResId == R.layout.product_item) {
+            if (item.getRating() == 0){
+                holder.iconRating.setImageResource(R.drawable.ic_question_face_12px);
+                holder.tvProductRate.setText("?");
+                holder.tvProductRate.setTextColor(mContext.getResources().getColor(R.color.purple_question));
+            } else
+                holder.tvProductRate.setText(String.format("%.1f", item.getRating()));
+            holder.tvProductReviewQuantities.setText(mContext.getString(R.string.review_quantities,
+                    item.getTotalReview()));
         }
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (mListener != null)
+                    mListener.onItemClicked(item.getProductUrl());
+            }
+        });
         //bind views for ...
 //        else{
 //            holder.tvProductRate.setText(String.valueOf(item.getRating()));
@@ -96,6 +114,10 @@ public class ProductItemsAdapter extends RecyclerView.Adapter<ProductItemsAdapte
 //        }
     }
 
+    public void setListener(Listener listener) {
+        mListener = listener;
+    }
+
     public void setProductItems(List<ProductItem> productItems) {
         mProductItems = productItems;
         notifyDataSetChanged();
@@ -103,12 +125,11 @@ public class ProductItemsAdapter extends RecyclerView.Adapter<ProductItemsAdapte
 
     public static class ProductItemViewHolder extends RecyclerView.ViewHolder {
         private ImageView imgProduct;
+        private ImageView iconRating;
         private TextView tvPrice;
         private TextView tvProductTitle;
-        private TextView tvSellerRate;
-        private ImageView imgSellerRateIcon;
         private TextView tvProductRate;
-        private TextView tvProductItemSoldQuantities;
+        private TextView tvProductReviewQuantities;
         private TextView tvPlatform;
 
         public ProductItemViewHolder(@NonNull View itemView) {
@@ -117,12 +138,11 @@ public class ProductItemsAdapter extends RecyclerView.Adapter<ProductItemsAdapte
             tvPrice = (TextView) itemView.findViewById(R.id.tvPrice);
             imgProduct = (ImageView) itemView.findViewById(R.id.imgProduct);
             tvPlatform = (TextView) itemView.findViewById(R.id.tvPlatform);
+            iconRating = (ImageView) itemView.findViewById(R.id.iconRating);
 
             //additional mapping views for product_item.xml
-            tvSellerRate = (TextView) itemView.findViewById(R.id.tvSellerRate);
-            imgSellerRateIcon = (ImageView) itemView.findViewById(R.id.imgSellerRateIcon);
             tvProductRate = (TextView) itemView.findViewById(R.id.tvProductRate);
-            tvProductItemSoldQuantities = (TextView) itemView.findViewById(R.id.tvProductItemSoldQuantities);
+            tvProductReviewQuantities = (TextView) itemView.findViewById(R.id.tvProductItemReview);
         }
     }
 }
