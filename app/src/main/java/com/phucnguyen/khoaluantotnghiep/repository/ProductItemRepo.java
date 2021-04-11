@@ -25,21 +25,18 @@ import retrofit2.Response;
 
 public class ProductItemRepo {
     private ProductItemDao mProductItemDao;
-    private LiveData<PagedList<ProductItem>> mProductItems;
+    private LiveData<List<ProductItem>> mProductItems;
     private ProductItemService mProductItemService;
     private MutableLiveData<ProductItemResponse> mProductItemResponseMutableLiveData;
 
     public ProductItemRepo(Context context) {
         mProductItemDao = AppDatabase.getInstance(context).getProductItemDao();
-        mProductItems = new LivePagedListBuilder<Integer, ProductItem>(
-                mProductItemDao.getAllProducts(),
-                10
-        ).build();
+        mProductItems = mProductItemDao.getAllProducts();
         mProductItemService = RetrofitInstance.getProductItemService();
         mProductItemResponseMutableLiveData = new MutableLiveData<ProductItemResponse>();
     }
 
-    public LiveData<PagedList<ProductItem>> getProductItems() {
+    public LiveData<List<ProductItem>> getProductItems() {
         return mProductItems;
     }
 

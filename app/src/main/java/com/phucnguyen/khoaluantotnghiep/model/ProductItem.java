@@ -24,7 +24,7 @@ public class ProductItem {
     private int mProductPrice;
     private int mSellerRate;
 
-    public ProductItem(String id, String name, String categoryId, String sellerId, float rating,
+    public ProductItem(String id, String name, String categoryId, String sellerId, String platform, float rating,
                        String productUrl, String thumbnailUrl, int totalReview,
                        int productPrice, int sellerRate) {
         this.id = id;
@@ -37,6 +37,7 @@ public class ProductItem {
         this.totalReview = totalReview;
         mProductPrice = productPrice;
         mSellerRate = sellerRate;
+        this.platform = platform;
     }
 
     public String getId() {

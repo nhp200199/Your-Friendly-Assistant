@@ -4,48 +4,63 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.phucnguyen.khoaluantotnghiep.R;
+import com.phucnguyen.khoaluantotnghiep.adapters.ProductItemsAdapter;
 import com.phucnguyen.khoaluantotnghiep.adapters.SearchHistoryRecyclerViewAdapter;
 import com.phucnguyen.khoaluantotnghiep.database.RecentSearch;
 import com.phucnguyen.khoaluantotnghiep.database.RecentSearchDao;
 import com.phucnguyen.khoaluantotnghiep.database.SearchDatabase;
+import com.phucnguyen.khoaluantotnghiep.model.ProductItem;
+import com.phucnguyen.khoaluantotnghiep.model.Review;
+import com.phucnguyen.khoaluantotnghiep.utils.Contants;
+import com.phucnguyen.khoaluantotnghiep.viewmodel.FindProductViewModel;
 
+import java.util.Date;
 import java.util.List;
 
 public class FindProductsFragment extends Fragment {
     private RecyclerView mRecyclerView;
+    private RecyclerView productsContainer;
     private TextView tvFindIntroduction;
+    private TextView tvNoProductFound;
     private LinearLayout historySearchContainer;
     private SearchView mSearchView;
     private EditText edtProductSearch;
+    private ProgressBar pbLoadingProgress;
+    private ImageView icClearSearch;
 
-    private SearchHistoryRecyclerViewAdapter mRecyclerViewAdapter;
+    private SearchHistoryRecyclerViewAdapter mHistorySearchAdapter;
+    private ProductItemsAdapter mProductItemsAdapter;
     private LiveData<List<RecentSearch>> mRecentSearchs;
     private RecentSearchDao mRecentSearchDao;
+    private FindProductViewModel mFindProductViewModel;
 
     public FindProductsFragment() {
         // Required empty public constructor
@@ -64,26 +79,35 @@ public class FindProductsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        mFindProductViewModel = new ViewModelProvider(this).get(FindProductViewModel.class);
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.find_products_fragment, container, false);
         connectViews(v);
         Log.i("FindFragment", "onCreate called");
 
-        //decide which layout to show
-        mRecentSearchs.observe(getViewLifecycleOwner(), new Observer<List<RecentSearch>>() {
+        mFindProductViewModel.getRecentSearchs().observe(getViewLifecycleOwner(), new Observer<List<String>>() {
             @Override
-            public void onChanged(List<RecentSearch> recentSearches) {
-                mRecyclerViewAdapter.setRecentSearches(recentSearches);
+            public void onChanged(List<String> recentSearchs) {
+                mHistorySearchAdapter.setRecentSearches(recentSearchs);
 
-                if (mRecentSearchs == null || mRecentSearchs.getValue().size() == 0) {
-                    //hide the search history and show introduction
+                //show the introduction if no recent searchs found
+                if (recentSearchs.size() == 0) {
                     tvFindIntroduction.setVisibility(View.VISIBLE);
-                    historySearchContainer.setVisibility(View.GONE);
                 } else {
-                    //otherwise show search history
                     tvFindIntroduction.setVisibility(View.GONE);
-                    historySearchContainer.setVisibility(View.VISIBLE);
                 }
+
+            }
+        });
+        mFindProductViewModel.getLoadingState().observe(getViewLifecycleOwner(), new Observer<Contants.LoadingState>() {
+            @Override
+            public void onChanged(Contants.LoadingState loadingState) {
+                if (loadingState == Contants.LoadingState.LOADING) {
+                    pbLoadingProgress.setVisibility(View.VISIBLE);
+                } else if (loadingState == Contants.LoadingState.SUCCESS) {
+                    pbLoadingProgress.setVisibility(View.INVISIBLE);
+                } else if (loadingState == Contants.LoadingState.ERROR)
+                    pbLoadingProgress.setVisibility(View.INVISIBLE);
             }
         });
         return v;
@@ -91,23 +115,70 @@ public class FindProductsFragment extends Fragment {
 
     private void connectViews(View v) {
         mRecyclerView = (RecyclerView) v.findViewById(R.id.rcvSearch);
+        productsContainer = (RecyclerView) v.findViewById(R.id.productsContainer);
+        tvNoProductFound = (TextView) v.findViewById(R.id.tvNoProductsFound);
+        pbLoadingProgress = (ProgressBar) v.findViewById(R.id.pbLoadingBar);
         tvFindIntroduction = (TextView) v.findViewById(R.id.tvFindIntroduction);
         edtProductSearch = (EditText) v.findViewById(R.id.edtSearchProduct);
         historySearchContainer = (LinearLayout) v.findViewById(R.id.historySearchContainer);
+        icClearSearch = (ImageView) v.findViewById(R.id.iconClearSearch);
 
-        mRecyclerViewAdapter = new SearchHistoryRecyclerViewAdapter(requireContext());
+        mHistorySearchAdapter = new SearchHistoryRecyclerViewAdapter(requireContext());
+        mProductItemsAdapter = new ProductItemsAdapter(requireContext(), R.layout.product_item);
 
+        edtProductSearch.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int start, int before, int count) {
+                if (edtProductSearch.getText().toString().equals("")) {
+                    historySearchContainer.setVisibility(View.VISIBLE);
+                    icClearSearch.setVisibility(View.INVISIBLE);
+                } else {
+                    historySearchContainer.setVisibility(View.INVISIBLE);
+                    icClearSearch.setVisibility(View.VISIBLE);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
         edtProductSearch.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int actionId, KeyEvent keyEvent) {
-                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                    Bundle bundle = new Bundle();
-                    bundle.putString("productUrl", edtProductSearch.getText().toString().trim());
-                    NavHostFragment.findNavController(FindProductsFragment.this)
-                            .navigate(R.id.action_global_productItemFragment, bundle);
+                if (actionId == EditorInfo.IME_ACTION_SEARCH &&
+                        edtProductSearch.getText().toString().trim().length() != 0) {
+                    handleQueryText(edtProductSearch.getText().toString().trim());
                     return true;
                 }
                 return false;
+            }
+        });
+        //hide keyboard when edt loses focus and show when focus
+        edtProductSearch.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean hasFocus) {
+                if (view.getId() == R.id.edtSearchProduct && !hasFocus) {
+                    InputMethodManager imm = (InputMethodManager) requireActivity()
+                            .getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+                } else if (view.getId() == R.id.edtSearchProduct && hasFocus) {
+                    InputMethodManager imm = (InputMethodManager)
+                            requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.showSoftInput(view, InputMethodManager.SHOW_IMPLICIT);
+                }
+            }
+        });
+
+        icClearSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                edtProductSearch.setText("");
             }
         });
 
@@ -118,17 +189,60 @@ public class FindProductsFragment extends Fragment {
                 return false;
             }
         });
-        mRecyclerView.setAdapter(mRecyclerViewAdapter);
+        mRecyclerView.setAdapter(mHistorySearchAdapter);
         mRecyclerView.setHasFixedSize(true);
-        mRecyclerViewAdapter.setListener(new SearchHistoryRecyclerViewAdapter.Listener() {
+        mHistorySearchAdapter.setListener(new SearchHistoryRecyclerViewAdapter.Listener() {
             @Override
-            public void onRemoveHistoryItem(RecentSearch itemToBeRemoved) {
-                new DeleteRecentSearchAsyncTask(mRecentSearchDao).execute(itemToBeRemoved);
+            public void onRemoveHistoryItem(String searchToBeRemoved) {
+                new DeleteRecentSearchAsyncTask(mRecentSearchDao).execute(searchToBeRemoved);
+            }
+
+            @Override
+            public void onSearchItemClicked(String searchItem) {
+                edtProductSearch.setText(searchItem);
+                handleQueryText(searchItem);
             }
         });
+        productsContainer.setLayoutManager(new LinearLayoutManager(requireActivity()));
+        productsContainer.setAdapter(mProductItemsAdapter);
     }
 
-//    @Override
+    private void handleQueryText(String query) {
+        edtProductSearch.clearFocus();
+        if (query.startsWith("https://tiki.vn/") || query.startsWith("https://shopee.vn/")) {
+            Bundle bundle = new Bundle();
+            bundle.putString("productUrl", query);
+            NavHostFragment.findNavController(FindProductsFragment.this)
+                    .navigate(R.id.action_global_productItemFragment, bundle);
+        } else {
+            //call api with the query string to receive product.
+            mFindProductViewModel.setQuery(query);
+            mFindProductViewModel.getSuggestedProducts().observe(getViewLifecycleOwner(), new Observer<List<ProductItem>>() {
+                @Override
+                public void onChanged(List<ProductItem> items) {
+                    if (items != null) {
+                        if (items.size() > 0) {
+                            productsContainer.setVisibility(View.VISIBLE);
+                            tvNoProductFound.setVisibility(View.INVISIBLE);
+                            //set the items for suggested products adapter
+                            mProductItemsAdapter.setProductItems(items);
+                        } else if (items.size() == 0) {
+                            productsContainer.setVisibility(View.INVISIBLE);
+                            tvNoProductFound.setVisibility(View.VISIBLE);
+                        }
+                    } else {
+                        productsContainer.setVisibility(View.INVISIBLE);
+                        tvNoProductFound.setVisibility(View.VISIBLE);
+                    }
+                }
+            });
+            //save the query to database
+            RecentSearch recentSearch = new RecentSearch(query, String.valueOf(new Date().getTime()));
+            new InsertRecentSearchAsyncTask(mRecentSearchDao).execute(recentSearch);
+        }
+    }
+
+    //    @Override
 //    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
 //        super.onCreateOptionsMenu(menu, inflater);
 //        inflater.inflate(R.menu.menu_search_for_real, menu);
@@ -179,8 +293,7 @@ public class FindProductsFragment extends Fragment {
 //            }
 //        });
 //    }
-
-    private static class DeleteRecentSearchAsyncTask extends AsyncTask<RecentSearch, Void, Void> {
+    private static class DeleteRecentSearchAsyncTask extends AsyncTask<String, Void, Void> {
         private RecentSearchDao recentSearchDao;
 
         private DeleteRecentSearchAsyncTask(RecentSearchDao recentSearchDao) {
@@ -188,8 +301,22 @@ public class FindProductsFragment extends Fragment {
         }
 
         @Override
+        protected Void doInBackground(String... recentSearchs) {
+            recentSearchDao.deleteBySearchContent(recentSearchs[0]);
+            return null;
+        }
+    }
+
+    private static class InsertRecentSearchAsyncTask extends AsyncTask<RecentSearch, Void, Void> {
+        private RecentSearchDao recentSearchDao;
+
+        private InsertRecentSearchAsyncTask(RecentSearchDao recentSearchDao) {
+            this.recentSearchDao = recentSearchDao;
+        }
+
+        @Override
         protected Void doInBackground(RecentSearch... recentSearchs) {
-            recentSearchDao.delete(recentSearchs[0]);
+            recentSearchDao.insert(recentSearchs[0]);
             return null;
         }
     }

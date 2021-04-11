@@ -19,7 +19,7 @@ import java.util.List;
 public class ProductItemViewModel extends AndroidViewModel {
     private ProductItemRepo mProductItemRepo;
     private LiveData<ProductItem> productItem;
-    private LiveData<PagedList<ProductItem>> productItems;
+    private LiveData<List<ProductItem>> productItems;
 
     public ProductItemViewModel(@NonNull Application application) {
         super(application);
@@ -47,7 +47,7 @@ public class ProductItemViewModel extends AndroidViewModel {
         return mProductItemRepo.getProductPriceHistory();
     }
 
-    public LiveData<PagedList<ProductItem>> getProductItems() {
+    public LiveData<List<ProductItem>> getProductItems() {
         return productItems;
     }
 }

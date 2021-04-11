@@ -17,51 +17,99 @@
         android:textAppearance="?attr/textAppearanceBody1"
         android:textColor="#ACA5A5" />
 
+    <TextView
+        android:id="@+id/tvNoProductsFound"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginHorizontal="64dp"
+        android:text="không có sản phẩm"
+        android:textAlignment="center"
+        android:textAppearance="?attr/textAppearanceBody1"
+        android:textColor="#ACA5A5"
+        android:visibility="invisible" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <EditText
-            android:id="@+id/edtSearchProduct"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="8dp"
-            android:layout_marginTop="4dp"
             android:background="@drawable/search_background"
-            android:drawableStart="@drawable/ic_search_24px"
-            android:drawablePadding="4dp"
-            android:hint="@string/find_guide"
-            android:imeOptions="actionSearch"
-            android:maxLines="1"
-            android:paddingHorizontal="8dp"
-            android:paddingVertical="16dp"
-            android:singleLine="true" />
+            android:orientation="horizontal"
+            android:paddingHorizontal="8dp">
 
-        <LinearLayout
-            android:id="@+id/historySearchContainer"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
+            <EditText
+                android:id="@+id/edtSearchProduct"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:background="@android:color/transparent"
+                android:drawableStart="@drawable/ic_search_24px"
+                android:drawablePadding="4dp"
+                android:hint="@string/find_guide"
+                android:imeOptions="actionSearch"
+                android:maxLines="1"
+                android:paddingVertical="16dp"
+                android:singleLine="true" />
 
-            <TextView
-                android:id="@+id/tvFindHistoryTtle"
+            <ImageView
+                android:id="@+id/iconClearSearch"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginVertical="16dp"
-                android:layout_marginStart="16dp"
-                android:text="@string/title_history"
-                android:textAppearance="?attr/textAppearanceBody2"
-                android:textColor="#ACA5A5" />
+                android:layout_gravity="center_vertical"
+                android:src="@drawable/ic_close_24px"
+                android:visibility="invisible" />
+        </LinearLayout>
+
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rcvSearch"
+                android:id="@+id/productsContainer"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:paddingStart="16dp"
-                android:paddingEnd="8dp"
-                tools:listitem="@layout/history_search_item" />
-        </LinearLayout>
+                android:layout_marginTop="8dp"
+                android:visibility="invisible" />
+
+            <ProgressBar
+                android:id="@+id/pbLoadingBar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:visibility="invisible" />
+
+            <LinearLayout
+                android:id="@+id/historySearchContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tvFindHistoryTtle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="16dp"
+                    android:layout_marginStart="16dp"
+                    android:text="@string/title_history"
+                    android:textAppearance="?attr/textAppearanceBody2"
+                    android:textColor="#ACA5A5" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rcvSearch"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:paddingStart="16dp"
+                    android:paddingEnd="8dp"
+                    tools:listitem="@layout/history_search_item" />
+            </LinearLayout>
+        </FrameLayout>
     </LinearLayout>
 
 

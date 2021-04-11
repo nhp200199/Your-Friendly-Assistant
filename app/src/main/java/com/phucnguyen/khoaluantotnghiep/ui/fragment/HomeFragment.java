@@ -23,6 +23,8 @@ import com.phucnguyen.khoaluantotnghiep.adapters.ProductItemsAdapter;
 import com.phucnguyen.khoaluantotnghiep.model.ProductItem;
 import com.phucnguyen.khoaluantotnghiep.repository.ProductItemRepo;
 
+import java.util.List;
+
 public class HomeFragment extends Fragment {
     private static final String LOGTAG = HomeFragment.class.getSimpleName();
     private RecyclerView productItemContainer;
@@ -52,13 +54,13 @@ public class HomeFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         connectViews(view);
 
-        ProductItemsAdapter adapter = new ProductItemsAdapter(view.getContext());
+        ProductItemsAdapter adapter = new ProductItemsAdapter(view.getContext(), R.layout.product_item);
         productItemContainer.setAdapter(adapter);
         productItemContainer.setLayoutManager(new LinearLayoutManager(getContext()));
-        mProductItemRepo.getProductItems().observe(requireActivity(), new Observer<PagedList<ProductItem>>() {
+        mProductItemRepo.getProductItems().observe(requireActivity(), new Observer<List<ProductItem>>() {
             @Override
-            public void onChanged(PagedList<ProductItem> productItems) {
-                adapter.submitList(productItems);
+            public void onChanged(List<ProductItem> productItems) {
+                adapter.setProductItems(productItems);
             }
         });
         Log.i("HomeFragment", "onViewCreated called");

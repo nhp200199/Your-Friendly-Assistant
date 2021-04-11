@@ -15,8 +15,9 @@ public interface RecentSearchDao {
     @Insert(onConflict = REPLACE)
     void insert(RecentSearch recentSearch);
 
-    @Delete
-    void delete(RecentSearch recentSearch);
+    @Query("DELETE FROM recent_searchs " +
+            "WHERE search_content = :searchContent")
+    void deleteBySearchContent(String searchContent);
 
     @Query("SELECT * FROM recent_searchs " +
             "ORDER BY timestamps DESC " +

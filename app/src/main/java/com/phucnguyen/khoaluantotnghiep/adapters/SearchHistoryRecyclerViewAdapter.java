@@ -19,11 +19,13 @@ import java.util.List;
 
 public class SearchHistoryRecyclerViewAdapter
         extends RecyclerView.Adapter<SearchHistoryRecyclerViewAdapter.ViewHolder> {
-    public interface Listener{
-        void onRemoveHistoryItem(RecentSearch itemToBeRemoved);
+    public interface Listener {
+        void onRemoveHistoryItem(String searchToBeRemoved);
+
+        void onSearchItemClicked(String searchItem);
     }
 
-    private List<RecentSearch> mRecentSearches = new ArrayList<RecentSearch>();
+    private List<String> mRecentSearches = new ArrayList<String>();
     private Context mContext;
     private Listener mListener;
 
@@ -46,14 +48,21 @@ public class SearchHistoryRecyclerViewAdapter
 
     @Override
     public void onBindViewHolder(@NonNull SearchHistoryRecyclerViewAdapter.ViewHolder holder, int position) {
-        RecentSearch recentSearchItem = mRecentSearches.get(position);
+        String recentSearch = mRecentSearches.get(position);
         holder.tvHistorySearchContent
-                .setText(recentSearchItem.searchContent);
+                .setText(recentSearch);
         holder.imgRemoveHistoryItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(mListener != null)
-                    mListener.onRemoveHistoryItem(recentSearchItem);
+                if (mListener != null)
+                    mListener.onRemoveHistoryItem(recentSearch);
+            }
+        });
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (mListener != null)
+                    mListener.onSearchItemClicked(recentSearch);
             }
         });
     }
@@ -63,7 +72,7 @@ public class SearchHistoryRecyclerViewAdapter
         return mRecentSearches.size();
     }
 
-    public void setRecentSearches(List<RecentSearch> recentSearches) {
+    public void setRecentSearches(List<String> recentSearches) {
         mRecentSearches = recentSearches;
         notifyDataSetChanged();
     }

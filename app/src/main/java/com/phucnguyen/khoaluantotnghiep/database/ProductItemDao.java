@@ -13,7 +13,7 @@ import java.util.List;
 @Dao
 public interface ProductItemDao {
     @Query("SELECT * FROM products")
-    DataSource.Factory<Integer, ProductItem> getAllProducts();
+    LiveData<List<ProductItem>> getAllProducts();
 
     @Query("SELECT * FROM products WHERE categoryId = :category")
     LiveData<List<ProductItem>> getAllProductsFromCategory(String category);
