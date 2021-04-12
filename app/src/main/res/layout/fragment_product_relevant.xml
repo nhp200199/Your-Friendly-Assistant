@@ -9,13 +9,25 @@
         android:id="@+id/productItemsContainer"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:listitem="@layout/product_item_grid"
-        android:layout_marginTop="8dp" />
+        android:layout_marginTop="8dp"
+        tools:listitem="@layout/product_item_grid" />
 
-    <TextView
-        android:id="@+id/tvLoadingStatus"
+    <ProgressBar
+        android:id="@+id/pbLoadingBar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center" />
+
+    <TextView
+        android:id="@+id/tvNoProductsFound"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginHorizontal="64dp"
+        android:text="không có sản phẩm"
+        android:textAlignment="center"
+        android:textAppearance="?attr/textAppearanceBody1"
+        android:textColor="#ACA5A5"
+        android:visibility="invisible" />
 
 </FrameLayout>
