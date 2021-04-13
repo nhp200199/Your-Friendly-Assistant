@@ -65,6 +65,40 @@
                 android:visibility="invisible" />
         </LinearLayout>
 
+        <RadioGroup
+            android:id="@+id/radioPlatformGroup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="16dp"
+            android:background="@color/white"
+            android:checkedButton="@id/radioAll"
+            android:orientation="horizontal"
+            android:visibility="gone">
+
+            <RadioButton
+                android:id="@+id/radioAll"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:text="Tất cả" />
+
+            <RadioButton
+                android:id="@+id/radioTiki"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:textColor="@color/blue_tiki"
+                android:text="Tiki" />
+
+            <RadioButton
+                android:id="@+id/radioShopee"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/orange_shopee"
+                android:layout_marginEnd="16dp"
+                android:text="Shopee" />
+
+        </RadioGroup>
 
         <FrameLayout
             android:layout_width="match_parent"

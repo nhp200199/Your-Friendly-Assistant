@@ -4,7 +4,6 @@ import android.content.Context;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.Transformations;
 
 import com.phucnguyen.khoaluantotnghiep.database.RecentSearch;
 import com.phucnguyen.khoaluantotnghiep.database.RecentSearchDao;
@@ -12,11 +11,9 @@ import com.phucnguyen.khoaluantotnghiep.database.SearchDatabase;
 import com.phucnguyen.khoaluantotnghiep.model.ProductItem;
 import com.phucnguyen.khoaluantotnghiep.model.SuggestedProductsResponse;
 import com.phucnguyen.khoaluantotnghiep.service.ProductItemService;
-import com.phucnguyen.khoaluantotnghiep.service.RelavantProductService;
 import com.phucnguyen.khoaluantotnghiep.service.RetrofitInstance;
 import com.phucnguyen.khoaluantotnghiep.utils.Contants;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -65,7 +62,7 @@ public class FindProductRepo {
         return recentSearchs;
     }
 
-    public LiveData<List<ProductItem>> getProductsForQueryString(String query, String platform) {
+    public LiveData<List<ProductItem>> getProductItems(String query, String platform) {
         callToReceiveSuggestedProducts(query, platform);
         return suggestedProducts;
     }

@@ -28,6 +28,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -55,6 +56,7 @@ public class FindProductsFragment extends Fragment {
     private EditText edtProductSearch;
     private ProgressBar pbLoadingProgress;
     private ImageView icClearSearch;
+    private RadioGroup radioPlatformGroup;
 
     private SearchHistoryRecyclerViewAdapter mHistorySearchAdapter;
     private ProductItemsAdapter mProductItemsAdapter;
@@ -108,7 +110,7 @@ public class FindProductsFragment extends Fragment {
                         tvNoProductFound.setVisibility(View.INVISIBLE);
                         //set the items for suggested products adapter
                         mProductItemsAdapter.setProductItems(items);
-                    } else if (items.size() == 0) {
+                    } else {
                         productsContainer.setVisibility(View.INVISIBLE);
                         tvNoProductFound.setVisibility(View.VISIBLE);
                     }
@@ -141,6 +143,7 @@ public class FindProductsFragment extends Fragment {
         edtProductSearch = (EditText) v.findViewById(R.id.edtSearchProduct);
         historySearchContainer = (LinearLayout) v.findViewById(R.id.historySearchContainer);
         icClearSearch = (ImageView) v.findViewById(R.id.iconClearSearch);
+        radioPlatformGroup = (RadioGroup) v.findViewById(R.id.radioPlatformGroup);
 
         mHistorySearchAdapter = new SearchHistoryRecyclerViewAdapter(requireContext());
         mProductItemsAdapter = new ProductItemsAdapter(requireContext(), R.layout.product_item);
@@ -156,9 +159,13 @@ public class FindProductsFragment extends Fragment {
                 if (edtProductSearch.getText().toString().equals("")) {
                     historySearchContainer.setVisibility(View.VISIBLE);
                     icClearSearch.setVisibility(View.INVISIBLE);
+                    radioPlatformGroup.setVisibility(View.GONE);
                     if (mFindProductViewModel.getRecentSearchs().getValue().size() == 0)
                         tvFindIntroduction.setVisibility(View.INVISIBLE);
                 } else {
+                    if (!edtProductSearch.getText().toString().startsWith("https://tiki.vn/") &&
+                            !edtProductSearch.getText().toString().startsWith("https://shopee.vn/"))
+                        radioPlatformGroup.setVisibility(View.VISIBLE);
                     historySearchContainer.setVisibility(View.INVISIBLE);
                     icClearSearch.setVisibility(View.VISIBLE);
                 }
@@ -200,6 +207,7 @@ public class FindProductsFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 edtProductSearch.setText("");
+                edtProductSearch.requestFocus();
             }
         });
 
@@ -235,6 +243,25 @@ public class FindProductsFragment extends Fragment {
             }
         });
         productsContainer.setAdapter(mProductItemsAdapter);
+
+        radioPlatformGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup radioGroup, int checkedId) {
+                String checkedPlatform = null;
+                switch (checkedId){
+                    case R.id.radioAll:
+                        checkedPlatform = "all";
+                        break;
+                    case R.id.radioTiki:
+                        checkedPlatform = "tiki";
+                        break;
+                    case R.id.radioShopee:
+                        checkedPlatform = "shopee";
+                        break;
+                }
+                mFindProductViewModel.setPlatform(checkedPlatform);
+            }
+        });
     }
 
     private void handleQueryText(String query) {
