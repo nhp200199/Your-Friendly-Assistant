@@ -41,7 +41,7 @@
     <fragment
         android:id="@+id/media_player_fragment"
         android:name="com.phucnguyen.khoaluantotnghiep.ui.fragment.MediaPlayerFragment"
-        android:label="Hình ảnh"
+        android:label="Hình ảnh/Video"
         tools:layout="@layout/fragment_media_player">
         <argument
             android:name="url"

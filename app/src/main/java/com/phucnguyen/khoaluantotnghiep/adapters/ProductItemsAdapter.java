@@ -72,8 +72,11 @@ public class ProductItemsAdapter extends RecyclerView.Adapter<ProductItemsAdapte
                 holder.iconRating.setImageResource(R.drawable.ic_question_face_12px);
                 holder.tvProductRate.setText("?");
                 holder.tvProductRate.setTextColor(mContext.getResources().getColor(R.color.purple_question));
-            } else
+            } else{
+                holder.iconRating.setImageResource(R.drawable.ic_star);
                 holder.tvProductRate.setText(String.format("%.1f", item.getRating()));
+                holder.tvProductRate.setTextColor(mContext.getResources().getColor(R.color.black));
+            }
             holder.tvProductReviewQuantities.setText(mContext.getString(R.string.review_quantities,
                     item.getTotalReview()));
         }
