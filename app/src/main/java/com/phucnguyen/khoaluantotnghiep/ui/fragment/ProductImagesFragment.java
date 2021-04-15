@@ -111,13 +111,19 @@ public class ProductImagesFragment extends Fragment implements View.OnClickListe
                         .navigate(R.id.action_product_item_fragment_to_mediaPlayerFragment, bundle);
             }
         });
+        reviewAdapter.setListener(new ReviewAdapter.Listener() {
+            @Override
+            public void onViewRecycle(int position, int value) {
+                mReviewViewModel.setNestedRecyclerViewPositions(position, value);
+            }
+        });
         reviewsContainer.setAdapter(reviewAdapter);
 
         mProductItemViewModel.getProductItem().observe(getViewLifecycleOwner(), new Observer<ProductItem>() {
             @Override
             public void onChanged(ProductItem productItem) {
                 if (productItem != null) {
-                    //enable click on filters
+                    //enable click on filters when product item is ready
                     tvFilterAllStar.setEnabled(true);
                     tvFilterMediaReview.setEnabled(true);
                     tvFilterFiveStar.setEnabled(true);
@@ -131,7 +137,8 @@ public class ProductImagesFragment extends Fragment implements View.OnClickListe
                             productItem.getSellerId()
                     );
                     mReviewViewModel = new ViewModelProvider(requireParentFragment(), factory).get(ReviewViewModel.class);
-
+                    //set the nested recycler view states which are retrieved from the ViewModel
+                    reviewAdapter.setNestedRecyclerViewPositions(mReviewViewModel.getNestedRecyclerViewPositions());
                     mReviewViewModel.getPagedList().observe(getViewLifecycleOwner(), new Observer<PagedList<Review>>() {
                         @Override
                         public void onChanged(PagedList<Review> reviews) {

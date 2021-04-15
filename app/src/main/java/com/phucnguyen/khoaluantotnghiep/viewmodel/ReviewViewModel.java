@@ -1,5 +1,7 @@
 package com.phucnguyen.khoaluantotnghiep.viewmodel;
 
+import android.util.SparseIntArray;
+
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Transformations;
@@ -9,9 +11,11 @@ import androidx.paging.PagedList;
 
 import com.phucnguyen.khoaluantotnghiep.model.Review;
 import com.phucnguyen.khoaluantotnghiep.model.datasource.ReviewDataSource;
+import com.phucnguyen.khoaluantotnghiep.model.datasource.ReviewDataSourceFactory;
 import com.phucnguyen.khoaluantotnghiep.repository.ReviewRepo;
 
 public class ReviewViewModel extends ViewModel {
+    private SparseIntArray nestedRecyclerViewPositions;
     private String productId;
     private String platform;
     private String seller;
@@ -40,6 +44,7 @@ public class ReviewViewModel extends ViewModel {
         this.productId = productId;
         this.platform = platform;
         this.seller = seller;
+        nestedRecyclerViewPositions = new SparseIntArray();
     }
 
     public LiveData<PagedList<Review>> getPagedList() {
@@ -56,5 +61,13 @@ public class ReviewViewModel extends ViewModel {
 
     public LiveData<ReviewDataSource.LoadingState> getLoadingState() {
         return loadingState;
+    }
+
+    public void setNestedRecyclerViewPositions(int position, int value) {
+        nestedRecyclerViewPositions.put(position, value);
+    }
+
+    public SparseIntArray getNestedRecyclerViewPositions() {
+        return nestedRecyclerViewPositions;
     }
 }

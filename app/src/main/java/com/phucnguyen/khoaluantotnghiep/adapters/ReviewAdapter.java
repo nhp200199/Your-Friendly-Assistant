@@ -25,12 +25,16 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class ReviewAdapter extends PagedListAdapter<Review, RecyclerView.ViewHolder> {
+    public interface Listener{
+        void onViewRecycle(int position, int value);
+    }
     public static final int TYPE_LOAD = 1;
     public static final int TYPE_REVIEW = 2;
 
     private Context context;
     private ProductImagesAdapter.ImageListener mImageListener;
     private ProductVideoAdapter.VideoListener mVideoListener;
+    private Listener mListener;
     private ReviewDataSource.LoadingState state;
     private SparseIntArray mNestedRecyclerViewPositions;
 
@@ -88,6 +92,14 @@ public class ReviewAdapter extends PagedListAdapter<Review, RecyclerView.ViewHol
 
     public void setState(ReviewDataSource.LoadingState state) {
         this.state = state;
+    }
+
+    public void setNestedRecyclerViewPositions(SparseIntArray nestedRecyclerViewPositions) {
+        mNestedRecyclerViewPositions = nestedRecyclerViewPositions;
+    }
+
+    public void setListener(Listener listener) {
+        mListener = listener;
     }
 
     private String transformMilToDateString(long createdAt) {
