@@ -14,11 +14,46 @@
             android:id="@+id/categoryNamesContainer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            tools:listitem="@layout/category_item"/>
+            tools:listitem="@layout/category_item" />
+
+        <RadioGroup
+            android:id="@+id/radioPlatformGroup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:checkedButton="@id/radioAll"
+            android:orientation="horizontal"
+            android:paddingHorizontal="16dp"
+            android:visibility="gone">
+
+            <RadioButton
+                android:id="@+id/radioAll"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:text="Tất cả" />
+
+            <RadioButton
+                android:id="@+id/radioTiki"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:text="Tiki"
+                android:textColor="@color/blue_tiki" />
+
+            <RadioButton
+                android:id="@+id/radioShopee"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:text="Shopee"
+                android:textColor="@color/orange_shopee" />
+
+        </RadioGroup>
+
         <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="16dp">
+            android:layout_height="match_parent">
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/productsContainer"
@@ -27,11 +62,20 @@
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/tvLoadingResult"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        android:layout_marginHorizontal="32dp"
+        android:layout_gravity="center" />
+
     <ProgressBar
         android:id="@+id/pbLoadingBar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:visibility="invisible"/>
+        android:visibility="invisible" />
 
 </FrameLayout>

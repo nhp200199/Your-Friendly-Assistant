@@ -17,7 +17,7 @@ import java.util.List;
 
 public class CategoryNamesAdapter extends RecyclerView.Adapter<CategoryNamesAdapter.ViewHolder> {
     public interface Listener {
-        void onCategoryClicked(int categoryPos);
+        void onCategoryClicked(int categoryPos, String categoryName);
     }
 
     private Context mContext;
@@ -54,7 +54,7 @@ public class CategoryNamesAdapter extends RecyclerView.Adapter<CategoryNamesAdap
                 holder.itemView.setSelected(true);
                 holder.tvCategoryName.setTextColor(mContext.getResources().getColor(R.color.white));
                 if (mListener != null)
-                    mListener.onCategoryClicked(position);
+                    mListener.onCategoryClicked(position, categories.get(position));
             }
         });
     }

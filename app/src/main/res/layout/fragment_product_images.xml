@@ -145,7 +145,7 @@
             android:layout_gravity="center" />
 
         <TextView
-            android:id="@+id/tvLoadingStatus"
+            android:id="@+id/tvLoadingResult"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center" />

@@ -2,6 +2,8 @@ package com.phucnguyen.khoaluantotnghiep.service;
 
 import androidx.lifecycle.LiveData;
 
+import com.phucnguyen.khoaluantotnghiep.model.CategoriesResponse;
+import com.phucnguyen.khoaluantotnghiep.model.HotItemsResponse;
 import com.phucnguyen.khoaluantotnghiep.model.ProductItem;
 import com.phucnguyen.khoaluantotnghiep.model.ProductItemResponse;
 import com.phucnguyen.khoaluantotnghiep.model.ReviewResponse;
@@ -31,4 +33,12 @@ public interface ProductItemService {
 
     @GET("relevant/test-mongo")
     Call<List<ProductItem>> getRelavantProducts(@QueryMap Map<String, String> query);
+
+    @GET("api/v1/items/most-decreasing-item")
+    Call<HotItemsResponse> getHotProducts(@Query("platform") String platform,
+                                          @Query("category") String category,
+                                          @Query("page") int page);
+
+    @GET("api/v1/categories/standard-categories")
+    Call<CategoriesResponse> getAllCategories();
 }
