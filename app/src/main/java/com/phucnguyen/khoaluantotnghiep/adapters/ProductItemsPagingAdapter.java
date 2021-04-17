@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -84,6 +85,18 @@ public class ProductItemsPagingAdapter extends PagedListAdapter<ProductItem, Rec
             }
             viewHolder.tvProductReviewQuantities.setText(mContext.getString(R.string.review_quantities,
                     item.getTotalReview()));
+            int priceDifference = item.getPriceDifference();
+            viewHolder.priceChangeContainer.setVisibility(View.VISIBLE);
+            if (priceDifference < 0){
+                viewHolder.tvPriceDifference.setText(Utils.formatNumber(Math.abs(priceDifference),
+                        0,
+                        true,
+                        '.'));
+                viewHolder.tvPriceDifference.setTextColor(mContext.getResources().getColor(R.color.green_happy));
+                //set the arrow to indicate price change
+                viewHolder.iconPriceChange.setRotation(90);
+                viewHolder.iconPriceChange.setColorFilter(mContext.getResources().getColor(R.color.green_happy));
+            }
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -116,8 +129,7 @@ public class ProductItemsPagingAdapter extends PagedListAdapter<ProductItem, Rec
     public void setLoadingState(Contants.LoadingState loadingState) {
         this.loadingState = loadingState;
         //update the last view holder for handle reload
-        if (loadingState == Contants.LoadingState.SUB_LOAD_ERROR)
-            notifyItemChanged(getItemCount() - 1);
+        notifyItemChanged(getItemCount() - 1);
     }
 
     public void setBtnListener(btnListener btnListener) {
@@ -148,11 +160,14 @@ public class ProductItemsPagingAdapter extends PagedListAdapter<ProductItem, Rec
     public static class ProductItemViewHolder extends RecyclerView.ViewHolder {
         private ImageView imgProduct;
         private ImageView iconRating;
+        private ImageView iconPriceChange;
         private TextView tvPrice;
         private TextView tvProductTitle;
         private TextView tvProductRate;
         private TextView tvProductReviewQuantities;
         private TextView tvPlatform;
+        private TextView tvPriceDifference;
+        private LinearLayout priceChangeContainer;
 
         public ProductItemViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -165,6 +180,9 @@ public class ProductItemsPagingAdapter extends PagedListAdapter<ProductItem, Rec
             //additional mapping views for product_item.xml
             tvProductRate = (TextView) itemView.findViewById(R.id.tvProductRate);
             tvProductReviewQuantities = (TextView) itemView.findViewById(R.id.tvProductItemReview);
+            tvPriceDifference = (TextView) itemView.findViewById(R.id.tvPriceDifferrence);
+            iconPriceChange = (ImageView) itemView.findViewById(R.id.iconPriceChange);
+            priceChangeContainer = (LinearLayout) itemView.findViewById(R.id.priceChangesContainer);
         }
     }
 

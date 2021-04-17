@@ -3,6 +3,7 @@ package com.phucnguyen.khoaluantotnghiep.model;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 import com.google.gson.annotations.SerializedName;
@@ -23,6 +24,9 @@ public class ProductItem {
     @SerializedName("currentPrice")
     private int mProductPrice;
     private int mSellerRate;
+    @SerializedName("lastPriceChange")
+    @Ignore
+    private int priceDifference;
 
     public ProductItem(String id, String name, String categoryId, String sellerId, String platform, float rating,
                        String productUrl, String thumbnailUrl, int totalReview,
@@ -126,6 +130,14 @@ public class ProductItem {
 
     public void setPlatform(String platform) {
         this.platform = platform;
+    }
+
+    public int getPriceDifference() {
+        return priceDifference;
+    }
+
+    public void setPriceDifference(int priceDifference) {
+        this.priceDifference = priceDifference;
     }
 
     @Override

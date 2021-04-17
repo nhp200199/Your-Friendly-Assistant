@@ -16,6 +16,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
@@ -40,6 +41,9 @@ public class HotProductsFragment extends Fragment {
     private ProgressBar pbLoadingBar;
     private TextView tvLoadingResult;
     private RadioGroup radioPlatformGroup;
+    private RadioButton radioAll;
+    private RadioButton radioTiki;
+    private RadioButton radioShopee;
 
     public HotProductsFragment() {
         // Required empty public constructor
@@ -60,6 +64,9 @@ public class HotProductsFragment extends Fragment {
         pbLoadingBar = (ProgressBar) v.findViewById(R.id.pbLoadingBar);
         tvLoadingResult = (TextView) v.findViewById(R.id.tvLoadingResult);
         radioPlatformGroup = (RadioGroup) v.findViewById(R.id.radioPlatformGroup);
+        radioAll = (RadioButton) v.findViewById(R.id.radioAll);
+        radioTiki = (RadioButton) v.findViewById(R.id.radioTiki);
+        radioShopee = (RadioButton) v.findViewById(R.id.radioShopee);
         refreshLayout = (SwipeRefreshLayout) v.findViewById(R.id.refreshLayout);
 
         refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -102,24 +109,60 @@ public class HotProductsFragment extends Fragment {
             }
         });
 
-        radioPlatformGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+        //use a variable to track which radio button's id is currently clicked
+        int checkedRadioPlatformId = mHotProductViewModel.getCurrentRadioPlatformId();
+        radioPlatformGroup.check(checkedRadioPlatformId);
+        radioAll.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onCheckedChanged(RadioGroup radioGroup, int i) {
-                String checkedPlatform = null;
-                switch (i) {
-                    case R.id.radioAll:
-                        checkedPlatform = "all";
-                        break;
-                    case R.id.radioTiki:
-                        checkedPlatform = "tiki";
-                        break;
-                    case R.id.radioShopee:
-                        checkedPlatform = "shopee";
-                        break;
+            public void onClick(View view) {
+                if (checkedRadioPlatformId != view.getId()){
+                    mHotProductViewModel.setCurrentRadioPlatformId(view.getId());
+                    mHotProductViewModel.setDataSourceWithNewPlatform("all");
                 }
-                mHotProductViewModel.setDataSourceWithNewPlatform(checkedPlatform);
             }
         });
+        radioTiki.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(checkedRadioPlatformId != view.getId()){
+                    mHotProductViewModel.setCurrentRadioPlatformId(view.getId());
+                    mHotProductViewModel.setDataSourceWithNewPlatform("tiki");
+                }
+            }
+        });
+        radioShopee.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(checkedRadioPlatformId != view.getId()){
+                    mHotProductViewModel.setCurrentRadioPlatformId(view.getId());
+                    mHotProductViewModel.setDataSourceWithNewPlatform("shopee");
+                }
+            }
+        });
+        //Using radioPlatformGroup.setOnCheckedChangeListener(...) to track the currently selected radio button
+        //cause an issue: onCheckChanged does not invoke like the way we want. Should use the implementation above
+//        radioPlatformGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+//            @Override
+//            public void onCheckedChanged(RadioGroup radioGroup, int i) {
+//                String checkedPlatform = null;
+//                switch (i) {
+//                    case R.id.radioAll:
+//                        checkedPlatform = "all";
+//                        break;
+//                    case R.id.radioTiki:
+//                        checkedPlatform = "tiki";
+//                        break;
+//                    case R.id.radioShopee:
+//                        checkedPlatform = "shopee";
+//                        break;
+//                }
+//                RadioButton radioButton = radioGroup.getRootView().findViewById(radioGroup.getCheckedRadioButtonId());
+//                if (!mHotProductViewModel.getCurrentPlatform().equals(radioButton.getText().toString())){
+//                    mHotProductViewModel.setDataSourceWithNewPlatform(checkedPlatform);
+//                    mHotProductViewModel.setCurrentPlatform(checkedPlatform);
+//                }
+//            }
+//        });
 
         mHotProductViewModel.getHotProducts().observe(getViewLifecycleOwner(), new Observer<PagedList<ProductItem>>() {
             @Override
@@ -154,7 +197,10 @@ public class HotProductsFragment extends Fragment {
             @Override
             public void onChanged(List<String> categoriesString) {
                 if (categoriesString != null) {
-                    categoriesString.add(0, "Tất cả");
+                    //shouldn't change the list emitted from the live data. Here we have to do that
+                    //because we want to include "Tất cả" in our categories
+                    if (!categoriesString.contains("Tất cả"))
+                        categoriesString.add(0, "Tất cả");
                     radioPlatformGroup.setVisibility(View.VISIBLE);
                     categoryNamesAdapter.setCategories(categoriesString);
                 } else radioPlatformGroup.setVisibility(View.GONE);

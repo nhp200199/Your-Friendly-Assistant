@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel;
 import androidx.paging.LivePagedListBuilder;
 import androidx.paging.PagedList;
 
+import com.phucnguyen.khoaluantotnghiep.R;
 import com.phucnguyen.khoaluantotnghiep.model.Category;
 import com.phucnguyen.khoaluantotnghiep.model.ProductItem;
 import com.phucnguyen.khoaluantotnghiep.model.datasource.HotProductsDataSource;
@@ -20,6 +21,7 @@ public class HotProductViewModel extends ViewModel {
     private MutableLiveData<Integer> selectedCategoryPos;
     private LiveData<List<String>> categories;
     private HotProductsRepo repo;
+    private int currentRadioPlatformId = R.id.radioAll;
     private LiveData<PagedList<ProductItem>> hotProducts;
 
     public HotProductViewModel() {
@@ -81,5 +83,13 @@ public class HotProductViewModel extends ViewModel {
 
     public void retryLoadingSubPages() {
         ((HotProductsDataSource)hotProducts.getValue().getDataSource()).retryLoadingSubPages();
+    }
+
+    public int getCurrentRadioPlatformId() {
+        return currentRadioPlatformId;
+    }
+
+    public void setCurrentRadioPlatformId(int currentRadioPlatformId) {
+        this.currentRadioPlatformId = currentRadioPlatformId;
     }
 }
