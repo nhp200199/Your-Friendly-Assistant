@@ -5,12 +5,12 @@ import android.os.Bundle;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.paging.PagedList;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,21 +23,18 @@ import com.phucnguyen.khoaluantotnghiep.R;
 import com.phucnguyen.khoaluantotnghiep.adapters.CategoryNamesAdapter;
 import com.phucnguyen.khoaluantotnghiep.adapters.ProductItemsAdapter;
 import com.phucnguyen.khoaluantotnghiep.adapters.ProductItemsPagingAdapter;
-import com.phucnguyen.khoaluantotnghiep.database.ProductItemDao;
 import com.phucnguyen.khoaluantotnghiep.model.ProductItem;
-import com.phucnguyen.khoaluantotnghiep.repository.ProductItemRepo;
 import com.phucnguyen.khoaluantotnghiep.utils.Contants;
 import com.phucnguyen.khoaluantotnghiep.viewmodel.HotProductViewModel;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class HotProductsFragment extends Fragment {
     private static final String LOGTAG = HotProductsFragment.class.getSimpleName();
 
     private HotProductViewModel mHotProductViewModel;
-    private ProductItemRepo mProductItemDao;
 
+    private SwipeRefreshLayout refreshLayout;
     private RecyclerView categoryNamesContainer;
     private RecyclerView productsContainer;
     private ProgressBar pbLoadingBar;
@@ -52,7 +49,6 @@ public class HotProductsFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mHotProductViewModel = new ViewModelProvider(this).get(HotProductViewModel.class);
-        mProductItemDao = new ProductItemRepo(requireContext());
     }
 
     @Override
@@ -64,6 +60,16 @@ public class HotProductsFragment extends Fragment {
         pbLoadingBar = (ProgressBar) v.findViewById(R.id.pbLoadingBar);
         tvLoadingResult = (TextView) v.findViewById(R.id.tvLoadingResult);
         radioPlatformGroup = (RadioGroup) v.findViewById(R.id.radioPlatformGroup);
+        refreshLayout = (SwipeRefreshLayout) v.findViewById(R.id.refreshLayout);
+
+        refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                mHotProductViewModel.refreshDataSource();
+                refreshLayout.setRefreshing(false);
+            }
+        });
+
         //adapter for the category names
         CategoryNamesAdapter categoryNamesAdapter = new CategoryNamesAdapter(requireContext());
         categoryNamesAdapter.setListener(new CategoryNamesAdapter.Listener() {
@@ -87,6 +93,12 @@ public class HotProductsFragment extends Fragment {
                 bundle.putString("productUrl", url);
                 NavHostFragment.findNavController(HotProductsFragment.this)
                         .navigate(R.id.action_global_productItemFragment, bundle);
+            }
+        });
+        productItemsAdapter.setBtnListener(new ProductItemsPagingAdapter.btnListener() {
+            @Override
+            public void onRetry() {
+                mHotProductViewModel.retryLoadingSubPages();
             }
         });
 
@@ -123,7 +135,7 @@ public class HotProductsFragment extends Fragment {
                     return;
                 } else pbLoadingBar.setVisibility(View.INVISIBLE);
                 if (loadingState == Contants.LoadingState.SUCCESS_WITH_NO_VALUES ||
-                        loadingState == Contants.LoadingState.ERROR) {
+                        loadingState == Contants.LoadingState.FIRST_LOAD_ERROR) {
                     tvLoadingResult.setVisibility(View.VISIBLE);
                     productsContainer.setVisibility(View.INVISIBLE);
                     if (loadingState == Contants.LoadingState.SUCCESS_WITH_NO_VALUES) {
@@ -137,17 +149,7 @@ public class HotProductsFragment extends Fragment {
                 productItemsAdapter.setLoadingState(loadingState);
             }
         });
-//        List<String> dummyCategories = new ArrayList<String>();
-//        dummyCategories.add("first category");
-//        dummyCategories.add("Smartphone");
-//        dummyCategories.add("Máy tính bảng");
-//        dummyCategories.add("fourth category");
-//        dummyCategories.add("fifth category");
-//        dummyCategories.add("sixth category");
-//        dummyCategories.add("seventh category");
-//        dummyCategories.add("eighth category");
-//        dummyCategories.add("ninth category");
-//        categoryNamesAdapter.setCategories(dummyCategories);
+
         mHotProductViewModel.getCategories().observe(getViewLifecycleOwner(), new Observer<List<String>>() {
             @Override
             public void onChanged(List<String> categoriesString) {

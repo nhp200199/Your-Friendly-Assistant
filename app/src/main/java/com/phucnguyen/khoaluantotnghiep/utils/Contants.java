@@ -9,6 +9,7 @@ public class Contants {
         LOADING,
         SUCCESS_WITH_NO_VALUES,
         SUCCESS,
-        ERROR
+        FIRST_LOAD_ERROR,
+        SUB_LOAD_ERROR
     }
 }

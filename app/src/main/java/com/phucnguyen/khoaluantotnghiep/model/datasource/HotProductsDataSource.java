@@ -1,9 +1,7 @@
 package com.phucnguyen.khoaluantotnghiep.model.datasource;
 
 import androidx.annotation.NonNull;
-import androidx.arch.core.util.Function;
 import androidx.lifecycle.MutableLiveData;
-import androidx.paging.DataSource;
 import androidx.paging.PageKeyedDataSource;
 
 import com.phucnguyen.khoaluantotnghiep.model.HotItemsResponse;
@@ -24,6 +22,8 @@ public class HotProductsDataSource extends PageKeyedDataSource<Integer, ProductI
     private String platform;
     private String category;
     private MutableLiveData<Contants.LoadingState> loadingState;
+    private LoadParams<Integer> params;
+    private LoadCallback<Integer, ProductItem> callback;
 
     public HotProductsDataSource(String platform, String category) {
         this.platform = platform;
@@ -53,14 +53,14 @@ public class HotProductsDataSource extends PageKeyedDataSource<Integer, ProductI
                         callback.onResult(new ArrayList<ProductItem>(), 0, 0);
                     }
                 } else {
-                    loadingState.postValue(Contants.LoadingState.ERROR);
+                    loadingState.postValue(Contants.LoadingState.FIRST_LOAD_ERROR);
                     callback.onResult(new ArrayList<ProductItem>(), 0, 0);
                 }
             }
 
             @Override
             public void onFailure(Call<HotItemsResponse> call, Throwable t) {
-                loadingState.postValue(Contants.LoadingState.ERROR);
+                loadingState.postValue(Contants.LoadingState.FIRST_LOAD_ERROR);
                 callback.onResult(new ArrayList<ProductItem>(), 0, 0);
             }
         });
@@ -73,6 +73,8 @@ public class HotProductsDataSource extends PageKeyedDataSource<Integer, ProductI
 
     @Override
     public void loadAfter(@NonNull LoadParams<Integer> params, @NonNull LoadCallback<Integer, ProductItem> callback) {
+        this.params = params;
+        this.callback = callback;
         final int currentPage = params.key;
         loadingState.postValue(Contants.LoadingState.LOADING);
         service.getHotProducts(platform, category, currentPage).enqueue(new Callback<HotItemsResponse>() {
@@ -85,16 +87,25 @@ public class HotProductsDataSource extends PageKeyedDataSource<Integer, ProductI
                     List<ProductItem> items = response.body().getItems();
                     callback.onResult(items, nextPageKey);
                 } else {
-                    loadingState.postValue(Contants.LoadingState.ERROR);
-                    callback.onResult(new ArrayList<ProductItem>(), currentPage);
+                    loadingState.postValue(Contants.LoadingState.SUB_LOAD_ERROR);
+                    //when the load is fail, dont call onResult() on the call back,
+                    //just ignore it, update the loading state for the UI to handle reload
+
+                    //callback.onResult(new ArrayList<ProductItem>(), currentPage);
                 }
             }
 
             @Override
             public void onFailure(Call<HotItemsResponse> call, Throwable t) {
-                loadingState.postValue(Contants.LoadingState.ERROR);
-                callback.onResult(new ArrayList<ProductItem>(), currentPage);
+                loadingState.postValue(Contants.LoadingState.SUB_LOAD_ERROR);
+                //when the load is fail, dont call onResult() on the call back,
+                //just ignore it, update the loading state for the UI to handle reload
+
+                //callback.onResult(new ArrayList<ProductItem>(), currentPage);
             }
         });
+    }
+    public void retryLoadingSubPages(){
+        loadAfter(params, callback);
     }
 }

@@ -40,14 +40,14 @@ public class RelavantProductRepo {
                         loadingState.postValue(Contants.LoadingState.SUCCESS);
                     else loadingState.postValue(Contants.LoadingState.SUCCESS_WITH_NO_VALUES);
                 } else {
-                    loadingState.postValue(Contants.LoadingState.ERROR);
+                    loadingState.postValue(Contants.LoadingState.FIRST_LOAD_ERROR);
                     products.postValue(null);
                 }
             }
 
             @Override
             public void onFailure(Call<List<ProductItem>> call, Throwable t) {
-                loadingState.postValue(Contants.LoadingState.ERROR);
+                loadingState.postValue(Contants.LoadingState.FIRST_LOAD_ERROR);
                 products.postValue(null);
             }
         });

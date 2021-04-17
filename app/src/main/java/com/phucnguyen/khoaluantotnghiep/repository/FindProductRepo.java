@@ -45,14 +45,14 @@ public class FindProductRepo {
                     loadingState.postValue(Contants.LoadingState.SUCCESS);
                     suggestedProducts.postValue(response.body().getItems());
                 } else {
-                    loadingState.postValue(Contants.LoadingState.ERROR);
+                    loadingState.postValue(Contants.LoadingState.FIRST_LOAD_ERROR);
                     suggestedProducts.postValue(null);
                 }
             }
 
             @Override
             public void onFailure(Call<SuggestedProductsResponse> call, Throwable t) {
-                loadingState.postValue(Contants.LoadingState.ERROR);
+                loadingState.postValue(Contants.LoadingState.FIRST_LOAD_ERROR);
                 suggestedProducts.postValue(null);
             }
         });

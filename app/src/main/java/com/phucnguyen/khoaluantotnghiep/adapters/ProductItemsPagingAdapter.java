@@ -4,7 +4,9 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -25,9 +27,13 @@ import static com.phucnguyen.khoaluantotnghiep.utils.Contants.PRODUCT_VIEW_TYPE;
 
 public class ProductItemsPagingAdapter extends PagedListAdapter<ProductItem, RecyclerView.ViewHolder> {
 
+    public interface btnListener{
+        void onRetry();
+    }
     private Context mContext;
     private Contants.LoadingState loadingState;
     private ProductItemsAdapter.Listener listener;
+    private btnListener mBtnListener;
 
     public ProductItemsPagingAdapter(Context context) {
         super(DIFF_CALLBACK);
@@ -85,6 +91,21 @@ public class ProductItemsPagingAdapter extends PagedListAdapter<ProductItem, Rec
                         listener.onItemClicked(item.getProductUrl());
                 }
             });
+        } else {
+            LoadingViewHolder viewHolder = (LoadingViewHolder) holder;
+            if (loadingState == Contants.LoadingState.SUB_LOAD_ERROR){
+                viewHolder.pbLoadingBar.setVisibility(View.GONE);
+                viewHolder.btnRetry.setVisibility(View.VISIBLE);
+            }
+            viewHolder.btnRetry.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    viewHolder.pbLoadingBar.setVisibility(View.VISIBLE);
+                    viewHolder.btnRetry.setVisibility(View.GONE);
+                    if (mBtnListener != null)
+                        mBtnListener.onRetry();
+                }
+            });
         }
     }
 
@@ -94,6 +115,13 @@ public class ProductItemsPagingAdapter extends PagedListAdapter<ProductItem, Rec
 
     public void setLoadingState(Contants.LoadingState loadingState) {
         this.loadingState = loadingState;
+        //update the last view holder for handle reload
+        if (loadingState == Contants.LoadingState.SUB_LOAD_ERROR)
+            notifyItemChanged(getItemCount() - 1);
+    }
+
+    public void setBtnListener(btnListener btnListener) {
+        mBtnListener = btnListener;
     }
 
     private static DiffUtil.ItemCallback<ProductItem> DIFF_CALLBACK = new DiffUtil.ItemCallback<ProductItem>() {
@@ -141,9 +169,13 @@ public class ProductItemsPagingAdapter extends PagedListAdapter<ProductItem, Rec
     }
 
     public static class LoadingViewHolder extends RecyclerView.ViewHolder {
+        private ProgressBar pbLoadingBar;
+        private Button btnRetry;
 
         public LoadingViewHolder(@NonNull View itemView) {
             super(itemView);
+            pbLoadingBar = itemView.findViewById(R.id.pbLoadingBar);
+            btnRetry = itemView.findViewById(R.id.btnRetry);
         }
     }
 }

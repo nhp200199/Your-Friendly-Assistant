@@ -24,13 +24,11 @@ import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RadioGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.phucnguyen.khoaluantotnghiep.R;
 import com.phucnguyen.khoaluantotnghiep.adapters.ProductItemsAdapter;
@@ -39,7 +37,6 @@ import com.phucnguyen.khoaluantotnghiep.database.RecentSearch;
 import com.phucnguyen.khoaluantotnghiep.database.RecentSearchDao;
 import com.phucnguyen.khoaluantotnghiep.database.SearchDatabase;
 import com.phucnguyen.khoaluantotnghiep.model.ProductItem;
-import com.phucnguyen.khoaluantotnghiep.model.Review;
 import com.phucnguyen.khoaluantotnghiep.utils.Contants;
 import com.phucnguyen.khoaluantotnghiep.viewmodel.FindProductViewModel;
 
@@ -127,7 +124,7 @@ public class FindProductsFragment extends Fragment {
                     pbLoadingProgress.setVisibility(View.VISIBLE);
                 } else if (loadingState == Contants.LoadingState.SUCCESS) {
                     pbLoadingProgress.setVisibility(View.INVISIBLE);
-                } else if (loadingState == Contants.LoadingState.ERROR)
+                } else if (loadingState == Contants.LoadingState.FIRST_LOAD_ERROR)
                     pbLoadingProgress.setVisibility(View.INVISIBLE);
             }
         });

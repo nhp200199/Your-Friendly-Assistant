@@ -9,6 +9,7 @@ import androidx.paging.PagedList;
 
 import com.phucnguyen.khoaluantotnghiep.model.Category;
 import com.phucnguyen.khoaluantotnghiep.model.ProductItem;
+import com.phucnguyen.khoaluantotnghiep.model.datasource.HotProductsDataSource;
 import com.phucnguyen.khoaluantotnghiep.repository.HotProductsRepo;
 import com.phucnguyen.khoaluantotnghiep.utils.Contants;
 
@@ -72,5 +73,13 @@ public class HotProductViewModel extends ViewModel {
 
     public LiveData<List<String>> getCategories() {
         return categories;
+    }
+
+    public void refreshDataSource(){
+        hotProducts.getValue().getDataSource().invalidate();
+    }
+
+    public void retryLoadingSubPages() {
+        ((HotProductsDataSource)hotProducts.getValue().getDataSource()).retryLoadingSubPages();
     }
 }
