@@ -73,6 +73,8 @@ public class HotProductsFragment extends Fragment {
             @Override
             public void onRefresh() {
                 mHotProductViewModel.refreshDataSource();
+                //only retry loading categories when previous call to receive categories has failed
+                mHotProductViewModel.retryLoadingCategories();
                 refreshLayout.setRefreshing(false);
             }
         });

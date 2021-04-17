@@ -92,4 +92,9 @@ public class HotProductViewModel extends ViewModel {
     public void setCurrentRadioPlatformId(int currentRadioPlatformId) {
         this.currentRadioPlatformId = currentRadioPlatformId;
     }
+
+    public void retryLoadingCategories(){
+        if (repo.getRetryRetrofitCall() != null)
+            repo.retryLoadingCategories();
+    }
 }

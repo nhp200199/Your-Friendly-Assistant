@@ -23,6 +23,7 @@ public class HotProductsRepo {
     private MutableLiveData<List<Category>> categories;
     private HotProductsDataSourceFactory mHotProductsDataSourceFactory;
     private LiveData<Contants.LoadingState> loadingState;
+    private Call<CategoriesResponse> retryRetrofitCall = null;
 
     public HotProductsRepo(String platform, String category) {
         service = RetrofitInstance.getProductItemService();
@@ -58,16 +59,52 @@ public class HotProductsRepo {
         service.getAllCategories().enqueue(new Callback<CategoriesResponse>() {
             @Override
             public void onResponse(Call<CategoriesResponse> call, Response<CategoriesResponse> response) {
-                if (response.isSuccessful())
+                if (response.isSuccessful()){
                     categories.postValue(response.body().getCagories());
-                else categories.postValue(null);
+                    retryRetrofitCall = null;
+                }
+                else {
+                    categories.postValue(null);
+                    retryRetrofitCall = call.clone();
+                }
             }
 
             @Override
             public void onFailure(Call<CategoriesResponse> call, Throwable t) {
                 categories.postValue(null);
+                retryRetrofitCall = call.clone();
             }
         });
         return categories;
+    }
+
+    public Call<CategoriesResponse> getRetryRetrofitCall() {
+        return retryRetrofitCall;
+    }
+
+    public void setRetryRetrofitCall(Call<CategoriesResponse> retryRetrofitCall) {
+        this.retryRetrofitCall = retryRetrofitCall;
+    }
+
+    public void retryLoadingCategories(){
+        retryRetrofitCall.enqueue(new Callback<CategoriesResponse>() {
+            @Override
+            public void onResponse(Call<CategoriesResponse> call, Response<CategoriesResponse> response) {
+                if (response.isSuccessful()){
+                    categories.postValue(response.body().getCagories());
+                    retryRetrofitCall = null;
+                }
+                else {
+                    categories.postValue(null);
+                    retryRetrofitCall = call.clone();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<CategoriesResponse> call, Throwable t) {
+                categories.postValue(null);
+                retryRetrofitCall = call.clone();
+            }
+        });
     }
 }
