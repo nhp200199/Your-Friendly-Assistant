@@ -25,8 +25,7 @@
                 android:layout_width="100dp"
                 android:layout_height="100dp"
                 android:contentDescription="@string/img_product_ava_des"
-                android:scaleType="centerCrop"
-                android:src="@mipmap/ic_launcher" />
+                android:scaleType="centerCrop" />
 
             <LinearLayout
                 android:layout_width="wrap_content"

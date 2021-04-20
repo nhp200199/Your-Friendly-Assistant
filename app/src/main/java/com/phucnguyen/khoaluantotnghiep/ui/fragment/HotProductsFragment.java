@@ -84,6 +84,9 @@ public class HotProductsFragment extends Fragment {
         categoryNamesAdapter.setListener(new CategoryNamesAdapter.Listener() {
             @Override
             public void onCategoryClicked(int categoryPos, String categoryName) {
+                //set here to make a workaround
+                if (categoryName.equals("Tất cả"))
+                    categoryName = "tất cả";
                 mHotProductViewModel.setSelectedCategoryPos(categoryPos);
                 mHotProductViewModel.setDataSourceWithNewCategory(categoryName);
             }

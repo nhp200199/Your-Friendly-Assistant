@@ -63,12 +63,11 @@ public class OnBoardingFragment extends Fragment {
         });
 
         List<OnBoardingScreenItem> screenItems = new ArrayList<OnBoardingScreenItem>();
-        screenItems.add(new OnBoardingScreenItem("1", R.drawable.ic_happy_face_96px));
-        screenItems.add(new OnBoardingScreenItem("2", R.drawable.ic_happy_face_96px));
-        screenItems.add(new OnBoardingScreenItem("3", R.drawable.ic_happy_face_96px));
-        screenItems.add(new OnBoardingScreenItem("4", R.drawable.ic_happy_face_96px));
-        screenItems.add(new OnBoardingScreenItem("5", R.drawable.ic_happy_face_96px));
-        screenItems.add(new OnBoardingScreenItem("6", R.drawable.ic_happy_face_96px));
+        screenItems.add(new OnBoardingScreenItem(getString(R.string.guideline_step_1), R.drawable.step_1));
+        screenItems.add(new OnBoardingScreenItem(getString(R.string.guideline_step_2), R.drawable.step_2));
+        screenItems.add(new OnBoardingScreenItem(getString(R.string.guideline_step_3), R.drawable.step_3));
+        screenItems.add(new OnBoardingScreenItem(getString(R.string.guideline_step_4), R.drawable.step_4));
+        screenItems.add(new OnBoardingScreenItem(getString(R.string.guideline_step_5), R.drawable.step_5));
 
         adapter = new OnboardingScreensPagerAdapter(
                 screenItems,

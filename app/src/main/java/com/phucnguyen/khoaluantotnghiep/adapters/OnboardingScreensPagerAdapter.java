@@ -16,7 +16,7 @@ import com.phucnguyen.khoaluantotnghiep.model.OnBoardingScreenItem;
 import java.util.List;
 
 public class OnboardingScreensPagerAdapter extends PagerAdapter {
-    public static final int NUMBER_OF_ONBOARDING_SCREENS = 6;
+    public static final int NUMBER_OF_ONBOARDING_SCREENS = 5;
     private List<OnBoardingScreenItem> mOnBoardingScreenItems;
     private Context mContext;
 

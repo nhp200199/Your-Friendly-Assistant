@@ -42,6 +42,8 @@ public class ProductVideoAdapter extends RecyclerView.Adapter<ProductImagesAdapt
     public void onBindViewHolder(@NonNull ProductImagesAdapter.ImageViewHolder holder, int position) {
         Glide.with(mContext)
                 .load(mVideos.get(position).getCover())
+                .placeholder(mContext.getDrawable(R.drawable.logo_fade))
+                .error(mContext.getDrawable(R.drawable.logo_fade))
                 .into(holder.imgRealProduct);
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {

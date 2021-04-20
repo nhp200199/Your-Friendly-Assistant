@@ -22,6 +22,7 @@ import com.phucnguyen.khoaluantotnghiep.model.ProductItem;
 import com.phucnguyen.khoaluantotnghiep.model.Review;
 import com.phucnguyen.khoaluantotnghiep.model.datasource.ReviewDataSource;
 import com.phucnguyen.khoaluantotnghiep.utils.Contants;
+import com.phucnguyen.khoaluantotnghiep.utils.NumbersFormatter;
 
 import static com.phucnguyen.khoaluantotnghiep.utils.Contants.LOAD_VIEW_TYPE;
 import static com.phucnguyen.khoaluantotnghiep.utils.Contants.PRODUCT_VIEW_TYPE;
@@ -67,6 +68,8 @@ public class ProductItemsPagingAdapter extends PagedListAdapter<ProductItem, Rec
                     '.'));
             Glide.with(mContext)
                     .load(item.getThumbnailUrl())
+                    .placeholder(mContext.getDrawable(R.drawable.logo_fade))
+                    .error(mContext.getDrawable(R.drawable.logo_fade))
                     .into(viewHolder.imgProduct);
             viewHolder.tvPlatform.setText(item.getPlatform());
             if (item.getPlatform().equals("tiki"))
@@ -80,7 +83,7 @@ public class ProductItemsPagingAdapter extends PagedListAdapter<ProductItem, Rec
                 viewHolder.tvProductRate.setTextColor(mContext.getResources().getColor(R.color.purple_question));
             } else {
                 viewHolder.iconRating.setImageResource(R.drawable.ic_star);
-                viewHolder.tvProductRate.setText(String.format("%.1f", item.getRating()));
+                viewHolder.tvProductRate.setText(NumbersFormatter.formatFloatToString(item.getRating(), 1));
                 viewHolder.tvProductRate.setTextColor(mContext.getResources().getColor(R.color.black));
             }
             viewHolder.tvProductReviewQuantities.setText(mContext.getString(R.string.review_quantities,

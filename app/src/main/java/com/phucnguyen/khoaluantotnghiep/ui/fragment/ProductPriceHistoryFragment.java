@@ -31,6 +31,7 @@ import com.github.mikephil.charting.utils.MPPointF;
 import com.github.mikephil.charting.utils.Utils;
 import com.phucnguyen.khoaluantotnghiep.R;
 import com.phucnguyen.khoaluantotnghiep.model.Price;
+import com.phucnguyen.khoaluantotnghiep.model.ProductItem;
 import com.phucnguyen.khoaluantotnghiep.model.ProductItemResponse;
 import com.phucnguyen.khoaluantotnghiep.model.Seller;
 import com.phucnguyen.khoaluantotnghiep.viewmodel.ProductItemViewModel;
@@ -45,6 +46,8 @@ public class ProductPriceHistoryFragment extends Fragment {
     private ProgressBar pbLoadingBar;
 
     private ProductItemViewModel mProductItemViewModel;
+    private LineDataSet mDataSet;
+    private List<Entry> mEntries = new ArrayList<Entry>();
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -76,18 +79,35 @@ public class ProductPriceHistoryFragment extends Fragment {
             }
 
             private void populateChartWithPrice(List<Price> prices) {
-                List<Entry> entries = new ArrayList<Entry>();
-                for (Price data : prices) {
-                    // turn your data into Entry objects
-                    entries.add(new Entry(data.getDate(), data.getPrice(), data));
+                if (prices.size() == 0){
+                    mChartPriceHistory.setNoDataText("Chưa có dữ liệu cho sản phẩm này");
+                    mChartPriceHistory.setNoDataTextColor(getResources().getColor(R.color.gray_300));
+                    return;
                 }
-                LineDataSet dataSet = new LineDataSet(entries, "Giá sản phẩm");
-                dataSet.setDrawFilled(true);
-                dataSet.setDrawValues(false);
+                if (mDataSet.getEntryCount() == 0){
+                    for (Price data : prices) {
+                        // turn your data into Entry objects
+                        mDataSet.addEntry(new Entry(data.getDate(), data.getPrice(), data));
+                    }
+                }
 
-                LineData lineData = new LineData(dataSet);
+                mDataSet.setDrawFilled(true);
+                mDataSet.setDrawValues(false);
+
+                LineData lineData = new LineData(mDataSet);
                 mChartPriceHistory.setData(lineData);
                 mChartPriceHistory.invalidate(); // refresh
+            }
+        });
+        mProductItemViewModel.getProductItem().observe(getViewLifecycleOwner(), new Observer<ProductItem>() {
+            @Override
+            public void onChanged(ProductItem productItem) {
+                if (productItem != null){
+                    mDataSet = new LineDataSet(mEntries, "Giá sản phẩm");
+                    if (productItem.getPlatform().equals("tiki")){
+                        mDataSet.setFillColor(getResources().getColor(R.color.blue_tiki));
+                    } else mDataSet.setFillColor(getResources().getColor(R.color.orange_shopee));
+                }
             }
         });
         // Inflate the layout for this fragment
@@ -100,10 +120,9 @@ public class ProductPriceHistoryFragment extends Fragment {
         mChartPriceHistory.getDescription().setEnabled(false);
         mChartPriceHistory.setDragEnabled(true);
         mChartPriceHistory.setScaleEnabled(false);
-        mChartPriceHistory.setNoDataText("Chưa có dữ liệu");
-        //mChartPriceHistory.setVisibleXRange(0f, 3f);
         YAxis yAxis = mChartPriceHistory.getAxisLeft();
         yAxis.setEnabled(true);
+        yAxis.setLabelCount(6, true);
         XAxis xAxis = mChartPriceHistory.getXAxis();
         xAxis.setEnabled(false);
 

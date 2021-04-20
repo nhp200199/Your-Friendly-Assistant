@@ -59,6 +59,13 @@
     <string name="price_currency">đ</string>
     <string name="review_quantities">%1$d bình luận</string>
 
+    <!--    App how-to-use-->
+    <string name="guideline_step_1">Truy cập vào ứng dụng bạn thích (Tiki hoặc Shopee)</string>
+    <string name="guideline_step_2">Lướt và chọn sản phẩm bạn quan tâm</string>
+    <string name="guideline_step_3">Nhấn nút chia sẻ bên góc phải màn hình</string>
+    <string name="guideline_step_4">Các ứng dụng đề xuất được hiện ra, hãy chia sẻ với chúng tôi</string>
+    <string name="guideline_step_5">Xong! Các thông tin cần thiết về sản phẩm sẽ được hiển thị ngay tức thời</string>
+
     <!--General strings-->
     <string name="default_text_placeholder">---</string>
 </resources>

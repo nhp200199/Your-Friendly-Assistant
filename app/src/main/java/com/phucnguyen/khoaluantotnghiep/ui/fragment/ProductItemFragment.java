@@ -28,6 +28,7 @@ import com.google.android.material.tabs.TabItem;
 import com.google.android.material.tabs.TabLayout;
 import com.phucnguyen.khoaluantotnghiep.R;
 import com.phucnguyen.khoaluantotnghiep.model.ProductItem;
+import com.phucnguyen.khoaluantotnghiep.utils.NumbersFormatter;
 import com.phucnguyen.khoaluantotnghiep.viewmodel.ProductItemViewModel;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -125,10 +126,12 @@ public class ProductItemFragment extends Fragment {
                                 0,
                                 true,
                                 '.'));
-                        mTvProductItemRate.setText(String.format("%.1f", productItem.getRating()));
+                        mTvProductItemRate.setText(NumbersFormatter.formatFloatToString(productItem.getRating(), 1));
                         mTvProductItemReview.setText(String.valueOf(productItem.getTotalReview()));
                         Glide.with(requireActivity())
                                 .load(productItem.getThumbnailUrl())
+                                .placeholder(requireActivity().getDrawable(R.drawable.logo_fade))
+                                .error(requireActivity().getDrawable(R.drawable.logo_fade))
                                 .into(mImgProductItem);
                         if (productItem.getPlatform().equals("tiki")) {
                             mImgActionGoToStore.setImageResource(R.drawable.tiki);
@@ -164,15 +167,19 @@ public class ProductItemFragment extends Fragment {
         switch (i) {
             case 0:
                 tvTabTitle.setText(getResources().getString(R.string.product_price_history_tab));
+                imgTabIcon.setImageResource(R.drawable.chart);
                 break;
             case 1:
                 tvTabTitle.setText(getResources().getString(R.string.product_seller_tab));
+                imgTabIcon.setImageResource(R.drawable.home);
                 break;
             case 2:
                 tvTabTitle.setText(getResources().getString(R.string.product_images_tab));
+                imgTabIcon.setImageResource(R.drawable.comments);
                 break;
             case 3:
                 tvTabTitle.setText(getResources().getString(R.string.product_relevant_tab));
+                imgTabIcon.setImageResource(R.drawable.radar);
                 break;
         }
         tab.setCustomView(tabCustomView);

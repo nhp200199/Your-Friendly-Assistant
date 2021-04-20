@@ -26,7 +26,7 @@ public class HotProductViewModel extends ViewModel {
 
     public HotProductViewModel() {
         selectedCategoryPos = new MutableLiveData<Integer>(0); //default value is 0
-        repo = new HotProductsRepo("all", "Tất cả");
+        repo = new HotProductsRepo("all", "tất cả");
         categories = Transformations.map(repo.getCategories(), categories -> {
             if (categories == null)
                 return null;

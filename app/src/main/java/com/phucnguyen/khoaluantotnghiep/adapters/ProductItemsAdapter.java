@@ -18,6 +18,7 @@ import com.bumptech.glide.Glide;
 import com.github.mikephil.charting.utils.Utils;
 import com.phucnguyen.khoaluantotnghiep.R;
 import com.phucnguyen.khoaluantotnghiep.model.ProductItem;
+import com.phucnguyen.khoaluantotnghiep.utils.NumbersFormatter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -59,6 +60,8 @@ public class ProductItemsAdapter extends RecyclerView.Adapter<ProductItemsAdapte
                 '.'));
         Glide.with(mContext)
                 .load(item.getThumbnailUrl())
+                .placeholder(mContext.getDrawable(R.drawable.logo_fade))
+                .error(mContext.getDrawable(R.drawable.logo_fade))
                 .into(holder.imgProduct);
         holder.tvPlatform.setText(item.getPlatform());
         if (item.getPlatform().equals("tiki"))
@@ -74,7 +77,7 @@ public class ProductItemsAdapter extends RecyclerView.Adapter<ProductItemsAdapte
                 holder.tvProductRate.setTextColor(mContext.getResources().getColor(R.color.purple_question));
             } else{
                 holder.iconRating.setImageResource(R.drawable.ic_star);
-                holder.tvProductRate.setText(String.format("%.1f", item.getRating()));
+                holder.tvProductRate.setText(NumbersFormatter.formatFloatToString(item.getRating(), 1));
                 holder.tvProductRate.setTextColor(mContext.getResources().getColor(R.color.black));
             }
             holder.tvProductReviewQuantities.setText(mContext.getString(R.string.review_quantities,

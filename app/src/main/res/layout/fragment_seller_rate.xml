@@ -33,10 +33,10 @@
             android:visibility="invisible">
 
             <ImageView
+                android:id="@+id/iconSellerRate"
                 android:layout_width="72dp"
                 android:layout_height="72dp"
-                android:layout_marginTop="32dp"
-                android:src="@drawable/ic_sad_face_12px" />
+                android:layout_marginTop="32dp" />
 
             <LinearLayout
                 android:id="@+id/SellerInfoContainer"
@@ -55,19 +55,20 @@
                     android:textStyle="bold" />
 
                 <TextView
+                    android:id="@+id/tvSellerRating"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp" />
+
+                <TextView
                     android:id="@+id/tvSellerCertification"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:visibility="gone"
                     android:layout_marginTop="8dp" />
 
                 <TextView
                     android:id="@+id/tvSellerOfficialShop"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp" />
-
-                <TextView
-                    android:id="@+id/tvSellerRating"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp" />
