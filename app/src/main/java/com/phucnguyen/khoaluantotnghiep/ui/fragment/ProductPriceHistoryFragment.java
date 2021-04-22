@@ -72,22 +72,22 @@ public class ProductPriceHistoryFragment extends Fragment {
             @Override
             public void onChanged(List<Price> prices) {
                 pbLoadingBar.setVisibility(View.GONE);
-                if (prices != null){
+                if (prices != null) {
                     mChartPriceHistory.setVisibility(View.VISIBLE);
                     populateChartWithPrice(prices);
                 }
             }
 
             private void populateChartWithPrice(List<Price> prices) {
-                if (prices.size() == 0){
+                if (prices.size() == 0) {
                     mChartPriceHistory.setNoDataText("Chưa có dữ liệu cho sản phẩm này");
                     mChartPriceHistory.setNoDataTextColor(getResources().getColor(R.color.gray_300));
                     return;
                 }
-                if (mDataSet.getEntryCount() == 0){
+                if (mDataSet.getEntryCount() == 0) {
                     for (Price data : prices) {
                         // turn your data into Entry objects
-                        mDataSet.addEntry(new Entry(data.getDate(), data.getPrice(), data));
+                        mDataSet.addEntry(new Entry(data.getDate(), data.getPrice() / 1000, data));
                     }
                 }
 
@@ -102,9 +102,9 @@ public class ProductPriceHistoryFragment extends Fragment {
         mProductItemViewModel.getProductItem().observe(getViewLifecycleOwner(), new Observer<ProductItem>() {
             @Override
             public void onChanged(ProductItem productItem) {
-                if (productItem != null){
+                if (productItem != null) {
                     mDataSet = new LineDataSet(mEntries, "Giá sản phẩm");
-                    if (productItem.getPlatform().equals("tiki")){
+                    if (productItem.getPlatform().equals("tiki")) {
                         mDataSet.setFillColor(getResources().getColor(R.color.blue_tiki));
                     } else mDataSet.setFillColor(getResources().getColor(R.color.orange_shopee));
                 }
@@ -122,7 +122,7 @@ public class ProductPriceHistoryFragment extends Fragment {
         mChartPriceHistory.setScaleEnabled(false);
         YAxis yAxis = mChartPriceHistory.getAxisLeft();
         yAxis.setEnabled(true);
-        yAxis.setLabelCount(6, true);
+        yAxis.setDrawLabels(false);
         XAxis xAxis = mChartPriceHistory.getXAxis();
         xAxis.setEnabled(false);
 

@@ -1,6 +1,7 @@
 package com.phucnguyen.khoaluantotnghiep.viewmodel;
 
 import android.app.Application;
+import android.view.MenuItem;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
@@ -10,6 +11,7 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Transformations;
 
 import com.phucnguyen.khoaluantotnghiep.database.RecentSearch;
+import com.phucnguyen.khoaluantotnghiep.model.Category;
 import com.phucnguyen.khoaluantotnghiep.model.ProductItem;
 import com.phucnguyen.khoaluantotnghiep.repository.FindProductRepo;
 import com.phucnguyen.khoaluantotnghiep.utils.Contants;
@@ -28,9 +30,12 @@ public class FindProductViewModel extends AndroidViewModel {
     //private LiveData<List<ProductItem>> suggestedProducts;
     private LiveData<List<ProductItem>> suggestedProducts = Transformations.switchMap(
             mMediatorLiveData, optionsMap -> repo.getProductItems(optionsMap.get("query"),
-                    optionsMap.get("platform"))
+                    optionsMap.get("platform"), optionsMap.get("category"))
     );
     private LiveData<Contants.LoadingState> loadingState;
+    private LiveData<List<Category>> categories;
+    private MutableLiveData<String> categoryLiveData = new MutableLiveData<String>();
+    private int currentCategoryMenuItem;
 
     public FindProductViewModel(@NonNull Application application) {
         super(application);
@@ -43,19 +48,29 @@ public class FindProductViewModel extends AndroidViewModel {
             }
             return recentSearchStrings;
         });
-        mMediatorLiveData.addSource(queryLiveData, query ->{
+        mMediatorLiveData.addSource(queryLiveData, query -> {
             Map<String, String> optionsMap = new HashMap<String, String>();
             optionsMap.put("query", query);
             optionsMap.put("platform", platformLiveData.getValue());
+            optionsMap.put("category", categoryLiveData.getValue());
             mMediatorLiveData.setValue(optionsMap);
         });
-        mMediatorLiveData.addSource(platformLiveData, platform ->{
+        mMediatorLiveData.addSource(platformLiveData, platform -> {
             Map<String, String> optionsMap = new HashMap<String, String>();
             optionsMap.put("query", queryLiveData.getValue());
             optionsMap.put("platform", platform);
+            optionsMap.put("category", categoryLiveData.getValue());
+            mMediatorLiveData.setValue(optionsMap);
+        });
+        mMediatorLiveData.addSource(categoryLiveData, category -> {
+            Map<String, String> optionsMap = new HashMap<String, String>();
+            optionsMap.put("query", queryLiveData.getValue());
+            optionsMap.put("platform", platformLiveData.getValue());
+            optionsMap.put("category", category);
             mMediatorLiveData.setValue(optionsMap);
         });
         loadingState = repo.getLoadingState();
+        categories = repo.getCategories();
     }
 
     public LiveData<List<String>> getRecentSearchs() {
@@ -81,5 +96,25 @@ public class FindProductViewModel extends AndroidViewModel {
 
     public LiveData<List<ProductItem>> getSuggestedProducts() {
         return suggestedProducts;
+    }
+
+    public LiveData<List<Category>> getCategories() {
+        return categories;
+    }
+
+    public int getCurrentCategory() {
+        return currentCategoryMenuItem;
+    }
+
+    public void setCurrentCategory(int categoryId) {
+        this.currentCategoryMenuItem = categoryId;
+    }
+
+    public MutableLiveData<String> getCategoryLiveData() {
+        return categoryLiveData;
+    }
+
+    public void setCategoryLiveData(String category) {
+        this.categoryLiveData.setValue(category);
     }
 }

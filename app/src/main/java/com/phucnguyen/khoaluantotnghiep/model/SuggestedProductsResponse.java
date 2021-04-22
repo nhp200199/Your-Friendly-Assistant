@@ -5,6 +5,7 @@ import java.util.List;
 public class SuggestedProductsResponse {
     private boolean success;
     private List<ProductItem> items;
+    private List<Category> categories;
 
     public SuggestedProductsResponse(boolean success, List<ProductItem> items) {
         this.success = success;
@@ -25,5 +26,13 @@ public class SuggestedProductsResponse {
 
     public void setItems(List<ProductItem> items) {
         this.items = items;
+    }
+
+    public List<Category> getCategories() {
+        return categories;
+    }
+
+    public void setCategories(List<Category> categories) {
+        this.categories = categories;
     }
 }

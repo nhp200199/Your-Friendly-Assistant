@@ -7,12 +7,14 @@
     android:layout_marginHorizontal="8dp"
     android:layout_marginTop="8dp"
     android:clickable="true"
+    android:focusable="true"
     app:cardCornerRadius="5dp"
     app:cardElevation="5dp">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:foreground="?android:attr/selectableItemBackground"
         android:padding="8dp">
 
         <ImageView
@@ -56,16 +58,15 @@
             android:layout_marginStart="12dp"
             android:layout_toEndOf="@+id/priceContainer"
             android:orientation="horizontal"
-            android:visibility="gone"
-            >
+            android:visibility="gone">
 
             <ImageView
                 android:id="@+id/iconPriceChange"
                 android:layout_width="16dp"
                 android:layout_height="16dp"
-                android:layout_marginEnd="4dp"
                 android:layout_gravity="center"
-                android:src="@drawable/ic_arrow"/>
+                android:layout_marginEnd="4dp"
+                android:src="@drawable/ic_arrow" />
 
             <TextView
                 android:id="@+id/tvPriceDifferrence"

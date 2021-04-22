@@ -29,7 +29,8 @@ public interface ProductItemService {
 
     @GET(value = "api/v1/items/search")
     Call<SuggestedProductsResponse> getSuggestedItems(@Query("q") String queryString,
-                                                      @Query("platform") String platform);
+                                                      @Query("platform") String platform,
+                                                      @Query("category")String category);
 
     @GET("relevant/test-mongo")
     Call<List<ProductItem>> getRelavantProducts(@QueryMap Map<String, String> query);

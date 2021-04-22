@@ -4,8 +4,11 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SearchView;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
@@ -19,6 +22,8 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
@@ -30,12 +35,14 @@ import android.widget.ProgressBar;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
+import com.google.android.material.navigation.NavigationView;
 import com.phucnguyen.khoaluantotnghiep.R;
 import com.phucnguyen.khoaluantotnghiep.adapters.ProductItemsAdapter;
 import com.phucnguyen.khoaluantotnghiep.adapters.SearchHistoryRecyclerViewAdapter;
 import com.phucnguyen.khoaluantotnghiep.database.RecentSearch;
 import com.phucnguyen.khoaluantotnghiep.database.RecentSearchDao;
 import com.phucnguyen.khoaluantotnghiep.database.SearchDatabase;
+import com.phucnguyen.khoaluantotnghiep.model.Category;
 import com.phucnguyen.khoaluantotnghiep.model.ProductItem;
 import com.phucnguyen.khoaluantotnghiep.utils.Contants;
 import com.phucnguyen.khoaluantotnghiep.viewmodel.FindProductViewModel;
@@ -54,6 +61,9 @@ public class FindProductsFragment extends Fragment {
     private ProgressBar pbLoadingProgress;
     private ImageView icClearSearch;
     private RadioGroup radioPlatformGroup;
+    private ImageView icFilter;
+    private DrawerLayout drawerLayout;
+    private NavigationView navigationView;
 
     private SearchHistoryRecyclerViewAdapter mHistorySearchAdapter;
     private ProductItemsAdapter mProductItemsAdapter;
@@ -117,6 +127,26 @@ public class FindProductsFragment extends Fragment {
                 }
             }
         });
+        mFindProductViewModel.getCategories().observe(getViewLifecycleOwner(), new Observer<List<Category>>() {
+            @Override
+            public void onChanged(List<Category> categories) {
+                //dont add more categories to the sub menu if there are.
+                //Though this is a workaround (because when there are new categories coming in, this
+                // menu section needs to be updated)
+                if (navigationView.getMenu().getItem(0).getSubMenu().size() < 2)
+                    for (Category category : categories)
+                        navigationView.getMenu().getItem(0).getSubMenu().add(R.id.categoriesGroup,
+                                category.getId(),
+                                Menu.NONE,
+                                category.getName());
+                //mark the check for selected category
+                if (mFindProductViewModel.getCurrentCategory() == 0) {
+                    mFindProductViewModel.setCurrentCategory(R.id.action_query_all_category);
+                    navigationView.getMenu().findItem(R.id.action_query_all_category).setChecked(true);
+                } else
+                    navigationView.getMenu().findItem(mFindProductViewModel.getCurrentCategory()).setChecked(true);
+            }
+        });
         mFindProductViewModel.getLoadingState().observe(getViewLifecycleOwner(), new Observer<Contants.LoadingState>() {
             @Override
             public void onChanged(Contants.LoadingState loadingState) {
@@ -141,6 +171,9 @@ public class FindProductsFragment extends Fragment {
         historySearchContainer = (LinearLayout) v.findViewById(R.id.historySearchContainer);
         icClearSearch = (ImageView) v.findViewById(R.id.iconClearSearch);
         radioPlatformGroup = (RadioGroup) v.findViewById(R.id.radioPlatformGroup);
+        icFilter = (ImageView) v.findViewById(R.id.icFilter);
+        navigationView = (NavigationView) v.findViewById(R.id.navigationView);
+        drawerLayout = (DrawerLayout) v.findViewById(R.id.drawerLayout);
 
         mHistorySearchAdapter = new SearchHistoryRecyclerViewAdapter(requireContext());
         mProductItemsAdapter = new ProductItemsAdapter(requireContext(), R.layout.product_item);
@@ -157,12 +190,15 @@ public class FindProductsFragment extends Fragment {
                     historySearchContainer.setVisibility(View.VISIBLE);
                     icClearSearch.setVisibility(View.INVISIBLE);
                     radioPlatformGroup.setVisibility(View.GONE);
+                    icFilter.setVisibility(View.GONE);
                     if (mFindProductViewModel.getRecentSearchs().getValue().size() == 0)
                         tvFindIntroduction.setVisibility(View.INVISIBLE);
                 } else {
                     if (!edtProductSearch.getText().toString().startsWith("https://tiki.vn/") &&
-                            !edtProductSearch.getText().toString().startsWith("https://shopee.vn/"))
+                            !edtProductSearch.getText().toString().startsWith("https://shopee.vn/")) {
                         radioPlatformGroup.setVisibility(View.VISIBLE);
+                        icFilter.setVisibility(View.VISIBLE);
+                    }
                     historySearchContainer.setVisibility(View.INVISIBLE);
                     icClearSearch.setVisibility(View.VISIBLE);
                 }
@@ -245,7 +281,7 @@ public class FindProductsFragment extends Fragment {
             @Override
             public void onCheckedChanged(RadioGroup radioGroup, int checkedId) {
                 String checkedPlatform = null;
-                switch (checkedId){
+                switch (checkedId) {
                     case R.id.radioAll:
                         checkedPlatform = "all";
                         break;
@@ -259,7 +295,32 @@ public class FindProductsFragment extends Fragment {
                 mFindProductViewModel.setPlatform(checkedPlatform);
             }
         });
+        icFilter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                drawerLayout.openDrawer(GravityCompat.END);
+            }
+        });
+
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                int previouslySelectedCategoryId = mFindProductViewModel.getCurrentCategory();
+                if (item.getItemId() != previouslySelectedCategoryId) {
+                    //calling setCheckedItem to set checked item on the group does not work,
+                    //maybe due to adding menu items dynamically
+//                    navigationView.setCheckedItem(item);
+                    navigationView.getMenu().findItem(previouslySelectedCategoryId).setChecked(false);
+                    item.setChecked(true);
+                    drawerLayout.closeDrawer(GravityCompat.END);
+                    mFindProductViewModel.setCurrentCategory(item.getItemId());
+                    mFindProductViewModel.setCategoryLiveData(item.getTitle().toString());
+                }
+                return true;
+            }
+        });
     }
+
 
     private void handleQueryText(String query) {
         edtProductSearch.clearFocus();
