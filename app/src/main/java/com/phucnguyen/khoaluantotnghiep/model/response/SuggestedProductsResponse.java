@@ -1,4 +1,7 @@
-package com.phucnguyen.khoaluantotnghiep.model;
+package com.phucnguyen.khoaluantotnghiep.model.response;
+
+import com.phucnguyen.khoaluantotnghiep.model.Category;
+import com.phucnguyen.khoaluantotnghiep.model.ProductItem;
 
 import java.util.List;
 

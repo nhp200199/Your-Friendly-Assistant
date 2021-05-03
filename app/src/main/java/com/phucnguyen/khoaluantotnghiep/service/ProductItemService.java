@@ -1,13 +1,11 @@
 package com.phucnguyen.khoaluantotnghiep.service;
 
-import androidx.lifecycle.LiveData;
-
-import com.phucnguyen.khoaluantotnghiep.model.CategoriesResponse;
-import com.phucnguyen.khoaluantotnghiep.model.HotItemsResponse;
+import com.phucnguyen.khoaluantotnghiep.model.response.CategoriesResponse;
+import com.phucnguyen.khoaluantotnghiep.model.response.HotItemsResponse;
 import com.phucnguyen.khoaluantotnghiep.model.ProductItem;
-import com.phucnguyen.khoaluantotnghiep.model.ProductItemResponse;
-import com.phucnguyen.khoaluantotnghiep.model.ReviewResponse;
-import com.phucnguyen.khoaluantotnghiep.model.SuggestedProductsResponse;
+import com.phucnguyen.khoaluantotnghiep.model.response.ProductItemResponse;
+import com.phucnguyen.khoaluantotnghiep.model.response.ReviewResponse;
+import com.phucnguyen.khoaluantotnghiep.model.response.SuggestedProductsResponse;
 
 import java.util.List;
 import java.util.Map;
@@ -32,7 +30,7 @@ public interface ProductItemService {
                                                       @Query("platform") String platform,
                                                       @Query("category")String category);
 
-    @GET("relevant/test-mongo")
+    @GET("relevant/get-relevant-products")
     Call<List<ProductItem>> getRelavantProducts(@QueryMap Map<String, String> query);
 
     @GET("api/v1/items/most-decreasing-item")

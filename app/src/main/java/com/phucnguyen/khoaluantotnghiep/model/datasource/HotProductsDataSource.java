@@ -4,7 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 import androidx.paging.PageKeyedDataSource;
 
-import com.phucnguyen.khoaluantotnghiep.model.HotItemsResponse;
+import com.phucnguyen.khoaluantotnghiep.model.response.HotItemsResponse;
 import com.phucnguyen.khoaluantotnghiep.model.ProductItem;
 import com.phucnguyen.khoaluantotnghiep.service.ProductItemService;
 import com.phucnguyen.khoaluantotnghiep.service.RetrofitInstance;

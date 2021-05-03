@@ -6,7 +6,7 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.paging.PageKeyedDataSource;
 
 import com.phucnguyen.khoaluantotnghiep.model.Review;
-import com.phucnguyen.khoaluantotnghiep.model.ReviewResponse;
+import com.phucnguyen.khoaluantotnghiep.model.response.ReviewResponse;
 import com.phucnguyen.khoaluantotnghiep.service.ProductItemService;
 import com.phucnguyen.khoaluantotnghiep.service.RetrofitInstance;
 

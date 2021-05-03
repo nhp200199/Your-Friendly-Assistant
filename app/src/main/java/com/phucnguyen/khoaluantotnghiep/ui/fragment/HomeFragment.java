@@ -1,13 +1,13 @@
 package com.phucnguyen.khoaluantotnghiep.ui.fragment;
 
-import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
-import androidx.paging.PagedList;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -17,18 +17,31 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.FrameLayout;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.phucnguyen.khoaluantotnghiep.R;
 import com.phucnguyen.khoaluantotnghiep.adapters.ProductItemsAdapter;
 import com.phucnguyen.khoaluantotnghiep.model.ProductItem;
-import com.phucnguyen.khoaluantotnghiep.repository.ProductItemRepo;
+import com.phucnguyen.khoaluantotnghiep.utils.Contants;
+import com.phucnguyen.khoaluantotnghiep.viewmodel.UserViewModel;
 
 import java.util.List;
 
 public class HomeFragment extends Fragment {
     private static final String LOGTAG = HomeFragment.class.getSimpleName();
     private RecyclerView productItemContainer;
-    private ProductItemRepo mProductItemRepo;
+    private LinearLayout loginHintContainer;
+    private FrameLayout productItemsOuterContainer;
+    private TextView tvNoProductsFound;
+    private TextView tvNetworkError;
+    private Button btnGoToLoginScreen;
+    private ProgressBar mProgressBar;
+
+    private UserViewModel userViewModel;
 
     public HomeFragment() {
         // Required empty public constructor
@@ -37,9 +50,8 @@ public class HomeFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mProductItemRepo = new ProductItemRepo(getContext());
+        userViewModel = new ViewModelProvider(requireActivity()).get(UserViewModel.class);
         Log.i("HomeFragment", "onCreate called");
-        setHasOptionsMenu(true);
     }
 
     @Override
@@ -57,10 +69,54 @@ public class HomeFragment extends Fragment {
         ProductItemsAdapter adapter = new ProductItemsAdapter(view.getContext(), R.layout.product_item);
         productItemContainer.setAdapter(adapter);
         productItemContainer.setLayoutManager(new LinearLayoutManager(getContext()));
-        mProductItemRepo.getProductItems().observe(requireActivity(), new Observer<List<ProductItem>>() {
+
+        userViewModel.getTokenIdMLiveData().observe(getViewLifecycleOwner(), new Observer<String>() {
+            @Override
+            public void onChanged(String tokenId) {
+                if (tokenId != null) {
+                    productItemsOuterContainer.setVisibility(View.VISIBLE);
+                    loginHintContainer.setVisibility(View.GONE);
+                } else {
+                    productItemsOuterContainer.setVisibility(View.GONE);
+                    loginHintContainer.setVisibility(View.VISIBLE);
+                }
+            }
+        });
+        userViewModel.getTrackedProducts().observe(getViewLifecycleOwner(), new Observer<List<ProductItem>>() {
             @Override
             public void onChanged(List<ProductItem> productItems) {
-                adapter.setProductItems(productItems);
+                if (productItems == null)
+                    return;
+                else {
+                    adapter.setProductItems(productItems);
+
+                    if (productItems.size() > 0) {
+                        tvNoProductsFound.setVisibility(View.GONE);
+                    } else {
+                        tvNoProductsFound.setVisibility(View.VISIBLE);
+                    }
+                }
+            }
+        });
+        userViewModel.getLoadingState().observe(getViewLifecycleOwner(), new Observer<Contants.LoadingState>() {
+            @Override
+            public void onChanged(Contants.LoadingState loadingState) {
+                switch (loadingState) {
+                    case LOADING:
+                        mProgressBar.setVisibility(View.VISIBLE);
+                        break;
+                    case SUCCESS:
+                        mProgressBar.setVisibility(View.GONE);
+                        productItemContainer.setVisibility(View.VISIBLE);
+                        tvNetworkError.setVisibility(View.GONE);
+                        break;
+                    case ERROR_LOGIN_FAILED_NETWORK_ERROR:
+                        mProgressBar.setVisibility(View.GONE);
+                        tvNetworkError.setVisibility(View.VISIBLE);
+                        productItemContainer.setVisibility(View.GONE);
+                        break;
+
+                }
             }
         });
         Log.i("HomeFragment", "onViewCreated called");
@@ -69,6 +125,20 @@ public class HomeFragment extends Fragment {
 
     private void connectViews(View view) {
         productItemContainer = (RecyclerView) view.findViewById(R.id.productItemsContainer);
+        loginHintContainer = view.findViewById(R.id.LoginHintContainer);
+        mProgressBar = view.findViewById(R.id.pbLoadingBar);
+        productItemsOuterContainer = view.findViewById(R.id.productItemsOuterContainer);
+        tvNoProductsFound = view.findViewById(R.id.tvNoProductsFound);
+        tvNetworkError = view.findViewById(R.id.tvNetworkError);
+        btnGoToLoginScreen = view.findViewById(R.id.btnGoToLoginScreen);
+
+        btnGoToLoginScreen.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                NavHostFragment.findNavController(HomeFragment.this)
+                        .navigate(R.id.action_home_fragment_to_login_nav);
+            }
+        });
     }
 
 //    @Override
@@ -107,11 +177,4 @@ public class HomeFragment extends Fragment {
 //        super.onDetach();
 //        Log.i("HomeFragment", "onDetach called");
 //    }
-
-    @Override
-    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
-        inflater.inflate(R.menu.menu_search_for_real, menu);
-        menu.clear();
-    }
 }

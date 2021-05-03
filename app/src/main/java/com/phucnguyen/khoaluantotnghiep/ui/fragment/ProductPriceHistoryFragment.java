@@ -3,16 +3,12 @@ package com.phucnguyen.khoaluantotnghiep.ui.fragment;
 import android.content.Context;
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.text.Html;
-import android.text.SpannableString;
-import android.text.Spanned;
-import android.text.style.BulletSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,8 +28,6 @@ import com.github.mikephil.charting.utils.Utils;
 import com.phucnguyen.khoaluantotnghiep.R;
 import com.phucnguyen.khoaluantotnghiep.model.Price;
 import com.phucnguyen.khoaluantotnghiep.model.ProductItem;
-import com.phucnguyen.khoaluantotnghiep.model.ProductItemResponse;
-import com.phucnguyen.khoaluantotnghiep.model.Seller;
 import com.phucnguyen.khoaluantotnghiep.viewmodel.ProductItemViewModel;
 
 import java.text.SimpleDateFormat;

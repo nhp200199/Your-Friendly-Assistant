@@ -10,7 +10,7 @@ import com.phucnguyen.khoaluantotnghiep.database.RecentSearchDao;
 import com.phucnguyen.khoaluantotnghiep.database.SearchDatabase;
 import com.phucnguyen.khoaluantotnghiep.model.Category;
 import com.phucnguyen.khoaluantotnghiep.model.ProductItem;
-import com.phucnguyen.khoaluantotnghiep.model.SuggestedProductsResponse;
+import com.phucnguyen.khoaluantotnghiep.model.response.SuggestedProductsResponse;
 import com.phucnguyen.khoaluantotnghiep.service.ProductItemService;
 import com.phucnguyen.khoaluantotnghiep.service.RetrofitInstance;
 import com.phucnguyen.khoaluantotnghiep.utils.Contants;

@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/login_nav"
+    app:startDestination="@id/log_in_fragment">
+
+    <fragment
+        android:id="@+id/log_in_fragment"
+        android:name="com.phucnguyen.khoaluantotnghiep.ui.fragment.LogInFragment"
+        android:label="Đăng nhập"
+        tools:layout="@layout/fragment_log_in">
+        <action
+            android:id="@+id/action_log_in_fragment_to_register_fragment"
+            app:destination="@id/register_fragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+        <action
+            android:id="@+id/action_log_in_fragment_to_reset_password_fragment"
+            app:destination="@id/reset_password_fragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+        <argument
+            android:name="email"
+            app:argType="string"
+            app:nullable="true" />
+        <action
+            android:id="@+id/action_log_in_fragment_to_setting_fragment"
+            app:destination="@id/setting_fragment"
+            app:enterAnim="@anim/slide_in_left"
+            app:exitAnim="@anim/slide_out_right"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            app:popUpTo="@id/setting_fragment"
+            app:popUpToInclusive="true"/>
+        <action
+            android:id="@+id/action_log_in_fragment_to_information_dialog"
+            app:destination="@id/information_dialog" />
+    </fragment>
+    <fragment
+        android:id="@+id/register_fragment"
+        android:name="com.phucnguyen.khoaluantotnghiep.ui.fragment.RegisterFragment"
+        android:label="Đăng kí"
+        tools:layout="@layout/fragment_register">
+        <action
+            android:id="@+id/action_register_fragment_to_log_in_fragment"
+            app:destination="@id/log_in_fragment"
+            app:enterAnim="@anim/slide_in_left"
+            app:exitAnim="@anim/slide_out_right"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            app:popUpTo="@id/log_in_fragment"
+            app:popUpToInclusive="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/reset_password_fragment"
+        android:name="com.phucnguyen.khoaluantotnghiep.ui.fragment.ResetPasswordFragment"
+        android:label="Lấy lại mật khẩu"
+        tools:layout="@layout/fragment_reset_password">
+        <action
+            android:id="@+id/action_reset_password_fragment_to_log_in_fragment"
+            app:destination="@id/log_in_fragment"
+            app:enterAnim="@anim/slide_in_left"
+            app:exitAnim="@anim/slide_out_right"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            app:popUpTo="@id/log_in_fragment"
+            app:popUpToInclusive="true" />
+    </fragment>
+    <dialog
+        android:id="@+id/information_dialog"
+        android:name="com.phucnguyen.khoaluantotnghiep.ui.fragment.InforDialogFragment">
+
+        <argument
+            android:name="title"
+            app:argType="string" />
+        <argument
+            android:name="message"
+            app:argType="string" />
+        <argument
+            android:name="posMessage"
+            app:argType="string" />
+    </dialog>
+</navigation>

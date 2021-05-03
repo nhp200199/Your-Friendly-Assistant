@@ -51,22 +51,21 @@
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:gravity="center_vertical">
+                    android:gravity="center_vertical"
+                    android:orientation="vertical">
 
                     <TextView
                         android:id="@+id/tvUserStatus"
                         android:layout_width="150dp"
                         android:layout_height="wrap_content"
                         android:text="@string/user_status_not_log_in"
-                        android:textAppearance="?attr/textAppearanceBody2"
+                        android:textAppearance="?attr/textAppearanceBody1"
                         android:textColor="#ACA5A5" />
 
-                    <de.hdodenhof.circleimageview.CircleImageView
-                        android:id="@+id/imgLoggedInLogo"
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
-                        android:layout_marginStart="4dp"
-                        android:src="@mipmap/ic_launcher"
+                    <TextView
+                        android:id="@+id/tvUserEmail"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:visibility="gone" />
                 </LinearLayout>
             </LinearLayout>
@@ -77,9 +76,10 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
-                android:textAllCaps="true"
                 android:text="@string/log_in"
-                android:textAppearance="?attr/textAppearanceBody1" />
+                android:textAllCaps="true"
+                android:textAppearance="?attr/textAppearanceBody1"
+                android:textColor="@color/blue_500" />
         </RelativeLayout>
 
         <FrameLayout

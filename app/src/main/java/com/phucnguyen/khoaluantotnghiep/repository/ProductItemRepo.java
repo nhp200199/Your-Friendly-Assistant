@@ -5,14 +5,12 @@ import android.content.Context;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Transformations;
-import androidx.paging.LivePagedListBuilder;
-import androidx.paging.PagedList;
 
 import com.phucnguyen.khoaluantotnghiep.database.AppDatabase;
 import com.phucnguyen.khoaluantotnghiep.database.ProductItemDao;
 import com.phucnguyen.khoaluantotnghiep.model.Price;
 import com.phucnguyen.khoaluantotnghiep.model.ProductItem;
-import com.phucnguyen.khoaluantotnghiep.model.ProductItemResponse;
+import com.phucnguyen.khoaluantotnghiep.model.response.ProductItemResponse;
 import com.phucnguyen.khoaluantotnghiep.model.Seller;
 import com.phucnguyen.khoaluantotnghiep.service.ProductItemService;
 import com.phucnguyen.khoaluantotnghiep.service.RetrofitInstance;

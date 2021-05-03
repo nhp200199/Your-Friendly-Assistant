@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Transformations;
 
-import com.phucnguyen.khoaluantotnghiep.model.CategoriesResponse;
+import com.phucnguyen.khoaluantotnghiep.model.response.CategoriesResponse;
 import com.phucnguyen.khoaluantotnghiep.model.Category;
 import com.phucnguyen.khoaluantotnghiep.model.datasource.HotProductsDataSource;
 import com.phucnguyen.khoaluantotnghiep.model.datasource.HotProductsDataSourceFactory;

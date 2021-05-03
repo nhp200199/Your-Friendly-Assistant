@@ -1,4 +1,6 @@
-package com.phucnguyen.khoaluantotnghiep.model;
+package com.phucnguyen.khoaluantotnghiep.model.response;
+
+import com.phucnguyen.khoaluantotnghiep.model.Review;
 
 import java.util.ArrayList;
 import java.util.List;

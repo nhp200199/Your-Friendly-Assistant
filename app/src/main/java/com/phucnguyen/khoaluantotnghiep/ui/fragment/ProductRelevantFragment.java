@@ -105,7 +105,8 @@ public class ProductRelevantFragment extends Fragment {
                     mRelavantProductViewModel.getRelavantProducts().observe(getViewLifecycleOwner(), new Observer<List<ProductItem>>() {
                         @Override
                         public void onChanged(List<ProductItem> items) {
-                            mAdapter.setProductItems(items);
+                            if (items != null)
+                                    mAdapter.setProductItems(items);
                         }
                     });
                 }

@@ -26,7 +26,7 @@
         android:label="@string/setting_title"
         tools:layout="@layout/fragment_setting">
         <action
-            android:id="@+id/action_setting_fragment_to_logInFragment"
+            android:id="@+id/action_home_fragment_to_login_nav"
             app:destination="@id/log_in_fragment"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"

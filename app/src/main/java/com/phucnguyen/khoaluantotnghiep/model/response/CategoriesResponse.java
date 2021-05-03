@@ -1,6 +1,7 @@
-package com.phucnguyen.khoaluantotnghiep.model;
+package com.phucnguyen.khoaluantotnghiep.model.response;
 
 import com.google.gson.annotations.SerializedName;
+import com.phucnguyen.khoaluantotnghiep.model.Category;
 
 import java.util.List;
 

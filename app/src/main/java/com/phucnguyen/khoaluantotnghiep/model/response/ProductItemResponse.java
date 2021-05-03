@@ -1,6 +1,9 @@
-package com.phucnguyen.khoaluantotnghiep.model;
+package com.phucnguyen.khoaluantotnghiep.model.response;
 
 import com.google.gson.annotations.SerializedName;
+import com.phucnguyen.khoaluantotnghiep.model.Price;
+import com.phucnguyen.khoaluantotnghiep.model.ProductItem;
+import com.phucnguyen.khoaluantotnghiep.model.Seller;
 
 import java.util.List;
 
