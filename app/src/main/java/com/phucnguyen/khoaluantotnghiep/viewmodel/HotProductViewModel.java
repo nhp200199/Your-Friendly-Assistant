@@ -69,7 +69,7 @@ public class HotProductViewModel extends ViewModel {
         hotProducts.getValue().getDataSource().invalidate();
     }
 
-    public LiveData<Contants.LoadingState> getLoadingState() {
+    public LiveData<Contants.ItemLoadingState> getLoadingState() {
         return repo.getLoadingState();
     }
 

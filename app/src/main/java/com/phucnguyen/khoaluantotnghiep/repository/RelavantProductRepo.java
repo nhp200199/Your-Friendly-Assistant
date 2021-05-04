@@ -25,7 +25,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class RelavantProductRepo {
     private ProductItemService service;
-    private MutableLiveData<Contants.LoadingState> loadingState = new MutableLiveData<Contants.LoadingState>();
+    private MutableLiveData<Contants.ItemLoadingState> loadingState = new MutableLiveData<Contants.ItemLoadingState>();
     private MutableLiveData<List<ProductItem>> products = new MutableLiveData<List<ProductItem>>();
     OkHttpClient client = new OkHttpClient.Builder()
             .hostnameVerifier(new HostnameVerifier() {
@@ -49,7 +49,7 @@ public class RelavantProductRepo {
         queries.put("name", name);
         queries.put("categoryId", categoryId);
         queries.put("platform", platform);
-        loadingState.postValue(Contants.LoadingState.LOADING);
+        loadingState.postValue(Contants.ItemLoadingState.LOADING);
         service.getRelavantProducts(queries).enqueue(new Callback<List<ProductItem>>() {
             @Override
             public void onResponse(Call<List<ProductItem>> call, Response<List<ProductItem>> response) {
@@ -57,17 +57,17 @@ public class RelavantProductRepo {
                     List<ProductItem> productItems = response.body();
                     products.postValue(productItems);
                     if (productItems.size() > 0)
-                        loadingState.postValue(Contants.LoadingState.SUCCESS);
-                    else loadingState.postValue(Contants.LoadingState.SUCCESS_WITH_NO_VALUES);
+                        loadingState.postValue(Contants.ItemLoadingState.SUCCESS);
+                    else loadingState.postValue(Contants.ItemLoadingState.SUCCESS_WITH_NO_VALUES);
                 } else {
-                    loadingState.postValue(Contants.LoadingState.FIRST_LOAD_ERROR);
+                    loadingState.postValue(Contants.ItemLoadingState.FIRST_LOAD_ERROR);
                     products.postValue(null);
                 }
             }
 
             @Override
             public void onFailure(Call<List<ProductItem>> call, Throwable t) {
-                loadingState.postValue(Contants.LoadingState.FIRST_LOAD_ERROR);
+                loadingState.postValue(Contants.ItemLoadingState.FIRST_LOAD_ERROR);
                 products.postValue(null);
             }
         });
@@ -98,7 +98,7 @@ public class RelavantProductRepo {
         return products;
     }
 
-    public LiveData<Contants.LoadingState> getLoadingState() {
+    public LiveData<Contants.ItemLoadingState> getLoadingState() {
         return loadingState;
     }
 }

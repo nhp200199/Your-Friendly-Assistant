@@ -4,7 +4,7 @@ public class Contants {
     public static final int LOAD_VIEW_TYPE = 1;
     public static final int PRODUCT_VIEW_TYPE = 2;
 
-    public enum LoadingState {
+    public enum ItemLoadingState {
         FIRST_LOADING,
         LOADING,
         SUCCESS_WITH_NO_VALUES,
@@ -14,5 +14,15 @@ public class Contants {
         ERROR_LOGIN_FAILED_NETWORK_ERROR,
         ERROR_LOGIN_FAILED_AUTHENTICATION_ERROR,
         ERROR_LOGIN_FAILED_AUTHORIZATION_ERROR
+    }
+
+    public enum UserLoadingState{
+        LOADING,
+        SUCCESS,
+        NETWORK_ERROR,
+        INVALID_CREDENTIALS,
+        NOT_AUTHORIZED,
+        EXPIRED_TOKEN,
+        NONE
     }
 }

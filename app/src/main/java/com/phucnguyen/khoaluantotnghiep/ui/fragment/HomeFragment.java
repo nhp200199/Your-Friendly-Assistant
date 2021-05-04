@@ -13,8 +13,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -98,10 +96,10 @@ public class HomeFragment extends Fragment {
                 }
             }
         });
-        userViewModel.getLoadingState().observe(getViewLifecycleOwner(), new Observer<Contants.LoadingState>() {
+        userViewModel.getUserLoadingState().observe(getViewLifecycleOwner(), new Observer<Contants.UserLoadingState>() {
             @Override
-            public void onChanged(Contants.LoadingState loadingState) {
-                switch (loadingState) {
+            public void onChanged(Contants.UserLoadingState userLoadingState) {
+                switch (userLoadingState) {
                     case LOADING:
                         mProgressBar.setVisibility(View.VISIBLE);
                         break;
@@ -110,7 +108,7 @@ public class HomeFragment extends Fragment {
                         productItemContainer.setVisibility(View.VISIBLE);
                         tvNetworkError.setVisibility(View.GONE);
                         break;
-                    case ERROR_LOGIN_FAILED_NETWORK_ERROR:
+                    case NETWORK_ERROR:
                         mProgressBar.setVisibility(View.GONE);
                         tvNetworkError.setVisibility(View.VISIBLE);
                         productItemContainer.setVisibility(View.GONE);

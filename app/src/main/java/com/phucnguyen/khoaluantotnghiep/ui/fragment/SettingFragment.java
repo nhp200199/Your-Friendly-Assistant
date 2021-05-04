@@ -57,7 +57,7 @@ public class SettingFragment extends Fragment {
             public void onClick(View view) {
                 if (!isLoggedIn)
                     Navigation.findNavController(requireActivity(), R.id.setting_navigation_host_fragment)
-                            .navigate(R.id.action_home_fragment_to_login_nav);
+                            .navigate(R.id.action_setting_fragment_to_login_nav);
                 else userViewModel.logoutUser();
             }
         });

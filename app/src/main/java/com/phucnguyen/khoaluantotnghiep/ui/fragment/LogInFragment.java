@@ -7,7 +7,9 @@ import android.os.Bundle;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
 
 import android.text.Editable;
@@ -33,12 +35,15 @@ import com.phucnguyen.khoaluantotnghiep.R;
 import com.phucnguyen.khoaluantotnghiep.model.response.LogInResponse;
 import com.phucnguyen.khoaluantotnghiep.service.RetrofitInstance;
 import com.phucnguyen.khoaluantotnghiep.service.UserService;
+import com.phucnguyen.khoaluantotnghiep.utils.Contants;
 import com.phucnguyen.khoaluantotnghiep.utils.FormChecker;
 import com.phucnguyen.khoaluantotnghiep.viewmodel.UserViewModel;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+
+import static com.phucnguyen.khoaluantotnghiep.utils.Contants.*;
 
 public class LogInFragment extends Fragment implements InforDialogFragment.InforDialogListener {
     private TextInputLayout emailInputLayout;
@@ -49,7 +54,7 @@ public class LogInFragment extends Fragment implements InforDialogFragment.Infor
     private TextView tvSignUpHint;
     private LinearLayout processContainer;
 
-    private boolean areAllFieldQualified = false;
+    private boolean areAllFieldQualified = true;
     private UserViewModel userViewModel;
     private SharedPreferences.Editor userSharedPreferenceEditor;
     private String email = null; //this email only has value if there is 'email' argument coming from
@@ -74,6 +79,28 @@ public class LogInFragment extends Fragment implements InforDialogFragment.Infor
         View v = inflater.inflate(R.layout.fragment_log_in, container, false);
         connectViews(v);
 
+        userViewModel.getUserLoadingState().observe(getViewLifecycleOwner(), new Observer<UserLoadingState>() {
+            @Override
+            public void onChanged(UserLoadingState userLoadingState) {
+                switch (userLoadingState) {
+                    case LOADING:
+                        processContainer.setVisibility(View.VISIBLE);
+                        break;
+                    case INVALID_CREDENTIALS:
+                    case NETWORK_ERROR:
+                        processContainer.setVisibility(View.GONE);
+                        //TODO: show dialog to inform about invalid credentials
+                        btnLogin.setEnabled(true);
+                        break;
+                    case SUCCESS:
+                        processContainer.setVisibility(View.GONE);
+
+                        NavHostFragment.findNavController(LogInFragment.this)
+                                .popBackStack();
+                        break;
+                }
+            }
+        });
         // Inflate the layout for this fragment
         return v;
     }
@@ -136,7 +163,8 @@ public class LogInFragment extends Fragment implements InforDialogFragment.Infor
             @Override
             public void onClick(View view) {
                 btnLogin.setEnabled(false);
-                loginToUser();
+                userViewModel.loginUser(edtEmail.getText().toString(),
+                        editPassword.getText().toString());
             }
 
             private void loginToUser() {
@@ -159,8 +187,8 @@ public class LogInFragment extends Fragment implements InforDialogFragment.Infor
                                         userViewModel.setNewTokenId(response.body().getAccessToken());
                                         Log.d("LOGIN: ", "Logged In");
                                         Log.d("LOGIN-ACCESS-TOKEN: ", response.body().getAccessToken());
-                                        NavHostFragment.findNavController(LogInFragment.this)
-                                                .navigate(R.id.action_log_in_fragment_to_setting_fragment);
+//                                        NavHostFragment.findNavController(LogInFragment.this)
+//                                                .navigate(R.id.action_log_in_fragment_to_setting_fragment);
                                     } else {
                                         Bundle errorBundle = new Bundle();
                                         if (response.body().getMessage().equals("Invalid credentials")) {
@@ -170,9 +198,6 @@ public class LogInFragment extends Fragment implements InforDialogFragment.Infor
                                                     "Tài khoản hoặc mật khẩu không đúng. Vui lòng thử lại");
                                             errorBundle.putString("posMessage",
                                                     "ok");
-                                            NavHostFragment.findNavController(LogInFragment.this)
-                                                    .navigate(R.id.action_log_in_fragment_to_information_dialog,
-                                                            errorBundle);
                                         } else {
                                             Log.d("LOGIN: ", response.body().getMessage());
                                             errorBundle.putString("title", "Đăng nhập không thành công");
@@ -180,9 +205,6 @@ public class LogInFragment extends Fragment implements InforDialogFragment.Infor
                                                     "Tài khoản hoặc mật khẩu không đúng. Vui lòng thử lại");
                                             errorBundle.putString("posMessage",
                                                     "ok");
-                                            NavHostFragment.findNavController(LogInFragment.this)
-                                                    .navigate(R.id.action_log_in_fragment_to_information_dialog,
-                                                            errorBundle);
                                         }
                                     }
                                 } else {
@@ -193,9 +215,6 @@ public class LogInFragment extends Fragment implements InforDialogFragment.Infor
                                             "Tài khoản hoặc mật khẩu không đúng. Vui lòng thử lại");
                                     errorBundle.putString("posMessage",
                                             "ok");
-                                    NavHostFragment.findNavController(LogInFragment.this)
-                                            .navigate(R.id.action_log_in_fragment_to_information_dialog,
-                                                    errorBundle);
                                     btnLogin.setEnabled(true);
                                 }
                             }

@@ -22,7 +22,7 @@ public class HotProductsRepo {
     private ProductItemService service;
     private MutableLiveData<List<Category>> categories;
     private HotProductsDataSourceFactory mHotProductsDataSourceFactory;
-    private LiveData<Contants.LoadingState> loadingState;
+    private LiveData<Contants.ItemLoadingState> loadingState;
     private Call<CategoriesResponse> retryRetrofitCall = null;
 
     public HotProductsRepo(String platform, String category) {
@@ -51,7 +51,7 @@ public class HotProductsRepo {
         mHotProductsDataSourceFactory.setCategory(newCategory);
     }
 
-    public LiveData<Contants.LoadingState> getLoadingState() {
+    public LiveData<Contants.ItemLoadingState> getLoadingState() {
         return loadingState;
     }
 

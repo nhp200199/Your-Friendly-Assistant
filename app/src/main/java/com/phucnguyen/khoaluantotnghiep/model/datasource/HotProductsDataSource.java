@@ -21,7 +21,7 @@ public class HotProductsDataSource extends PageKeyedDataSource<Integer, ProductI
     private ProductItemService service;
     private String platform;
     private String category;
-    private MutableLiveData<Contants.LoadingState> loadingState;
+    private MutableLiveData<Contants.ItemLoadingState> loadingState;
     private LoadParams<Integer> params;
     private LoadCallback<Integer, ProductItem> callback;
 
@@ -29,38 +29,38 @@ public class HotProductsDataSource extends PageKeyedDataSource<Integer, ProductI
         this.platform = platform;
         this.category = category;
         service = RetrofitInstance.getProductItemService();
-        loadingState = new MutableLiveData<Contants.LoadingState>();
+        loadingState = new MutableLiveData<Contants.ItemLoadingState>();
     }
 
-    public MutableLiveData<Contants.LoadingState> getLoadingState() {
+    public MutableLiveData<Contants.ItemLoadingState> getLoadingState() {
         return loadingState;
     }
 
     @Override
     public void loadInitial(@NonNull LoadInitialParams<Integer> params, @NonNull LoadInitialCallback<Integer, ProductItem> callback) {
         final int page = 1;
-        loadingState.postValue(Contants.LoadingState.FIRST_LOADING);
+        loadingState.postValue(Contants.ItemLoadingState.FIRST_LOADING);
         service.getHotProducts(platform, category, page).enqueue(new Callback<HotItemsResponse>() {
             @Override
             public void onResponse(Call<HotItemsResponse> call, Response<HotItemsResponse> response) {
                 if (response.isSuccessful()) {
                     List<ProductItem> items = response.body().getItems();
                     if (items.size() > 0) {
-                        loadingState.postValue(Contants.LoadingState.SUCCESS);
+                        loadingState.postValue(Contants.ItemLoadingState.SUCCESS);
                         callback.onResult(response.body().getItems(), 0, page + 1);
                     } else {
-                        loadingState.postValue(Contants.LoadingState.SUCCESS_WITH_NO_VALUES);
+                        loadingState.postValue(Contants.ItemLoadingState.SUCCESS_WITH_NO_VALUES);
                         callback.onResult(new ArrayList<ProductItem>(), 0, 0);
                     }
                 } else {
-                    loadingState.postValue(Contants.LoadingState.FIRST_LOAD_ERROR);
+                    loadingState.postValue(Contants.ItemLoadingState.FIRST_LOAD_ERROR);
                     callback.onResult(new ArrayList<ProductItem>(), 0, 0);
                 }
             }
 
             @Override
             public void onFailure(Call<HotItemsResponse> call, Throwable t) {
-                loadingState.postValue(Contants.LoadingState.FIRST_LOAD_ERROR);
+                loadingState.postValue(Contants.ItemLoadingState.FIRST_LOAD_ERROR);
                 callback.onResult(new ArrayList<ProductItem>(), 0, 0);
             }
         });
@@ -76,18 +76,18 @@ public class HotProductsDataSource extends PageKeyedDataSource<Integer, ProductI
         this.params = params;
         this.callback = callback;
         final int currentPage = params.key;
-        loadingState.postValue(Contants.LoadingState.LOADING);
+        loadingState.postValue(Contants.ItemLoadingState.LOADING);
         service.getHotProducts(platform, category, currentPage).enqueue(new Callback<HotItemsResponse>() {
             @Override
             public void onResponse(Call<HotItemsResponse> call, Response<HotItemsResponse> response) {
                 if (response.isSuccessful()) {
-                    loadingState.postValue(Contants.LoadingState.SUCCESS);
+                    loadingState.postValue(Contants.ItemLoadingState.SUCCESS);
                     int lastPage = response.body().getPagination().getLastPage();
                     Integer nextPageKey = params.key == lastPage ? null : currentPage + 1;
                     List<ProductItem> items = response.body().getItems();
                     callback.onResult(items, nextPageKey);
                 } else {
-                    loadingState.postValue(Contants.LoadingState.SUB_LOAD_ERROR);
+                    loadingState.postValue(Contants.ItemLoadingState.SUB_LOAD_ERROR);
                     //when the load is fail, dont call onResult() on the call back,
                     //just ignore it, update the loading state for the UI to handle reload
 
@@ -97,7 +97,7 @@ public class HotProductsDataSource extends PageKeyedDataSource<Integer, ProductI
 
             @Override
             public void onFailure(Call<HotItemsResponse> call, Throwable t) {
-                loadingState.postValue(Contants.LoadingState.SUB_LOAD_ERROR);
+                loadingState.postValue(Contants.ItemLoadingState.SUB_LOAD_ERROR);
                 //when the load is fail, dont call onResult() on the call back,
                 //just ignore it, update the loading state for the UI to handle reload
 

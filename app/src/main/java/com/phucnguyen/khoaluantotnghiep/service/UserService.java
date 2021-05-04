@@ -30,6 +30,6 @@ public interface UserService {
     @POST("api/v1/auth/forgot-password")
     Call<ResetPasswordResponse> resetUserPassword(@Field("email") String email);
 
-    @GET("api/v1/auth/my-account?include=item")
+    @GET("api/v1/user/my-account?include=item")
     Call<UserAccountResponse> getUserAccount(@Header("Authorization") String authorizedString);
 }

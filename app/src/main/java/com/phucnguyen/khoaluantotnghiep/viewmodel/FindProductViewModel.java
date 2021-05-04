@@ -1,7 +1,6 @@
 package com.phucnguyen.khoaluantotnghiep.viewmodel;
 
 import android.app.Application;
-import android.view.MenuItem;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
@@ -32,7 +31,7 @@ public class FindProductViewModel extends AndroidViewModel {
             mMediatorLiveData, optionsMap -> repo.getProductItems(optionsMap.get("query"),
                     optionsMap.get("platform"), optionsMap.get("category"))
     );
-    private LiveData<Contants.LoadingState> loadingState;
+    private LiveData<Contants.ItemLoadingState> loadingState;
     private LiveData<List<Category>> categories;
     private MutableLiveData<String> categoryLiveData = new MutableLiveData<String>();
     private int currentCategoryMenuItem;
@@ -90,7 +89,7 @@ public class FindProductViewModel extends AndroidViewModel {
         platformLiveData.setValue(platform);
     }
 
-    public LiveData<Contants.LoadingState> getLoadingState() {
+    public LiveData<Contants.ItemLoadingState> getLoadingState() {
         return loadingState;
     }
 

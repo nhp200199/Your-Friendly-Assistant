@@ -12,7 +12,7 @@
         tools:layout="@layout/fragment_setting">
 
         <action
-            android:id="@+id/action_home_fragment_to_login_nav"
+            android:id="@+id/action_setting_fragment_to_login_nav"
             app:destination="@id/login_nav"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
@@ -40,7 +40,7 @@
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right" />
         <action
-            android:id="@+id/action_home_fragment_to_login_nav"
+            android:id="@+id/action_product_item_fragment_to_login_nav"
             app:destination="@id/login_nav"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
@@ -66,5 +66,5 @@
             app:nullable="true" />
     </fragment>
 
-    <include app:graph="@navigation/login_nav"/>
+    <include app:graph="@navigation/login_nav" />
 </navigation>

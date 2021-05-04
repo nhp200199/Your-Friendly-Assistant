@@ -3,6 +3,8 @@ package com.phucnguyen.khoaluantotnghiep.viewmodel;
 import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.os.Bundle;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
@@ -12,14 +14,23 @@ import androidx.lifecycle.Transformations;
 
 import com.phucnguyen.khoaluantotnghiep.model.ProductItem;
 import com.phucnguyen.khoaluantotnghiep.model.User;
+import com.phucnguyen.khoaluantotnghiep.model.response.LogInResponse;
 import com.phucnguyen.khoaluantotnghiep.repository.UserRepo;
 import com.phucnguyen.khoaluantotnghiep.utils.Contants;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
+import static com.phucnguyen.khoaluantotnghiep.utils.Contants.*;
+import static com.phucnguyen.khoaluantotnghiep.utils.Contants.UserLoadingState.*;
+
 public class UserViewModel extends AndroidViewModel {
     private MutableLiveData<String> tokenIdMLiveData;
+    private MutableLiveData<UserLoadingState> userLoadingStateMLiveData;
     private LiveData<User> userLiveData;
     private UserRepo userRepo;
     private LiveData<String> userName;
@@ -34,6 +45,7 @@ public class UserViewModel extends AndroidViewModel {
         String refreshTokenIdSharePref = sharedPreferences.getString("refreshToken", null);
         userRepo = new UserRepo();
 
+        userLoadingStateMLiveData = userRepo.getUserLoadingState();
         tokenIdMLiveData = new MutableLiveData<String>(tokenIdSharePref);
         userLiveData = Transformations.switchMap(tokenIdMLiveData,
                 tokenId -> userRepo.getUserByTokenId(tokenId, refreshTokenIdSharePref));
@@ -82,8 +94,8 @@ public class UserViewModel extends AndroidViewModel {
         return tokenIdMLiveData;
     }
 
-    public LiveData<Contants.LoadingState> getLoadingState() {
-        return userRepo.getLoadingState();
+    public LiveData<UserLoadingState> getUserLoadingState() {
+        return userLoadingStateMLiveData;
     }
 
     public void setNewTokenId(String tokenId) {
@@ -95,6 +107,44 @@ public class UserViewModel extends AndroidViewModel {
                 .putString("accessToken", null)
                 .putString("refreshToken", null)
                 .commit();
+        //NONE indicates that no user is currently logged in
+        userLoadingStateMLiveData.setValue(NONE);
         tokenIdMLiveData.setValue(null);
+    }
+
+    public void loginUser(String email, String password) {
+        userLoadingStateMLiveData.postValue(LOADING);
+        userRepo.getService().loginToUser(email, password)
+                .enqueue(new Callback<LogInResponse>() {
+                    @Override
+                    public void onResponse(Call<LogInResponse> call, Response<LogInResponse> response) {
+                        if (response.isSuccessful()) {
+                            sharedPreferences.edit()
+                                    .putString("accessToken", response.body().getAccessToken())
+                                    .apply();
+                            sharedPreferences.edit()
+                                    .putString("refreshToken", response.body().getRefreshToken())
+                                    .apply();
+                            setNewTokenId(response.body().getAccessToken());
+                            userLoadingStateMLiveData.setValue(SUCCESS);
+                            Log.d("LOGIN: ", "Logged In");
+                            Log.d("LOGIN-ACCESS-TOKEN: ", response.body().getAccessToken());
+                        } else {
+                            Bundle errorBundle = new Bundle();
+                            Log.d("LOGIN: ", response.toString());
+                            errorBundle.putString("title", "Đăng nhập không thành công");
+                            errorBundle.putString("message",
+                                    "Tài khoản hoặc mật khẩu không đúng. Vui lòng thử lại");
+                            errorBundle.putString("posMessage",
+                                    "ok");
+                            userLoadingStateMLiveData.setValue(INVALID_CREDENTIALS);
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<LogInResponse> call, Throwable t) {
+                        userLoadingStateMLiveData.setValue(NETWORK_ERROR);
+                    }
+                });
     }
 }

@@ -147,14 +147,14 @@ public class FindProductsFragment extends Fragment {
                     navigationView.getMenu().findItem(mFindProductViewModel.getCurrentCategory()).setChecked(true);
             }
         });
-        mFindProductViewModel.getLoadingState().observe(getViewLifecycleOwner(), new Observer<Contants.LoadingState>() {
+        mFindProductViewModel.getLoadingState().observe(getViewLifecycleOwner(), new Observer<Contants.ItemLoadingState>() {
             @Override
-            public void onChanged(Contants.LoadingState loadingState) {
-                if (loadingState == Contants.LoadingState.LOADING) {
+            public void onChanged(Contants.ItemLoadingState itemLoadingState) {
+                if (itemLoadingState == Contants.ItemLoadingState.LOADING) {
                     pbLoadingProgress.setVisibility(View.VISIBLE);
-                } else if (loadingState == Contants.LoadingState.SUCCESS) {
+                } else if (itemLoadingState == Contants.ItemLoadingState.SUCCESS) {
                     pbLoadingProgress.setVisibility(View.INVISIBLE);
-                } else if (loadingState == Contants.LoadingState.FIRST_LOAD_ERROR)
+                } else if (itemLoadingState == Contants.ItemLoadingState.FIRST_LOAD_ERROR)
                     pbLoadingProgress.setVisibility(View.INVISIBLE);
             }
         });

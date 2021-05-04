@@ -175,18 +175,18 @@ public class HotProductsFragment extends Fragment {
                 productItemsAdapter.submitList(productItems);
             }
         });
-        mHotProductViewModel.getLoadingState().observe(getViewLifecycleOwner(), new Observer<Contants.LoadingState>() {
+        mHotProductViewModel.getLoadingState().observe(getViewLifecycleOwner(), new Observer<Contants.ItemLoadingState>() {
             @Override
-            public void onChanged(Contants.LoadingState loadingState) {
-                if (loadingState == Contants.LoadingState.FIRST_LOADING) {
+            public void onChanged(Contants.ItemLoadingState itemLoadingState) {
+                if (itemLoadingState == Contants.ItemLoadingState.FIRST_LOADING) {
                     pbLoadingBar.setVisibility(View.VISIBLE);
                     return;
                 } else pbLoadingBar.setVisibility(View.INVISIBLE);
-                if (loadingState == Contants.LoadingState.SUCCESS_WITH_NO_VALUES ||
-                        loadingState == Contants.LoadingState.FIRST_LOAD_ERROR) {
+                if (itemLoadingState == Contants.ItemLoadingState.SUCCESS_WITH_NO_VALUES ||
+                        itemLoadingState == Contants.ItemLoadingState.FIRST_LOAD_ERROR) {
                     tvLoadingResult.setVisibility(View.VISIBLE);
                     productsContainer.setVisibility(View.INVISIBLE);
-                    if (loadingState == Contants.LoadingState.SUCCESS_WITH_NO_VALUES) {
+                    if (itemLoadingState == Contants.ItemLoadingState.SUCCESS_WITH_NO_VALUES) {
                         tvLoadingResult.setText("Chưa có sản phẩm nào trong danh mục này để gợi ý cho bạn");
                     } else
                         tvLoadingResult.setText("Đã có lỗi xảy ra");
@@ -194,7 +194,7 @@ public class HotProductsFragment extends Fragment {
                     tvLoadingResult.setVisibility(View.INVISIBLE);
                     productsContainer.setVisibility(View.VISIBLE);
                 }
-                productItemsAdapter.setLoadingState(loadingState);
+                productItemsAdapter.setItemLoadingState(itemLoadingState);
             }
         });
 

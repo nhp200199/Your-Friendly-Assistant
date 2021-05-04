@@ -19,8 +19,6 @@ import com.bumptech.glide.Glide;
 import com.github.mikephil.charting.utils.Utils;
 import com.phucnguyen.khoaluantotnghiep.R;
 import com.phucnguyen.khoaluantotnghiep.model.ProductItem;
-import com.phucnguyen.khoaluantotnghiep.model.Review;
-import com.phucnguyen.khoaluantotnghiep.model.datasource.ReviewDataSource;
 import com.phucnguyen.khoaluantotnghiep.utils.Contants;
 import com.phucnguyen.khoaluantotnghiep.utils.NumbersFormatter;
 
@@ -33,7 +31,7 @@ public class ProductItemsPagingAdapter extends PagedListAdapter<ProductItem, Rec
         void onRetry();
     }
     private Context mContext;
-    private Contants.LoadingState loadingState;
+    private Contants.ItemLoadingState mItemLoadingState;
     private ProductItemsAdapter.Listener listener;
     private btnListener mBtnListener;
 
@@ -109,7 +107,7 @@ public class ProductItemsPagingAdapter extends PagedListAdapter<ProductItem, Rec
             });
         } else {
             LoadingViewHolder viewHolder = (LoadingViewHolder) holder;
-            if (loadingState == Contants.LoadingState.SUB_LOAD_ERROR){
+            if (mItemLoadingState == Contants.ItemLoadingState.SUB_LOAD_ERROR){
                 viewHolder.pbLoadingBar.setVisibility(View.GONE);
                 viewHolder.btnRetry.setVisibility(View.VISIBLE);
             }
@@ -129,8 +127,8 @@ public class ProductItemsPagingAdapter extends PagedListAdapter<ProductItem, Rec
         this.listener = listener;
     }
 
-    public void setLoadingState(Contants.LoadingState loadingState) {
-        this.loadingState = loadingState;
+    public void setItemLoadingState(Contants.ItemLoadingState itemLoadingState) {
+        this.mItemLoadingState = itemLoadingState;
         //update the last view holder for handle reload
         notifyItemChanged(getItemCount() - 1);
     }
@@ -155,7 +153,7 @@ public class ProductItemsPagingAdapter extends PagedListAdapter<ProductItem, Rec
     public int getItemViewType(int position) {
         //IMPORTANT: When to show a loading spinner
         //if((we are at the last position of previous page)
-        if (position == getItemCount() - 1 && loadingState != null && loadingState != Contants.LoadingState.SUCCESS)
+        if (position == getItemCount() - 1 && mItemLoadingState != null && mItemLoadingState != Contants.ItemLoadingState.SUCCESS)
             return LOAD_VIEW_TYPE;
         else return PRODUCT_VIEW_TYPE;
     }

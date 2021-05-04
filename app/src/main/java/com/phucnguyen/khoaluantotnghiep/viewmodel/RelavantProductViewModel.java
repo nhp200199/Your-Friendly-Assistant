@@ -12,7 +12,7 @@ import java.util.List;
 public class RelavantProductViewModel extends ViewModel {
     private RelavantProductRepo repo;
     private LiveData<List<ProductItem>> relavantProducts;
-    private LiveData<Contants.LoadingState> loadingState;
+    private LiveData<Contants.ItemLoadingState> loadingState;
 
     public RelavantProductViewModel(String id, String categoryId, String name, String platform) {
         repo = new RelavantProductRepo(id, name, categoryId, platform);
@@ -24,7 +24,7 @@ public class RelavantProductViewModel extends ViewModel {
         return relavantProducts;
     }
 
-    public LiveData<Contants.LoadingState> getLoadingState() {
+    public LiveData<Contants.ItemLoadingState> getLoadingState() {
         return loadingState;
     }
 }

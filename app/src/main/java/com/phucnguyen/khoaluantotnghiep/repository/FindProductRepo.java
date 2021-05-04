@@ -26,7 +26,7 @@ public class FindProductRepo {
     private LiveData<List<RecentSearch>> recentSearchs;
     private ProductItemService service;
     private MutableLiveData<List<ProductItem>> suggestedProducts;
-    private MutableLiveData<Contants.LoadingState> loadingState;
+    private MutableLiveData<Contants.ItemLoadingState> loadingState;
     private MutableLiveData<List<Category>> categories;
 
     public FindProductRepo(Context context) {
@@ -35,30 +35,30 @@ public class FindProductRepo {
         recentSearchs = mRecentSearchDao.getRecentSearchsForHistory();
         service = RetrofitInstance.getProductItemService();
         suggestedProducts = new MutableLiveData<List<ProductItem>>();
-        loadingState = new MutableLiveData<Contants.LoadingState>();
+        loadingState = new MutableLiveData<Contants.ItemLoadingState>();
         categories = new MutableLiveData<List<Category>>();
     }
 
     private void callToReceiveSuggestedProducts(String query, String platform, String category) {
-        loadingState.postValue(Contants.LoadingState.LOADING);
+        loadingState.postValue(Contants.ItemLoadingState.LOADING);
         service.getSuggestedItems(query, platform, category).enqueue(new Callback<SuggestedProductsResponse>() {
             @Override
             public void onResponse(Call<SuggestedProductsResponse> call, Response<SuggestedProductsResponse> response) {
                 if (response.isSuccessful()) {
-                    loadingState.postValue(Contants.LoadingState.SUCCESS);
+                    loadingState.postValue(Contants.ItemLoadingState.SUCCESS);
                     suggestedProducts.postValue(response.body().getItems());
                     //only query for the categories when user requires it (category.equals("tất cả"))
                     if (response.body().getCategories() != null)
                         categories.postValue(response.body().getCategories());
                 } else {
-                    loadingState.postValue(Contants.LoadingState.FIRST_LOAD_ERROR);
+                    loadingState.postValue(Contants.ItemLoadingState.FIRST_LOAD_ERROR);
                     suggestedProducts.postValue(null);
                 }
             }
 
             @Override
             public void onFailure(Call<SuggestedProductsResponse> call, Throwable t) {
-                loadingState.postValue(Contants.LoadingState.FIRST_LOAD_ERROR);
+                loadingState.postValue(Contants.ItemLoadingState.FIRST_LOAD_ERROR);
                 suggestedProducts.postValue(null);
             }
         });
@@ -77,7 +77,7 @@ public class FindProductRepo {
         return categories;
     }
 
-    public LiveData<Contants.LoadingState> getLoadingState() {
+    public LiveData<Contants.ItemLoadingState> getLoadingState() {
         return loadingState;
     }
 }

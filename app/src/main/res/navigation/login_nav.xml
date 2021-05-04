@@ -29,15 +29,6 @@
             app:argType="string"
             app:nullable="true" />
         <action
-            android:id="@+id/action_log_in_fragment_to_setting_fragment"
-            app:destination="@id/setting_fragment"
-            app:enterAnim="@anim/slide_in_left"
-            app:exitAnim="@anim/slide_out_right"
-            app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right"
-            app:popUpTo="@id/setting_fragment"
-            app:popUpToInclusive="true"/>
-        <action
             android:id="@+id/action_log_in_fragment_to_information_dialog"
             app:destination="@id/information_dialog" />
     </fragment>

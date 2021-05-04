@@ -86,17 +86,17 @@ public class ProductRelevantFragment extends Fragment {
                     );
                     mRelavantProductViewModel = new ViewModelProvider(requireParentFragment(), factory)
                             .get(RelavantProductViewModel.class);
-                    mRelavantProductViewModel.getLoadingState().observe(getViewLifecycleOwner(), new Observer<Contants.LoadingState>() {
+                    mRelavantProductViewModel.getLoadingState().observe(getViewLifecycleOwner(), new Observer<Contants.ItemLoadingState>() {
                         @Override
-                        public void onChanged(Contants.LoadingState loadingState) {
-                            if (loadingState == Contants.LoadingState.LOADING) {
+                        public void onChanged(Contants.ItemLoadingState itemLoadingState) {
+                            if (itemLoadingState == Contants.ItemLoadingState.LOADING) {
                                 pbLoadingStatus.setVisibility(View.VISIBLE);
                                 return;
                             } else pbLoadingStatus.setVisibility(View.INVISIBLE);
-                            if (loadingState == Contants.LoadingState.SUCCESS_WITH_NO_VALUES) {
+                            if (itemLoadingState == Contants.ItemLoadingState.SUCCESS_WITH_NO_VALUES) {
                                 productItemsContainer.setVisibility(View.INVISIBLE);
                                 tvNoProductsFound.setVisibility(View.VISIBLE);
-                            } else if (loadingState == Contants.LoadingState.SUCCESS) {
+                            } else if (itemLoadingState == Contants.ItemLoadingState.SUCCESS) {
                                 tvNoProductsFound.setVisibility(View.INVISIBLE);
                                 productItemsContainer.setVisibility(View.VISIBLE);
                             }
