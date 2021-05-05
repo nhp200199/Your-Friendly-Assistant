@@ -32,4 +32,8 @@ public interface UserService {
 
     @GET("api/v1/user/my-account?include=item")
     Call<UserAccountResponse> getUserAccount(@Header("Authorization") String authorizedString);
+
+    @FormUrlEncoded
+    @POST("api/v1/auth/token")
+    Call<LogInResponse> createNewAccessToken(@Field("refreshToken") String refreshTokenIdSharePref);
 }

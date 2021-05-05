@@ -2,7 +2,14 @@ package com.phucnguyen.khoaluantotnghiep.ui.fragment;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Lifecycle;
+import androidx.lifecycle.LifecycleEventObserver;
+import androidx.lifecycle.LifecycleOwner;
+import androidx.navigation.NavBackStackEntry;
+import androidx.navigation.NavController;
+import androidx.navigation.fragment.NavHostFragment;
 
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -17,11 +24,16 @@ import android.widget.LinearLayout;
 
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import com.phucnguyen.khoaluantotnghiep.R;
 import com.phucnguyen.khoaluantotnghiep.model.response.RegistrationResponse;
 import com.phucnguyen.khoaluantotnghiep.service.RetrofitInstance;
 import com.phucnguyen.khoaluantotnghiep.service.UserService;
+import com.phucnguyen.khoaluantotnghiep.utils.DialogUtils;
 import com.phucnguyen.khoaluantotnghiep.utils.FormChecker;
+
+import java.io.IOException;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -43,6 +55,7 @@ public class RegisterFragment extends Fragment {
     private boolean isEmailFieldQualified = false;
     private boolean isPasswordFieldQualified = false;
     private boolean isRepeatPasswordQualified = false;
+    private boolean isSuccessfullyCreatedAccount = false;
 
     public RegisterFragment() {
         // Required empty public constructor
@@ -53,6 +66,41 @@ public class RegisterFragment extends Fragment {
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_register, container, false);
         connectViews(v);
+
+        NavController navController = NavHostFragment.findNavController(this);
+        // After a configuration change or process death, the currentBackStackEntry
+        // points to the dialog destination, so you must use getBackStackEntry()
+        // with the specific ID of your destination to ensure we always
+        // get the right NavBackStackEntry
+        final NavBackStackEntry navBackStackEntry = navController.getBackStackEntry(R.id.register_fragment);
+        // Create our observer and add it to the NavBackStackEntry's lifecycle
+        final LifecycleEventObserver observer = new LifecycleEventObserver() {
+            @Override
+            public void onStateChanged(@NonNull LifecycleOwner source, @NonNull Lifecycle.Event event) {
+                if (event.equals(Lifecycle.Event.ON_RESUME)
+                        && navBackStackEntry.getSavedStateHandle().contains("isRead")) {
+                    boolean isRead = navBackStackEntry.getSavedStateHandle().get("isRead");
+                    // Do something with the result
+                    if (isRead && isSuccessfullyCreatedAccount) {
+                        Bundle emailBundle = new Bundle();
+                        emailBundle.putString("email", edtEmail.getText().toString());
+                        NavHostFragment.findNavController(RegisterFragment.this)
+                                .navigate(R.id.action_register_fragment_to_log_in_fragment, emailBundle);
+                    }
+                }
+            }
+        };
+        navBackStackEntry.getLifecycle().addObserver(observer);
+        // As addObserver() does not automatically remove the observer, we
+        // call removeObserver() manually when the view lifecycle is destroyed
+        getViewLifecycleOwner().getLifecycle().addObserver(new LifecycleEventObserver() {
+            @Override
+            public void onStateChanged(@NonNull LifecycleOwner source, @NonNull Lifecycle.Event event) {
+                if (event.equals(Lifecycle.Event.ON_DESTROY)) {
+                    navBackStackEntry.getLifecycle().removeObserver(observer);
+                }
+            }
+        });
 
         // Inflate the layout for this fragment
         return v;
@@ -183,23 +231,42 @@ public class RegisterFragment extends Fragment {
                                 btnRegister.setEnabled(true);
                                 processContainer.setVisibility(View.GONE);
                                 if (response.isSuccessful()) {
-                                    if (response.body().isSuccess()) {
-                                        Log.d("REGISTRATION: ", "need to verify email");
-                                        //remove all fields when successfully registered
-                                        edtName.setText("");
-                                        edtEmail.setText("");
-                                        edtPassword.setText("");
-                                        edtRepeatPassword.setText("");
-                                        //TODO: navigate back to Login fragment with attached email
-                                    } else {
-                                        if (response.body().getMessage().equals("User already exists")) {
-                                            Log.d("REGISTRATION: ", "User already exists");
-                                        } else {
-                                            Log.d("REGISTRATION: ", response.body().getMessage());
-                                        }
-                                    }
+                                    isSuccessfullyCreatedAccount = true;
+                                    Log.d("REGISTRATION: ", "need to verify email");
+                                    //remove all fields when successfully registered
+                                    edtName.setText("");
+                                    edtEmail.setText("");
+                                    edtPassword.setText("");
+                                    edtRepeatPassword.setText("");
+
+                                    DialogUtils.navigateToInformationDialog("Thành công",
+                                            "Một email dùng để xác thực tài khoản đã được gửi đến bạn. Vui lòng kiểm" +
+                                                    " tra và xác thực tài khoản trước khi đăng nhập",
+                                            "về màn hình đăng nhập",
+                                            RegisterFragment.this,
+                                            R.id.action_register_fragment_to_information_dialog);
                                 } else {
                                     Log.d("REGISTRATION: ", response.toString());
+                                    String errorJsonString;
+                                    Gson gson = new Gson();
+                                    try {
+                                        errorJsonString = response.errorBody().string();
+                                        JsonObject jsonObject = gson.fromJson(errorJsonString, JsonObject.class);
+                                        if (jsonObject.get("message").getAsString().equals("User already exists")) {
+                                            DialogUtils.navigateToInformationDialog("Không thể tạo tài khoản",
+                                                    "Tài khoản đã tồn tại",
+                                                    "ok",
+                                                    RegisterFragment.this,
+                                                    R.id.action_register_fragment_to_information_dialog);
+                                        }
+                                    } catch (IOException e) {
+                                        e.printStackTrace();
+                                        DialogUtils.navigateToInformationDialog("Không thể tạo tài khoản",
+                                                "Đã có lỗi xảy ra khi xử lý. Vui lòng thử lại",
+                                                "ok",
+                                                RegisterFragment.this,
+                                                R.id.action_register_fragment_to_information_dialog);
+                                    }
                                 }
                             }
 
@@ -208,6 +275,11 @@ public class RegisterFragment extends Fragment {
                                 btnRegister.setEnabled(true);
                                 processContainer.setVisibility(View.GONE);
                                 Log.d("REGISTRATION: ", t.toString());
+                                DialogUtils.navigateToInformationDialog("Không thể tạo tài khoản",
+                                        "Đã có lỗi xảy ra khi xử lý. Vui lòng thử lại",
+                                        "ok",
+                                        RegisterFragment.this,
+                                        R.id.action_register_fragment_to_information_dialog);
                             }
                         });
             }

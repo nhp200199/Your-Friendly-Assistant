@@ -25,7 +25,7 @@ public class UserRepo {
         service = RetrofitInstance.getInstance().create(UserService.class);
     }
 
-    public LiveData<User> getUserByTokenId(String tokenId, String refreshTokenId) {
+    public LiveData<User> getUserByTokenId(String tokenId) {
         if (tokenId == null) {
             user.postValue(null);
             return user;
@@ -40,7 +40,7 @@ public class UserRepo {
                             userLoadingState.postValue(SUCCESS);
                             user.postValue(response.body().getUser());
                         } else {
-                            userLoadingState.setValue(INVALID_CREDENTIALS);
+                            userLoadingState.setValue(NOT_AUTHORIZED);
                         }
                     }
 

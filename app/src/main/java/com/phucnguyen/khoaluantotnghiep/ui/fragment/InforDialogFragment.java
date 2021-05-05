@@ -12,6 +12,10 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.Fragment;
+import androidx.navigation.fragment.NavHostFragment;
+
+import com.phucnguyen.khoaluantotnghiep.R;
 
 public class InforDialogFragment extends DialogFragment {
     public interface InforDialogListener {
@@ -21,26 +25,6 @@ public class InforDialogFragment extends DialogFragment {
     private String title;
     private String message;
     private String positiveMessage;
-    private InforDialogListener listener;
-
-    @Override
-    public void onAttach(@NonNull Context context) {
-        super.onAttach(context);
-
-    }
-
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        // Verify that the host activity (or fragment) implements the callback interface
-        try {
-            // Instantiate the InforDialogListener so we can send events to the host
-            listener = (InforDialogListener) getParentFragment();
-        } catch (ClassCastException e) {
-            // The activity (or fragment) doesn't implement the interface, throw exception
-            throw new ClassCastException("must implement InforDialogListener");
-        }
-    }
 
     @NonNull
     @Override
@@ -58,10 +42,13 @@ public class InforDialogFragment extends DialogFragment {
                         new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
-                                if (listener != null)
-                                    listener.onInformationIsRead();
+                                NavHostFragment.findNavController(InforDialogFragment.this)
+                                        .getPreviousBackStackEntry()
+                                        .getSavedStateHandle()
+                                        .set("isRead", true);
                             }
-                        });
+                        })
+                .setCancelable(false);
         return builder.create();
     }
 }

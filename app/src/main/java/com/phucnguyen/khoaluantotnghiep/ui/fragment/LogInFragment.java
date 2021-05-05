@@ -5,10 +5,16 @@ import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Lifecycle;
+import androidx.lifecycle.LifecycleEventObserver;
+import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavBackStackEntry;
+import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
 
@@ -36,6 +42,7 @@ import com.phucnguyen.khoaluantotnghiep.model.response.LogInResponse;
 import com.phucnguyen.khoaluantotnghiep.service.RetrofitInstance;
 import com.phucnguyen.khoaluantotnghiep.service.UserService;
 import com.phucnguyen.khoaluantotnghiep.utils.Contants;
+import com.phucnguyen.khoaluantotnghiep.utils.DialogUtils;
 import com.phucnguyen.khoaluantotnghiep.utils.FormChecker;
 import com.phucnguyen.khoaluantotnghiep.viewmodel.UserViewModel;
 
@@ -87,10 +94,43 @@ public class LogInFragment extends Fragment implements InforDialogFragment.Infor
                         processContainer.setVisibility(View.VISIBLE);
                         break;
                     case INVALID_CREDENTIALS:
+                        processContainer.setVisibility(View.GONE);
+                        btnLogin.setEnabled(true);
+
+                        //reset user loading's state
+                        userViewModel.setUserLoadingState(UserLoadingState.NONE);
+
+                        DialogUtils.navigateToInformationDialog("Đăng nhập không thành công",
+                                "Tài khoản hoặc mật khẩu không đúng. Vui lòng thử lại",
+                                "ok",
+                                LogInFragment.this,
+                                R.id.action_log_in_fragment_to_information_dialog);
+                        break;
+                    case NOT_VERIFIED:
+                        processContainer.setVisibility(View.GONE);
+                        btnLogin.setEnabled(true);
+
+                        //reset user loading's state
+                        userViewModel.setUserLoadingState(UserLoadingState.NONE);
+
+                        DialogUtils.navigateToInformationDialog("Đăng nhập không thành công",
+                                "Tài khoản chưa được xác thực. Vui lòng kiểm tra email và" +
+                                        " xác thực tài khoản",
+                                "ok",
+                                LogInFragment.this,
+                                R.id.action_log_in_fragment_to_information_dialog);
+                        break;
                     case NETWORK_ERROR:
                         processContainer.setVisibility(View.GONE);
-                        //TODO: show dialog to inform about invalid credentials
                         btnLogin.setEnabled(true);
+
+                        userViewModel.setUserLoadingState(UserLoadingState.NONE);
+
+                        DialogUtils.navigateToInformationDialog("Đăng nhập không thành công",
+                                "Đã xảy ra lỗi khi thực hiện đăng nhập. Vui lòng thử lại",
+                                "ok",
+                                LogInFragment.this,
+                                R.id.action_log_in_fragment_to_information_dialog);
                         break;
                     case SUCCESS:
                         processContainer.setVisibility(View.GONE);
@@ -165,67 +205,6 @@ public class LogInFragment extends Fragment implements InforDialogFragment.Infor
                 btnLogin.setEnabled(false);
                 userViewModel.loginUser(edtEmail.getText().toString(),
                         editPassword.getText().toString());
-            }
-
-            private void loginToUser() {
-                processContainer.setVisibility(View.VISIBLE);
-
-                RetrofitInstance.getInstance().create(UserService.class)
-                        .loginToUser(edtEmail.getText().toString(),
-                                editPassword.getText().toString())
-                        .enqueue(new Callback<LogInResponse>() {
-                            @Override
-                            public void onResponse(Call<LogInResponse> call, Response<LogInResponse> response) {
-                                processContainer.setVisibility(View.GONE);
-
-                                if (response.isSuccessful()) {
-                                    if (response.body().isSuccess()) {
-                                        userSharedPreferenceEditor.putString("accessToken", response.body().getAccessToken())
-                                                .apply();
-                                        userSharedPreferenceEditor.putString("refreshToken", response.body().getRefreshToken())
-                                                .apply();
-                                        userViewModel.setNewTokenId(response.body().getAccessToken());
-                                        Log.d("LOGIN: ", "Logged In");
-                                        Log.d("LOGIN-ACCESS-TOKEN: ", response.body().getAccessToken());
-//                                        NavHostFragment.findNavController(LogInFragment.this)
-//                                                .navigate(R.id.action_log_in_fragment_to_setting_fragment);
-                                    } else {
-                                        Bundle errorBundle = new Bundle();
-                                        if (response.body().getMessage().equals("Invalid credentials")) {
-                                            Log.d("LOGIN: ", "Invalid credentials");
-                                            errorBundle.putString("title", "Đăng nhập không thành công");
-                                            errorBundle.putString("message",
-                                                    "Tài khoản hoặc mật khẩu không đúng. Vui lòng thử lại");
-                                            errorBundle.putString("posMessage",
-                                                    "ok");
-                                        } else {
-                                            Log.d("LOGIN: ", response.body().getMessage());
-                                            errorBundle.putString("title", "Đăng nhập không thành công");
-                                            errorBundle.putString("message",
-                                                    "Tài khoản hoặc mật khẩu không đúng. Vui lòng thử lại");
-                                            errorBundle.putString("posMessage",
-                                                    "ok");
-                                        }
-                                    }
-                                } else {
-                                    Bundle errorBundle = new Bundle();
-                                    Log.d("LOGIN: ", response.toString());
-                                    errorBundle.putString("title", "Đăng nhập không thành công");
-                                    errorBundle.putString("message",
-                                            "Tài khoản hoặc mật khẩu không đúng. Vui lòng thử lại");
-                                    errorBundle.putString("posMessage",
-                                            "ok");
-                                    btnLogin.setEnabled(true);
-                                }
-                            }
-
-                            @Override
-                            public void onFailure(Call<LogInResponse> call, Throwable t) {
-                                Log.d("LOGIN: ", t.toString());
-                                processContainer.setVisibility(View.GONE);
-                                btnLogin.setEnabled(true);
-                            }
-                        });
             }
         });
         tvSignUpHint.setOnClickListener(new View.OnClickListener() {

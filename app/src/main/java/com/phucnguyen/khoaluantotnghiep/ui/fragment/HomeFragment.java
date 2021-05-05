@@ -113,7 +113,14 @@ public class HomeFragment extends Fragment {
                         tvNetworkError.setVisibility(View.VISIBLE);
                         productItemContainer.setVisibility(View.GONE);
                         break;
-
+                    case EXPIRED_TOKEN:
+                        //TODO: display dialog to inform user to login again.
+                        // Here the the code for going to the Login screen
+                        NavHostFragment.findNavController(HomeFragment.this)
+                                .navigate(R.id.action_home_fragment_to_login_nav);
+                        break;
+                    case NOT_AUTHORIZED:
+                        userViewModel.createNewAccessTokenFromRefreshToken();
                 }
             }
         });

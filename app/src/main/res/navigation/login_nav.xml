@@ -46,6 +46,9 @@
             app:popExitAnim="@anim/slide_out_right"
             app:popUpTo="@id/log_in_fragment"
             app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_register_fragment_to_information_dialog"
+            app:destination="@id/information_dialog" />
     </fragment>
     <fragment
         android:id="@+id/reset_password_fragment"
@@ -61,6 +64,9 @@
             app:popExitAnim="@anim/slide_out_right"
             app:popUpTo="@id/log_in_fragment"
             app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_reset_password_fragment_to_information_dialog"
+            app:destination="@id/information_dialog" />
     </fragment>
     <dialog
         android:id="@+id/information_dialog"

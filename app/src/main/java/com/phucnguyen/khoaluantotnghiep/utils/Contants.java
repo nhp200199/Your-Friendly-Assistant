@@ -23,6 +23,7 @@ public class Contants {
         INVALID_CREDENTIALS,
         NOT_AUTHORIZED,
         EXPIRED_TOKEN,
+        NOT_VERIFIED,
         NONE
     }
 }
