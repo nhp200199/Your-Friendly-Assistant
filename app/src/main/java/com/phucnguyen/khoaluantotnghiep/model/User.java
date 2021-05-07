@@ -63,20 +63,20 @@ public class User {
     }
 
     public class TrackedItem{
-        private long createdAt;
+        private long create;
         private ProductItem item;
 
-        public TrackedItem(long createdAt, ProductItem item) {
-            this.createdAt = createdAt;
+        public TrackedItem(long create, ProductItem item) {
+            this.create = create;
             this.item = item;
         }
 
-        public long getCreatedAt() {
-            return createdAt;
+        public long getCreate() {
+            return create;
         }
 
-        public void setCreatedAt(long createdAt) {
-            this.createdAt = createdAt;
+        public void setCreate(long create) {
+            this.create = create;
         }
 
         public ProductItem getItem() {

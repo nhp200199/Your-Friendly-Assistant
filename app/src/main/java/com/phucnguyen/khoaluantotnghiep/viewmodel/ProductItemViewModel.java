@@ -11,6 +11,7 @@ import com.phucnguyen.khoaluantotnghiep.model.ProductItem;
 import com.phucnguyen.khoaluantotnghiep.model.response.ProductItemResponse;
 import com.phucnguyen.khoaluantotnghiep.model.Seller;
 import com.phucnguyen.khoaluantotnghiep.repository.ProductItemRepo;
+import com.phucnguyen.khoaluantotnghiep.utils.Contants;
 
 import java.util.List;
 
@@ -48,5 +49,13 @@ public class ProductItemViewModel extends AndroidViewModel {
 
     public LiveData<List<ProductItem>> getProductItems() {
         return productItems;
+    }
+
+    public LiveData<Contants.ItemLoadingState> getLoadingState() {
+        return mProductItemRepo.getLoadingState();
+    }
+
+    public void retryLoadingProductItem() {
+        mProductItemRepo.retryLoadingProductItem();
     }
 }

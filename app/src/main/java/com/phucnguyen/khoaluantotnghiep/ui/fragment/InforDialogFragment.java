@@ -18,10 +18,6 @@ import androidx.navigation.fragment.NavHostFragment;
 import com.phucnguyen.khoaluantotnghiep.R;
 
 public class InforDialogFragment extends DialogFragment {
-    public interface InforDialogListener {
-        void onInformationIsRead();
-    }
-
     private String title;
     private String message;
     private String positiveMessage;

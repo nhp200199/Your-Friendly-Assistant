@@ -146,7 +146,7 @@ public class UserViewModel extends AndroidViewModel {
                             try {
                                 errorJsonString = response.errorBody().string();
                                 JsonObject jsonObject = gson.fromJson(errorJsonString, JsonObject.class);
-                                if (jsonObject.get("message").getAsString().equals("Invalid Credentials")) {
+                                if (jsonObject.get("message").getAsString().equals("Invalid credentials")) {
                                     userLoadingStateMLiveData.setValue(INVALID_CREDENTIALS);
                                 } else if (jsonObject.get("message").getAsString().equals("Please verify your email to continue"))
                                     userLoadingStateMLiveData.setValue(NOT_VERIFIED);

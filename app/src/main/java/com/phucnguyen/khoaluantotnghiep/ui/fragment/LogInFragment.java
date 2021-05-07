@@ -52,7 +52,7 @@ import retrofit2.Response;
 
 import static com.phucnguyen.khoaluantotnghiep.utils.Contants.*;
 
-public class LogInFragment extends Fragment implements InforDialogFragment.InforDialogListener {
+public class LogInFragment extends Fragment {
     private TextInputLayout emailInputLayout;
     private TextInputEditText edtEmail;
     private TextInputEditText editPassword;
@@ -237,10 +237,5 @@ public class LogInFragment extends Fragment implements InforDialogFragment.Infor
                 registerHint.length(),
                 Spanned.SPAN_INCLUSIVE_INCLUSIVE);
         tvSignUpHint.setText(spannableString);
-    }
-
-    @Override
-    public void onInformationIsRead() {
-        //do nothing for this Login fragment
     }
 }

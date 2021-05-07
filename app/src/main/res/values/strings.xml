@@ -58,6 +58,7 @@
     <string name="img_product_reviews_quantities_icon_des">số lượt bình luận</string>
     <string name="price_currency">đ</string>
     <string name="review_quantities">%1$d bình luận</string>
+    <string name="price_changes_counter">Sản phẩm có &lt;b>%1$d&lt;/b> lần thay đổi giá với &lt;b>%2$d&lt;/b> mức giá khác nhau</string>
 
     <!--    App how-to-use-->
     <string name="guideline_step_1">Truy cập vào ứng dụng bạn thích (Tiki hoặc Shopee)</string>

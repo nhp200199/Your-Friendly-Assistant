@@ -13,6 +13,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import androidx.viewpager.widget.ViewPager;
 
 import android.view.LayoutInflater;
@@ -28,10 +29,13 @@ import com.google.android.material.tabs.TabItem;
 import com.google.android.material.tabs.TabLayout;
 import com.phucnguyen.khoaluantotnghiep.R;
 import com.phucnguyen.khoaluantotnghiep.model.ProductItem;
+import com.phucnguyen.khoaluantotnghiep.utils.Contants;
 import com.phucnguyen.khoaluantotnghiep.utils.NumbersFormatter;
 import com.phucnguyen.khoaluantotnghiep.viewmodel.ProductItemViewModel;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+
+import static com.phucnguyen.khoaluantotnghiep.utils.Contants.*;
 
 public class ProductItemFragment extends Fragment {
 
@@ -51,6 +55,7 @@ public class ProductItemFragment extends Fragment {
     private TextView mTvPriceCurrency;
     private CircleImageView mImgActionGoToStore;
     private FloatingActionButton mFabFav;
+    private SwipeRefreshLayout swipeRefreshLayout;
 
     private ProductItemViewModel mItemViewModel;
 
@@ -86,13 +91,22 @@ public class ProductItemFragment extends Fragment {
         mTvProductItemReview = v.findViewById(R.id.tvProductItemReview);
         mTvPriceCurrency = v.findViewById(R.id.tvPriceCurrency);
         mImgActionGoToStore = (CircleImageView) v.findViewById(R.id.imgActionGoToStore);
+        swipeRefreshLayout = (SwipeRefreshLayout) v.findViewById(R.id.refreshLayout);
 
+        swipeRefreshLayout.setEnabled(false);
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                mItemViewModel.retryLoadingProductItem();
+            }
+        });
         mTvPriceCurrency.setPaintFlags(mTvPriceCurrency.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
         //Attach the SectionsPagerAdapter to the ViewPager
         SectionsPagerAdapter pagerAdapter =
                 new SectionsPagerAdapter(getChildFragmentManager());
         ViewPager pager = (ViewPager) v.findViewById(R.id.productItemPager);
         pager.setAdapter(pagerAdapter);
+        pager.setOffscreenPageLimit(3);
 
         //Attach the ViewPager to the TabLayout
         TabLayout tabLayout = (TabLayout) v.findViewById(R.id.productItemTabs);
@@ -144,6 +158,24 @@ public class ProductItemFragment extends Fragment {
                         mProductItemListener.onProductItemReceive(productItem.getName());
                     }
                 });
+        mItemViewModel.getLoadingState().observe(getViewLifecycleOwner(), new Observer<ItemLoadingState>() {
+            @Override
+            public void onChanged(ItemLoadingState itemLoadingState) {
+                switch (itemLoadingState) {
+                    case SUCCESS:
+                        swipeRefreshLayout.setEnabled(false);
+                        if (swipeRefreshLayout.isRefreshing()) {
+                            swipeRefreshLayout.setRefreshing(false);
+                        }
+                        break;
+                    case FIRST_LOAD_ERROR:
+                        swipeRefreshLayout.setEnabled(true);
+                        if (swipeRefreshLayout.isRefreshing())
+                            swipeRefreshLayout.setRefreshing(false);
+                        break;
+                }
+            }
+        });
         // Inflate the layout for this fragment
         return v;
     }
