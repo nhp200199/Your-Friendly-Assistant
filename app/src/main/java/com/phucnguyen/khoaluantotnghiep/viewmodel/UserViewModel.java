@@ -50,7 +50,7 @@ public class UserViewModel extends AndroidViewModel {
         sharedPreferences = application.getSharedPreferences("user", Context.MODE_PRIVATE);
         tokenIdSharePref = sharedPreferences.getString("accessToken", null);
         refreshTokenIdSharePref = sharedPreferences.getString("refreshToken", null);
-        userRepo = new UserRepo();
+        userRepo = new UserRepo(application);
 
         userLoadingStateMLiveData = userRepo.getUserLoadingState();
         tokenIdMLiveData = new MutableLiveData<String>(tokenIdSharePref);
@@ -68,21 +68,7 @@ public class UserViewModel extends AndroidViewModel {
                         return user.getEmail();
                     else return null;
                 });
-        trackedProducts = Transformations.map(userLiveData,
-                user -> {
-                    if (user != null) {
-                        ArrayList<ProductItem> combineTrackedProducts = new ArrayList<ProductItem>();
-                        for (User.TrackedItem tikiItem : user.getTrackedTikiProducts()) {
-                            tikiItem.getItem().setPlatform("tiki");
-                            combineTrackedProducts.add(tikiItem.getItem());
-                        }
-                        for (User.TrackedItem shopeeItem : user.getTrackedShopeeProducts()) {
-                            shopeeItem.getItem().setPlatform("shopee");
-                            combineTrackedProducts.add(shopeeItem.getItem());
-                        }
-                        return combineTrackedProducts;
-                    } else return null;
-                });
+        trackedProducts = userRepo.getUserTrackedProducts();
     }
 
     public LiveData<String> getUserName() {
@@ -120,6 +106,7 @@ public class UserViewModel extends AndroidViewModel {
                 .commit();
         //NONE indicates that no user is currently logged in
         userLoadingStateMLiveData.setValue(NONE);
+        userRepo.deleteAllProductsFromDatabase();
         tokenIdMLiveData.setValue(null);
     }
 

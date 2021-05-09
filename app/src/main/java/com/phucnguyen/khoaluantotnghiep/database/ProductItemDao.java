@@ -3,7 +3,9 @@ package com.phucnguyen.khoaluantotnghiep.database;
 import androidx.lifecycle.LiveData;
 import androidx.paging.DataSource;
 import androidx.room.Dao;
+import androidx.room.Delete;
 import androidx.room.Insert;
+import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 
 import com.phucnguyen.khoaluantotnghiep.model.ProductItem;
@@ -20,4 +22,10 @@ public interface ProductItemDao {
 
     @Insert
     Void insertProduct(ProductItem item);
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    Void insertUserTrackedProducts(List<ProductItem> items);
+
+    @Query("DELETE FROM products")
+    void deleteAllProducts();
 }
