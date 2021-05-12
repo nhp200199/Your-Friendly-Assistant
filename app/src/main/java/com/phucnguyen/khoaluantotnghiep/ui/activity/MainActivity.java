@@ -92,7 +92,9 @@ public class MainActivity extends AppCompatActivity implements ProductItemFragme
                         destination.getId() == R.id.media_player_fragment ||
                         destination.getId() == R.id.log_in_fragment ||
                         destination.getId() == R.id.reset_password_fragment ||
-                        destination.getId() == R.id.register_fragment)
+                        destination.getId() == R.id.register_fragment ||
+                        destination.getId() == R.id.redirect_confirmation_dialog ||
+                        destination.getId() == R.id.add_to_favorite_fragment)
                     bottomNav.setVisibility(View.GONE);
                 else bottomNav.setVisibility(View.VISIBLE);
                 if (destination.getId() == R.id.on_boarding_fragment)

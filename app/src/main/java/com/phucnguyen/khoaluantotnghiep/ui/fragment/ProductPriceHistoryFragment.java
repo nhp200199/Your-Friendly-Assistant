@@ -58,8 +58,9 @@ public class ProductPriceHistoryFragment extends Fragment {
     private LinearLayout priceHistoryContainer;
 
     private ProductItemViewModel mProductItemViewModel;
-    private LineDataSet mDataSet;
     private List<Entry> mEntries = new ArrayList<Entry>();
+    private LineDataSet mDataSet = new LineDataSet(mEntries, "Giá sản phẩm");
+
     private Set<Integer> uniquePriceList = new HashSet<Integer>();
     private List<Price.DailyPrice> mDailyPriceList = new ArrayList<Price.DailyPrice>();
     private DailyPricesAdapter mDailyPricesAdapter;
@@ -192,7 +193,6 @@ public class ProductPriceHistoryFragment extends Fragment {
             @Override
             public void onChanged(ProductItem productItem) {
                 if (productItem != null) {
-                    mDataSet = new LineDataSet(mEntries, "Giá sản phẩm");
                     if (productItem.getPlatform().equals("tiki")) {
                         mDataSet.setFillColor(getResources().getColor(R.color.blue_tiki));
                     } else mDataSet.setFillColor(getResources().getColor(R.color.orange_shopee));

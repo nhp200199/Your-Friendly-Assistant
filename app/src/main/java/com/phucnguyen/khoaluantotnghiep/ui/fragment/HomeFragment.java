@@ -7,6 +7,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -21,6 +22,7 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.google.android.material.navigation.NavigationView;
 import com.phucnguyen.khoaluantotnghiep.R;
 import com.phucnguyen.khoaluantotnghiep.adapters.ProductItemsAdapter;
 import com.phucnguyen.khoaluantotnghiep.model.ProductItem;
@@ -65,6 +67,15 @@ public class HomeFragment extends Fragment {
         connectViews(view);
 
         ProductItemsAdapter adapter = new ProductItemsAdapter(view.getContext(), R.layout.product_item);
+        adapter.setListener(new ProductItemsAdapter.Listener() {
+            @Override
+            public void onItemClicked(String url) {
+                Bundle bundle = new Bundle();
+                bundle.putString("productUrl", url);
+                NavHostFragment.findNavController(HomeFragment.this)
+                        .navigate(R.id.action_global_productItemFragment, bundle);
+            }
+        });
         productItemContainer.setAdapter(adapter);
         productItemContainer.setLayoutManager(new LinearLayoutManager(getContext()));
 
@@ -114,10 +125,18 @@ public class HomeFragment extends Fragment {
                         productItemContainer.setVisibility(View.GONE);
                         break;
                     case EXPIRED_TOKEN:
-                        //TODO: display dialog to inform user to login again.
-                        // Here the the code for going to the Login screen
-                        NavHostFragment.findNavController(HomeFragment.this)
-                                .navigate(R.id.action_home_fragment_to_login_nav);
+                        // Display dialog to inform user to login again.
+                        // Here the the code for going to the Login screen. Only happen when the view is visible
+                        if (requireView().isShown()) {
+                            Bundle inforBundle = new Bundle();
+                            inforBundle.putString("title", "Thông báo");
+                            inforBundle.putString("message", "Phiên đăng nhập của bạn đã hết hạn");
+                            inforBundle.putString("posMessage", "đăng nhập");
+                            inforBundle.putString("negMessage", "để sau");
+                            inforBundle.putInt("actionId", R.id.action_redirect_confirmation_dialog_to_login_nav);
+                            NavHostFragment.findNavController(HomeFragment.this)
+                                    .navigate(R.id.action_home_fragment_to_redirect_confirmation_dialog, inforBundle);
+                        }
                         break;
                     case NOT_AUTHORIZED:
                         userViewModel.createNewAccessTokenFromRefreshToken();

@@ -10,13 +10,10 @@ import com.phucnguyen.khoaluantotnghiep.database.AppDatabase;
 import com.phucnguyen.khoaluantotnghiep.database.ProductItemDao;
 import com.phucnguyen.khoaluantotnghiep.model.Price;
 import com.phucnguyen.khoaluantotnghiep.model.ProductItem;
-import com.phucnguyen.khoaluantotnghiep.model.datasource.ReviewDataSource;
-import com.phucnguyen.khoaluantotnghiep.model.response.CategoriesResponse;
 import com.phucnguyen.khoaluantotnghiep.model.response.ProductItemResponse;
 import com.phucnguyen.khoaluantotnghiep.model.Seller;
 import com.phucnguyen.khoaluantotnghiep.service.ProductItemService;
 import com.phucnguyen.khoaluantotnghiep.service.RetrofitInstance;
-import com.phucnguyen.khoaluantotnghiep.utils.Contants;
 
 import java.util.List;
 
@@ -46,10 +43,15 @@ public class ProductItemRepo {
         return mProductItems;
     }
 
-    public void getItem(String url, String include) {
+    public LiveData<ProductItem> getProductItemWithIdAndPlatform(String productId, String platform){
+        return mProductItemDao.getProductItemWithIdAndPlatform(productId, platform);
+    }
+
+    public void getItem(String url, String include, String authString) {
         loadingState.setValue(ItemLoadingState.LOADING);
 
-        Call<ProductItemResponse> productItem = mProductItemService.getItem(url, include);
+        Call<ProductItemResponse> productItem = mProductItemService.getItem(url, include,
+                "Bearer " + authString);
         productItem.enqueue(new Callback<ProductItemResponse>() {
             @Override
             public void onResponse(Call<ProductItemResponse> call, Response<ProductItemResponse> response) {

@@ -36,6 +36,7 @@ import static com.phucnguyen.khoaluantotnghiep.utils.Contants.UserLoadingState.*
 public class UserViewModel extends AndroidViewModel {
     private MutableLiveData<String> tokenIdMLiveData;
     private MutableLiveData<UserLoadingState> userLoadingStateMLiveData;
+    private MutableLiveData<UserActionState> userActionStateMLiveData;
     private LiveData<User> userLiveData;
     private UserRepo userRepo;
     private LiveData<String> userName;
@@ -51,8 +52,8 @@ public class UserViewModel extends AndroidViewModel {
         tokenIdSharePref = sharedPreferences.getString("accessToken", null);
         refreshTokenIdSharePref = sharedPreferences.getString("refreshToken", null);
         userRepo = new UserRepo(application);
-
         userLoadingStateMLiveData = userRepo.getUserLoadingState();
+        userActionStateMLiveData = userRepo.getUserActionState();
         tokenIdMLiveData = new MutableLiveData<String>(tokenIdSharePref);
         userLiveData = Transformations.switchMap(tokenIdMLiveData,
                 tokenId -> userRepo.getUserByTokenId(tokenId));
@@ -87,6 +88,14 @@ public class UserViewModel extends AndroidViewModel {
         return tokenIdMLiveData;
     }
 
+    public LiveData<UserActionState> getUserActionStateMLiveData() {
+        return userActionStateMLiveData;
+    }
+
+    public SharedPreferences getSharedPreferences() {
+        return sharedPreferences;
+    }
+
     public LiveData<UserLoadingState> getUserLoadingState() {
         return userLoadingStateMLiveData;
     }
@@ -119,7 +128,7 @@ public class UserViewModel extends AndroidViewModel {
                         if (response.isSuccessful()) {
                             sharedPreferences.edit()
                                     .putString("accessToken", response.body().getAccessToken())
-                                    .apply();
+                                    .commit();
                             sharedPreferences.edit()
                                     .putString("refreshToken", response.body().getRefreshToken())
                                     .apply();
@@ -153,7 +162,7 @@ public class UserViewModel extends AndroidViewModel {
 
     public void createNewAccessTokenFromRefreshToken() {
         userLoadingStateMLiveData.setValue(LOADING);
-        userRepo.getService().createNewAccessToken(refreshTokenIdSharePref)
+        userRepo.getService().createNewAccessToken(sharedPreferences.getString("refreshToken", ""))
                 .enqueue(new Callback<LogInResponse>() {
                     @Override
                     public void onResponse(Call<LogInResponse> call, Response<LogInResponse> response) {
@@ -163,8 +172,16 @@ public class UserViewModel extends AndroidViewModel {
                                     .putString("accessToken", response.body().getAccessToken())
                                     .apply();
                             setNewTokenId(response.body().getAccessToken());
+
+                            //notify ui to retry proceeding user action
+                            if (userActionStateMLiveData.getValue() == UserActionState.NOT_AUTHORIZED) {
+                                userActionStateMLiveData.setValue(UserActionState.REGAINED_ACCESS_TOKEN);
+                            }
                         } else {
                             userLoadingStateMLiveData.setValue(EXPIRED_TOKEN);
+
+                            userActionStateMLiveData.setValue(UserActionState.EXPIRED_TOKEN);
+                            userActionStateMLiveData.setValue(UserActionState.NONE);
                             logoutUser();
                         }
                     }
@@ -172,7 +189,17 @@ public class UserViewModel extends AndroidViewModel {
                     @Override
                     public void onFailure(Call<LogInResponse> call, Throwable t) {
                         userLoadingStateMLiveData.setValue(NETWORK_ERROR);
+                        userActionStateMLiveData.setValue(UserActionState.NETWORK_ERROR);
                     }
                 });
+    }
+
+    public void trackProduct(ProductItem item, int desiredPrice) {
+        String tokenId = "Bearer " + tokenIdMLiveData.getValue();
+        userRepo.trackProduct(item, desiredPrice, tokenId);
+    }
+
+    public void deleteTrackedProduct(String productId, String platform, String authString) {
+        userRepo.deleteTrackedProduct(productId, platform, "Bearer " + authString);
     }
 }

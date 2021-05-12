@@ -20,7 +20,7 @@ public interface ProductItemDao {
     @Query("SELECT * FROM products WHERE categoryId = :category")
     LiveData<List<ProductItem>> getAllProductsFromCategory(String category);
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     Void insertProduct(ProductItem item);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
@@ -28,4 +28,10 @@ public interface ProductItemDao {
 
     @Query("DELETE FROM products")
     void deleteAllProducts();
+
+    @Query("DELETE FROM products WHERE id = :productId AND platform = :platform")
+    void deleteOneTrackedProduct(String productId, String platform);
+
+    @Query("SELECT * FROM products WHERE id = :productId AND platform = :platform")
+    LiveData<ProductItem> getProductItemWithIdAndPlatform(String productId, String platform);
 }

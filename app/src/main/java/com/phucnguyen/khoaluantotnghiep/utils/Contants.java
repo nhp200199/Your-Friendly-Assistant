@@ -26,4 +26,14 @@ public class Contants {
         NOT_VERIFIED,
         NONE
     }
+
+    public enum UserActionState{
+        PROCESSING,
+        DONE,
+        NETWORK_ERROR,
+        NOT_AUTHORIZED,
+        EXPIRED_TOKEN,
+        REGAINED_ACCESS_TOKEN,
+        NONE,
+    }
 }

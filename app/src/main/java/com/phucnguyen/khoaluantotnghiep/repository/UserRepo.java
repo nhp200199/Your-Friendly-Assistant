@@ -6,6 +6,7 @@ import android.os.AsyncTask;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
+import com.google.gson.JsonObject;
 import com.phucnguyen.khoaluantotnghiep.database.AppDatabase;
 import com.phucnguyen.khoaluantotnghiep.database.ProductItemDao;
 import com.phucnguyen.khoaluantotnghiep.model.ProductItem;
@@ -15,7 +16,9 @@ import com.phucnguyen.khoaluantotnghiep.service.RetrofitInstance;
 import com.phucnguyen.khoaluantotnghiep.service.UserService;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -28,6 +31,7 @@ public class UserRepo {
     private MutableLiveData<User> user = new MutableLiveData<User>();
     private LiveData<List<ProductItem>> userTrackedProducts;
     private MutableLiveData<UserLoadingState> userLoadingState = new MutableLiveData<UserLoadingState>();
+    private MutableLiveData<UserActionState> userActionState = new MutableLiveData<UserActionState>();
     private UserService service;
     private ProductItemDao productItemsService;
     private Context mContext;
@@ -85,9 +89,66 @@ public class UserRepo {
         return user;
     }
 
-    public void deleteAllProductsFromDatabase(){
+    public void deleteAllProductsFromDatabase() {
         new DeleteDbAsyncTask(AppDatabase.getInstance(mContext))
                 .execute();
+    }
+
+    public void trackProduct(ProductItem productItem, int desiredPrice, String authString) {
+        userActionState.setValue(UserActionState.PROCESSING);
+
+        Map<String, String> productInforMap = new HashMap<String, String>();
+        productInforMap.put("itemId", productItem.getId());
+        productInforMap.put("platform", productItem.getPlatform());
+        productInforMap.put("notifyWhenPriceLt", String.valueOf(desiredPrice));
+
+        service.trackProduct(productInforMap, authString)
+                .enqueue(new Callback<JsonObject>() {
+                    @Override
+                    public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                        if (response.isSuccessful()) {
+                            new InsertDbAsyncTask(AppDatabase.getInstance(mContext))
+                                    .execute(productItem);
+                            userActionState.setValue(UserActionState.DONE);
+                            userActionState.setValue(UserActionState.NONE);
+                        } else {
+                            userActionState.setValue(UserActionState.NOT_AUTHORIZED);
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<JsonObject> call, Throwable t) {
+                        userActionState.postValue(UserActionState.NETWORK_ERROR);
+                    }
+                });
+    }
+
+    public void deleteTrackedProduct(String productId, String platform, String authString) {
+        userActionState.setValue(UserActionState.PROCESSING);
+
+        service.deleteTrackedProduct(productId, platform, authString)
+                .enqueue(new Callback<JsonObject>() {
+                    @Override
+                    public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                        //here, we just consider 2 situations:
+                        //1. the request is successfully executed
+                        //2. the request fail due to user's access token expired
+                        //More situations should be further considered
+                        if (response.isSuccessful()) {
+                            new DeleteOneItemAsyncTask(AppDatabase.getInstance(mContext))
+                                    .execute(productId, platform);
+                            userActionState.setValue(UserActionState.DONE);
+                            userActionState.setValue(UserActionState.NONE);
+                        } else {
+                            userActionState.setValue(UserActionState.NOT_AUTHORIZED);
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<JsonObject> call, Throwable t) {
+                        userActionState.postValue(UserActionState.NETWORK_ERROR);
+                    }
+                });
     }
 
     public MutableLiveData<UserLoadingState> getUserLoadingState() {
@@ -98,10 +159,13 @@ public class UserRepo {
         return userTrackedProducts;
     }
 
+    public MutableLiveData<UserActionState> getUserActionState() {
+        return userActionState;
+    }
+
     public UserService getService() {
         return service;
     }
-
 
     private static class PopulateDbAsyncTask extends AsyncTask<List<ProductItem>, Void, Void> {
         private ProductItemDao mProductItemDao;
@@ -113,6 +177,34 @@ public class UserRepo {
         @Override
         protected Void doInBackground(List<ProductItem>... lists) {
             mProductItemDao.insertUserTrackedProducts(lists[0]);
+            return null;
+        }
+    }
+
+    private static class InsertDbAsyncTask extends AsyncTask<ProductItem, Void, Void> {
+        private ProductItemDao mProductItemDao;
+
+        public InsertDbAsyncTask(AppDatabase db) {
+            mProductItemDao = db.getProductItemDao();
+        }
+
+        @Override
+        protected Void doInBackground(ProductItem... items) {
+            mProductItemDao.insertProduct(items[0]);
+            return null;
+        }
+    }
+
+    private static class DeleteOneItemAsyncTask extends AsyncTask<String, Void, Void> {
+        private ProductItemDao mProductItemDao;
+
+        public DeleteOneItemAsyncTask(AppDatabase db) {
+            mProductItemDao = db.getProductItemDao();
+        }
+
+        @Override
+        protected Void doInBackground(String... params) {
+            mProductItemDao.deleteOneTrackedProduct(params[0], params[1]);
             return null;
         }
     }

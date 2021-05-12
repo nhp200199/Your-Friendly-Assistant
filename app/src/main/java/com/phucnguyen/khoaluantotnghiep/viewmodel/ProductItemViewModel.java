@@ -35,8 +35,8 @@ public class ProductItemViewModel extends AndroidViewModel {
         return mProductItemRepo.getSeller();
     }
 
-    public void makeApiCallToReceiveProductItem(String url, String include) {
-        mProductItemRepo.getItem(url, include);
+    public void makeApiCallToReceiveProductItem(String url, String include, String authString) {
+        mProductItemRepo.getItem(url, include, authString);
     }
 
     public LiveData<ProductItemResponse> getProductItemResponse() {
@@ -53,6 +53,10 @@ public class ProductItemViewModel extends AndroidViewModel {
 
     public LiveData<Contants.ItemLoadingState> getLoadingState() {
         return mProductItemRepo.getLoadingState();
+    }
+
+    public LiveData<ProductItem> getProductItemWithIdAndPlatform(String productId, String platform){
+        return mProductItemRepo.getProductItemWithIdAndPlatform(productId, platform);
     }
 
     public void retryLoadingProductItem() {

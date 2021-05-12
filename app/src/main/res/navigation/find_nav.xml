@@ -30,6 +30,12 @@
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right" />
+        <action
+            android:id="@+id/action_product_item_fragment_to_login_nav"
+            app:destination="@id/login_nav" />
+        <action
+            android:id="@+id/action_product_item_fragment_to_add_to_favorite_fragment"
+            app:destination="@id/add_to_favorite_fragment" />
     </fragment>
     <action
         android:id="@+id/action_global_productItemFragment"
@@ -49,4 +55,14 @@
             app:argType="string"
             app:nullable="true" />
     </fragment>
+    <include app:graph="@navigation/login_nav" />
+    <dialog
+        android:id="@+id/add_to_favorite_fragment"
+        android:name="com.phucnguyen.khoaluantotnghiep.ui.fragment.FavoriteActionDialogFragment"
+        android:label="AddToFavorite"
+        tools:layout="@layout/add_to_favorite_action_dialog">
+        <argument
+            android:name="wishedPrice"
+            app:argType="integer" />
+    </dialog>
 </navigation>
