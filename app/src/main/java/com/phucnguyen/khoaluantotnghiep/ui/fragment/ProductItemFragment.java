@@ -26,6 +26,9 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import androidx.viewpager.widget.ViewPager;
 
 import android.os.Handler;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.style.ForegroundColorSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -171,6 +174,7 @@ public class ProductItemFragment extends Fragment {
                     }
                     if (navBackStackEntry.getSavedStateHandle().contains("wishedPrice")) {
                         mWishedPrice = navBackStackEntry.getSavedStateHandle().get("wishedPrice");
+                        mProductItem.setDesiredPrice(mWishedPrice);
                         mUserViewModel.trackProduct(mProductItem, mWishedPrice);
                         navBackStackEntry.getSavedStateHandle().remove("wishedPrice");
                     }
@@ -213,7 +217,7 @@ public class ProductItemFragment extends Fragment {
                     case REGAINED_ACCESS_TOKEN:
                         accessToken = mUserViewModel.getSharedPreferences().getString("accessToken", null);
 
-                        if (!isTracked)
+                        if (!isTracked && mProductItem != null)
                             mUserViewModel.trackProduct(mProductItem, mWishedPrice);
                         else mUserViewModel.deleteTrackedProduct(mProductItem.getId(),
                                 mProductItem.getPlatform(),
@@ -251,10 +255,18 @@ public class ProductItemFragment extends Fragment {
                                     R.drawable.ic_favorite_violet, null));
                             isTracked = true;
 
-                            //here we are using the product item from remote database,
-                            //should have used the cached product
-                            //TODO: use the cached product to determine the visibility of
-                            // tvUpdateWishedPriceAction
+                            String updateWishedPriceAction = "Thông báo khi giá thấp hơn "
+                                    + Utils.formatNumber(cachedProductItem.getDesiredPrice(),
+                                    0,
+                                    true,
+                                    '.')
+                                    + ". Nhấn để thay đổi";
+                            SpannableString spannableString = new SpannableString(updateWishedPriceAction);
+                            spannableString.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.blue_500)),
+                                    updateWishedPriceAction.indexOf('.'),
+                                    updateWishedPriceAction.length(),
+                                    Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
+                            tvUpdateWishedPriceAction.setText(spannableString);
                             tvUpdateWishedPriceAction.setVisibility(View.VISIBLE);
                             if (!tvUpdateWishedPriceAction.hasOnClickListeners())
                                 tvUpdateWishedPriceAction.setOnClickListener(new View.OnClickListener() {
@@ -262,7 +274,8 @@ public class ProductItemFragment extends Fragment {
                                     public void onClick(View view) {
                                         if (mUserViewModel.getSharedPreferences().getString("accessToken", null) != null) {
                                             Bundle inforBundle = new Bundle();
-                                            inforBundle.putInt("wishedPrice", mProductItem.getProductPrice());
+                                            inforBundle.putInt("wishedPrice", cachedProductItem.getDesiredPrice());
+                                            inforBundle.putInt("currentPrice", cachedProductItem.getProductPrice());
                                             NavHostFragment.findNavController(ProductItemFragment.this)
                                                     .navigate(R.id.action_product_item_fragment_to_add_to_favorite_fragment, inforBundle);
                                         } else {
@@ -401,7 +414,7 @@ public class ProductItemFragment extends Fragment {
                 if (mUserViewModel.getSharedPreferences().getString("accessToken", null) != null) {
                     if (!isTracked) {
                         Bundle inforBundle = new Bundle();
-                        inforBundle.putInt("wishedPrice", mProductItem.getProductPrice());
+                        inforBundle.putInt("currentPrice", mProductItem.getProductPrice());
                         NavHostFragment.findNavController(ProductItemFragment.this)
                                 .navigate(R.id.action_product_item_fragment_to_add_to_favorite_fragment, inforBundle);
                     } else {

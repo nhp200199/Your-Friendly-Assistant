@@ -2,6 +2,7 @@ package com.phucnguyen.khoaluantotnghiep.model;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
@@ -25,13 +26,15 @@ public class ProductItem {
     private int mProductPrice;
     private int mSellerRate;
     @SerializedName("lastPriceChange")
-    @Ignore
+    @ColumnInfo(defaultValue = "0")
     private int priceDifference;
     @Ignore
     private boolean isTracked;
-    @Ignore
     @SerializedName("notifyWhenPriceLt")
+    @ColumnInfo(defaultValue = "0")
     private int desiredPrice;
+    @ColumnInfo(name = "updateTime", defaultValue = "0")
+    private long update;
 
     public ProductItem(String id, String name, String categoryId, String sellerId, String platform, float rating,
                        String productUrl, String thumbnailUrl, int totalReview,
@@ -159,6 +162,14 @@ public class ProductItem {
 
     public void setDesiredPrice(int desiredPrice) {
         this.desiredPrice = desiredPrice;
+    }
+
+    public long getUpdate() {
+        return update;
+    }
+
+    public void setUpdate(long update) {
+        this.update = update;
     }
 
     @Override

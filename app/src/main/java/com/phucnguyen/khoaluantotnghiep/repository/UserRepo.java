@@ -70,10 +70,16 @@ public class UserRepo {
                         ArrayList<ProductItem> combineTrackedProducts = new ArrayList<ProductItem>();
                         for (User.TrackedItem tikiItem : user.getTrackedTikiProducts()) {
                             tikiItem.getItem().setPlatform("tiki");
+                            tikiItem.getItem().setDesiredPrice(tikiItem.getNotifyWhenPriceLt());
+                            tikiItem.getItem().setUpdate(tikiItem.getUpdate());
+
                             combineTrackedProducts.add(tikiItem.getItem());
                         }
                         for (User.TrackedItem shopeeItem : user.getTrackedShopeeProducts()) {
                             shopeeItem.getItem().setPlatform("shopee");
+                            shopeeItem.getItem().setDesiredPrice(shopeeItem.getNotifyWhenPriceLt());
+                            shopeeItem.getItem().setUpdate(shopeeItem.getUpdate());
+
                             combineTrackedProducts.add(shopeeItem.getItem());
                         }
                         PopulateDbAsyncTask populateDbAsyncTask = new PopulateDbAsyncTask(AppDatabase.getInstance(mContext));

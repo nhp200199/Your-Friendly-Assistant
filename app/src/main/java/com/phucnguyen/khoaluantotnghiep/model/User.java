@@ -64,6 +64,8 @@ public class User {
 
     public class TrackedItem{
         private long create;
+        private long update;
+        private int notifyWhenPriceLt;
         private ProductItem item;
 
         public TrackedItem(long create, ProductItem item) {
@@ -85,6 +87,22 @@ public class User {
 
         public void setItem(ProductItem item) {
             this.item = item;
+        }
+
+        public long getUpdate() {
+            return update;
+        }
+
+        public void setUpdate(long update) {
+            this.update = update;
+        }
+
+        public int getNotifyWhenPriceLt() {
+            return notifyWhenPriceLt;
+        }
+
+        public void setNotifyWhenPriceLt(int notifyWhenPriceLt) {
+            this.notifyWhenPriceLt = notifyWhenPriceLt;
         }
     }
 }

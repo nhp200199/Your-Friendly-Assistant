@@ -95,7 +95,10 @@ public class ProductItemsAdapter extends RecyclerView.Adapter<ProductItemsAdapte
             holder.tvProductReviewQuantities.setText(mContext.getString(R.string.review_quantities,
                     item.getTotalReview()));
         } else if (mResId == R.layout.tracked_product_item) {
-            holder.tvWishedPrice.setText("Bạn sẽ nhận được thông báo khi giá thấp hơn " + item.getDesiredPrice());
+            holder.tvWishedPrice.setText("Thông báo khi giá thấp hơn " + Utils.formatNumber(item.getDesiredPrice(),
+                    0,
+                    true,
+                    '.'));
             holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View v) {

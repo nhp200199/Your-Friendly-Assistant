@@ -89,6 +89,7 @@ public class HomeFragment extends Fragment {
             public void onStateChanged(@NonNull LifecycleOwner source, @NonNull Lifecycle.Event event) {
                 if (event.equals(Lifecycle.Event.ON_RESUME)) {
                     if (navBackStackEntry.getSavedStateHandle().contains("wishedPrice") && mProductItem != null) {
+                        mProductItem.setDesiredPrice(navBackStackEntry.getSavedStateHandle().get("wishedPrice"));
                         userViewModel.trackProduct(mProductItem, mProductItem.getDesiredPrice());
                         navBackStackEntry.getSavedStateHandle().remove("wishedPrice");
                     }
@@ -234,6 +235,7 @@ public class HomeFragment extends Fragment {
 
                         Bundle inforBundle = new Bundle();
                         inforBundle.putInt("wishedPrice", mProductItem.getDesiredPrice());
+                        inforBundle.putInt("currentPrice", mProductItem.getProductPrice());
                         NavHostFragment.findNavController(HomeFragment.this)
                                 .navigate(R.id.action_home_fragment_to_add_to_favorite_fragment, inforBundle);
                         break;
