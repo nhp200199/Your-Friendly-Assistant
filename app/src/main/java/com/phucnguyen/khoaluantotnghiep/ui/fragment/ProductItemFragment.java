@@ -263,7 +263,7 @@ public class ProductItemFragment extends Fragment {
                                     + ". Nhấn để thay đổi";
                             SpannableString spannableString = new SpannableString(updateWishedPriceAction);
                             spannableString.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.blue_500)),
-                                    updateWishedPriceAction.indexOf('.'),
+                                    updateWishedPriceAction.lastIndexOf('.'),
                                     updateWishedPriceAction.length(),
                                     Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
                             tvUpdateWishedPriceAction.setText(spannableString);

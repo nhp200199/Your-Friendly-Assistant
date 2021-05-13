@@ -5,6 +5,7 @@ import android.os.AsyncTask;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Transformations;
 
 import com.google.gson.JsonObject;
 import com.phucnguyen.khoaluantotnghiep.database.AppDatabase;
@@ -16,6 +17,7 @@ import com.phucnguyen.khoaluantotnghiep.service.RetrofitInstance;
 import com.phucnguyen.khoaluantotnghiep.service.UserService;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -32,17 +34,27 @@ public class UserRepo {
     private LiveData<List<ProductItem>> userTrackedProducts;
     private MutableLiveData<UserLoadingState> userLoadingState = new MutableLiveData<UserLoadingState>();
     private MutableLiveData<UserActionState> userActionState = new MutableLiveData<UserActionState>();
+    private MutableLiveData<String> trackedProductFilter = new MutableLiveData<String>("Thêm gần đây");
     private UserService service;
-    private ProductItemDao productItemsService;
+    private ProductItemDao productItemsDao;
     private Context mContext;
 
     public UserRepo(Context context) {
         service = RetrofitInstance.getInstance().create(UserService.class);
-        productItemsService = AppDatabase.getInstance(context)
+        productItemsDao = AppDatabase.getInstance(context)
                 .getProductItemDao();
         mContext = context;
         user = new MutableLiveData<User>();
-        userTrackedProducts = productItemsService.getAllProducts();
+        userTrackedProducts = Transformations.switchMap(trackedProductFilter,
+                orderBy -> {
+                    switch (orderBy){
+                        case "Thêm gần đây":
+                            return productItemsDao.getAllProductsOrderedByTimeCreated();
+                        case "Thời gian cập nhật giá":
+                            return productItemsDao.getAllProductsOrderedByUpdateTime();
+                        default: return null;
+                    }
+                });
     }
 
     public LiveData<User> getUserByTokenId(String tokenId) {
@@ -72,6 +84,7 @@ public class UserRepo {
                             tikiItem.getItem().setPlatform("tiki");
                             tikiItem.getItem().setDesiredPrice(tikiItem.getNotifyWhenPriceLt());
                             tikiItem.getItem().setUpdate(tikiItem.getUpdate());
+                            tikiItem.getItem().setCreate(tikiItem.getCreate());
 
                             combineTrackedProducts.add(tikiItem.getItem());
                         }
@@ -79,6 +92,7 @@ public class UserRepo {
                             shopeeItem.getItem().setPlatform("shopee");
                             shopeeItem.getItem().setDesiredPrice(shopeeItem.getNotifyWhenPriceLt());
                             shopeeItem.getItem().setUpdate(shopeeItem.getUpdate());
+                            shopeeItem.getItem().setCreate(shopeeItem.getCreate());
 
                             combineTrackedProducts.add(shopeeItem.getItem());
                         }
@@ -113,6 +127,7 @@ public class UserRepo {
                     @Override
                     public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
                         if (response.isSuccessful()) {
+                            productItem.setCreate(Calendar.getInstance().getTimeInMillis());
                             new InsertDbAsyncTask(AppDatabase.getInstance(mContext))
                                     .execute(productItem);
                             userActionState.setValue(UserActionState.DONE);
@@ -163,6 +178,14 @@ public class UserRepo {
 
     public LiveData<List<ProductItem>> getUserTrackedProducts() {
         return userTrackedProducts;
+    }
+
+    public MutableLiveData<String> getTrackedProductFilter() {
+        return trackedProductFilter;
+    }
+
+    public void setTrackedProductFilter(String orderRequest) {
+        trackedProductFilter.setValue(orderRequest);
     }
 
     public MutableLiveData<UserActionState> getUserActionState() {

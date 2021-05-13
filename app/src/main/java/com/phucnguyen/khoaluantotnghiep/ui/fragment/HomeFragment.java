@@ -22,11 +22,14 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.PopupMenu;
 import android.widget.ProgressBar;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -48,6 +51,7 @@ public class HomeFragment extends Fragment {
     private TextView tvNetworkError;
     private Button btnGoToLoginScreen;
     private ProgressBar mProgressBar;
+    private Spinner spnOrderRequest;
 
     private UserViewModel userViewModel;
     private ProductItemsAdapter adapter;
@@ -131,8 +135,10 @@ public class HomeFragment extends Fragment {
 
                     if (productItems.size() > 0) {
                         tvNoProductsFound.setVisibility(View.GONE);
+                        spnOrderRequest.setVisibility(View.VISIBLE);
                     } else {
                         tvNoProductsFound.setVisibility(View.VISIBLE);
+                        spnOrderRequest.setVisibility(View.GONE);
                     }
                 }
             }
@@ -153,6 +159,7 @@ public class HomeFragment extends Fragment {
                         mProgressBar.setVisibility(View.GONE);
                         tvNetworkError.setVisibility(View.VISIBLE);
                         productItemContainer.setVisibility(View.GONE);
+                        spnOrderRequest.setVisibility(View.GONE);
                         break;
                     case EXPIRED_TOKEN:
                         // Display dialog to inform user to login again.
@@ -215,6 +222,7 @@ public class HomeFragment extends Fragment {
         tvNoProductsFound = view.findViewById(R.id.tvNoProductsFound);
         tvNetworkError = view.findViewById(R.id.tvNetworkError);
         btnGoToLoginScreen = view.findViewById(R.id.btnGoToLoginScreen);
+        spnOrderRequest = (Spinner) view.findViewById(R.id.spnOrderRequest);
 
         adapter = new ProductItemsAdapter(view.getContext(), R.layout.tracked_product_item);
         adapter.setListener(new ProductItemsAdapter.Listener() {
@@ -251,6 +259,27 @@ public class HomeFragment extends Fragment {
         });
         productItemContainer.setAdapter(adapter);
         productItemContainer.setLayoutManager(new LinearLayoutManager(getContext()));
+        ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<String>(
+                requireContext(),
+                android.R.layout.simple_spinner_item,
+                new String[]{
+                        "Thêm gần đây",
+                        "Thời gian cập nhật giá"
+                }
+        );
+        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spnOrderRequest.setAdapter(spinnerAdapter);
+        spnOrderRequest.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int pos, long id) {
+                userViewModel.setOrderRequest((String) adapterView.getItemAtPosition(pos));
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
 
         btnGoToLoginScreen.setOnClickListener(new View.OnClickListener() {
             @Override

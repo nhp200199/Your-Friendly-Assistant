@@ -35,6 +35,8 @@ public class ProductItem {
     private int desiredPrice;
     @ColumnInfo(name = "updateTime", defaultValue = "0")
     private long update;
+    @ColumnInfo(name = "createTime", defaultValue = "0")
+    private long create;
 
     public ProductItem(String id, String name, String categoryId, String sellerId, String platform, float rating,
                        String productUrl, String thumbnailUrl, int totalReview,
@@ -170,6 +172,14 @@ public class ProductItem {
 
     public void setUpdate(long update) {
         this.update = update;
+    }
+
+    public long getCreate() {
+        return create;
+    }
+
+    public void setCreate(long create) {
+        this.create = create;
     }
 
     @Override

@@ -16,7 +16,7 @@ import org.jetbrains.annotations.NotNull;
 
 @Database(entities = {ProductItem.class}, version = AppDatabase.DATABASE_VERSION)
 public abstract class AppDatabase extends RoomDatabase {
-    public static final int DATABASE_VERSION = 2;
+    public static final int DATABASE_VERSION = 3;
     public static final String DATABASE_NAME = "app_database";
 
     private static AppDatabase instance;
@@ -30,6 +30,14 @@ public abstract class AppDatabase extends RoomDatabase {
                     "ADD COLUMN desiredPrice INTEGER NOT NULL DEFAULT 0");
             database.execSQL("ALTER TABLE products " +
                     "ADD COLUMN updateTime INTEGER NOT NULL DEFAULT 0");
+        }
+    };
+
+    private static final Migration MIGRATION_2_3 = new Migration(2, 3) {
+        @Override
+        public void migrate(@NonNull @NotNull SupportSQLiteDatabase database) {
+            database.execSQL("ALTER TABLE products " +
+                    "ADD COLUMN createTime INTEGER NOT NULL DEFAULT 0");
         }
     };
 

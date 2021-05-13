@@ -100,12 +100,20 @@ public class UserViewModel extends AndroidViewModel {
         return userLoadingStateMLiveData;
     }
 
+    public LiveData<String> getOrderRequest() {
+        return userRepo.getTrackedProductFilter();
+    }
+
     public void setNewTokenId(String tokenId) {
         tokenIdMLiveData.setValue(tokenId);
     }
 
     public void setUserLoadingState(UserLoadingState loadingState) {
         userLoadingStateMLiveData.setValue(loadingState);
+    }
+
+    public void setOrderRequest(String request) {
+        userRepo.setTrackedProductFilter(request);
     }
 
     public void logoutUser() {

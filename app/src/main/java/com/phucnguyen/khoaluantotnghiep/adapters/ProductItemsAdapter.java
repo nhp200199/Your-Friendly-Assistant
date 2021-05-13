@@ -8,6 +8,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -127,6 +128,32 @@ public class ProductItemsAdapter extends RecyclerView.Adapter<ProductItemsAdapte
                     return true;
                 }
             });
+            int priceDifference = item.getPriceDifference();
+            if (priceDifference != 0) {
+                holder.priceChangeContainer.setVisibility(View.VISIBLE);
+
+                if (priceDifference > 0){
+                    holder.tvPriceDifference.setText(Utils.formatNumber(priceDifference,
+                            0,
+                            true,
+                            '.'));
+                    holder.tvPriceDifference.setTextColor(mContext.getResources().getColor(R.color.red_sad));
+                    //set the arrow to indicate price increase
+                    holder.iconPriceChange.setRotation(-90);
+                    holder.iconPriceChange.setColorFilter(mContext.getResources().getColor(R.color.red_sad));
+                } else if (priceDifference < 0){
+                    holder.tvPriceDifference.setText(Utils.formatNumber(Math.abs(priceDifference),
+                            0,
+                            true,
+                            '.'));
+                    holder.tvPriceDifference.setTextColor(mContext.getResources().getColor(R.color.green_happy));
+                    //set the arrow to indicate price decrease
+                    holder.iconPriceChange.setRotation(90);
+                    holder.iconPriceChange.setColorFilter(mContext.getResources().getColor(R.color.green_happy));
+                }
+            } else {
+                holder.priceChangeContainer.setVisibility(View.GONE);
+            }
         }
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -182,12 +209,15 @@ public class ProductItemsAdapter extends RecyclerView.Adapter<ProductItemsAdapte
         private ImageView imgProduct;
         private ImageView iconRating;
         private ImageView icActionMore;
+        private ImageView iconPriceChange;
         private TextView tvPrice;
         private TextView tvProductTitle;
         private TextView tvProductRate;
         private TextView tvProductReviewQuantities;
         private TextView tvPlatform;
         private TextView tvWishedPrice;
+        private TextView tvPriceDifference;
+        private LinearLayout priceChangeContainer;
 
         public ProductItemViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -203,7 +233,10 @@ public class ProductItemsAdapter extends RecyclerView.Adapter<ProductItemsAdapte
 
             //additional mapping views for tracked_product_item.xml
             icActionMore = itemView.findViewById(R.id.imgActionMore);
+            iconPriceChange = (ImageView) itemView.findViewById(R.id.iconPriceChange);
             tvWishedPrice = itemView.findViewById(R.id.tvWishedPrice);
+            tvPriceDifference = (TextView) itemView.findViewById(R.id.tvPriceDifferrence);
+            priceChangeContainer = (LinearLayout) itemView.findViewById(R.id.priceChangesContainer);
         }
     }
 }

@@ -33,7 +33,7 @@ public class ProductItemRepo {
 
     public ProductItemRepo(Context context) {
         mProductItemDao = AppDatabase.getInstance(context).getProductItemDao();
-        mProductItems = mProductItemDao.getAllProducts();
+        mProductItems = mProductItemDao.getAllProductsOrderedByUpdateTime();
         mProductItemService = RetrofitInstance.getProductItemService();
         mProductItemResponseMutableLiveData = new MutableLiveData<ProductItemResponse>();
         loadingState = new MutableLiveData<ItemLoadingState>();
