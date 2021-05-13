@@ -20,6 +20,9 @@
         <action
             android:id="@+id/action_home_fragment_to_redirect_confirmation_dialog"
             app:destination="@id/redirect_confirmation_dialog" />
+        <action
+            android:id="@+id/action_home_fragment_to_add_to_favorite_fragment"
+            app:destination="@id/add_to_favorite_fragment" />
     </fragment>
     <include app:graph="@navigation/login_nav" />
     <fragment

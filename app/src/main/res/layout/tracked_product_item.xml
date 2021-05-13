@@ -89,52 +89,44 @@
             android:textAppearance="?attr/textAppearanceCaption"
             android:textColor="@color/black" />
 
-        <LinearLayout
-            android:id="@+id/productDetailContainer"
-            android:layout_width="wrap_content"
+
+        <TextView
+            android:id="@+id/tvWishedPrice"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/tvProductTitle"
             android:layout_alignStart="@id/priceContainer"
-            android:layout_marginTop="12dp"
+            android:layout_marginTop="6dp"
+            android:layout_marginEnd="16dp"
+            android:layout_toStartOf="@id/actionContainer" />
+
+
+        <LinearLayout
+            android:id="@+id/actionContainer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@id/tvWishedPrice"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="4dp"
             android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/tvProductRate"
-                android:layout_width="wrap_content"
+                android:id="@+id/tvPlatform"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="4.5"
+                android:layout_marginEnd="8dp"
+                android:layout_weight="2"
+                android:text="Tiki"
+                android:textAlignment="textEnd"
                 android:textAppearance="?attr/textAppearanceBody2" />
 
             <ImageView
-                android:id="@+id/iconRating"
+                android:id="@+id/imgActionMore"
                 android:layout_width="12dp"
                 android:layout_height="12dp"
                 android:layout_gravity="center_vertical"
-                android:layout_marginStart="4dp"
-                android:layout_marginEnd="12dp"
-                android:contentDescription="@string/img_product_rate_icon_des"
-                android:scaleType="centerCrop"
-                android:src="@drawable/ic_star"
-                app:tint="@color/orange_shopee" />
-
-            <TextView
-                android:id="@+id/tvProductItemReview"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/review_quantities"
-                android:textAppearance="?attr/textAppearanceBody2"
-                android:textColor="@color/gray_300" />
+                android:src="@mipmap/ic_launcher" />
 
         </LinearLayout>
-
-        <TextView
-            android:id="@+id/tvPlatform"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBottom="@id/productDetailContainer"
-            android:layout_alignParentEnd="true"
-            android:layout_marginEnd="8dp"
-            android:textAlignment="textEnd"
-            android:textAppearance="?attr/textAppearanceBody2" />
     </RelativeLayout>
 </androidx.cardview.widget.CardView>

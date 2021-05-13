@@ -29,6 +29,9 @@ public class ProductItem {
     private int priceDifference;
     @Ignore
     private boolean isTracked;
+    @Ignore
+    @SerializedName("notifyWhenPriceLt")
+    private int desiredPrice;
 
     public ProductItem(String id, String name, String categoryId, String sellerId, String platform, float rating,
                        String productUrl, String thumbnailUrl, int totalReview,
@@ -148,6 +151,14 @@ public class ProductItem {
 
     public void setTracked(boolean tracked) {
         isTracked = tracked;
+    }
+
+    public int getDesiredPrice() {
+        return desiredPrice;
+    }
+
+    public void setDesiredPrice(int desiredPrice) {
+        this.desiredPrice = desiredPrice;
     }
 
     @Override

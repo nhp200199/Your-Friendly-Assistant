@@ -2,13 +2,16 @@ package com.phucnguyen.khoaluantotnghiep.adapters;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.PopupMenu;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.paging.PagedListAdapter;
 import androidx.recyclerview.widget.DiffUtil;
@@ -24,13 +27,22 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ProductItemsAdapter extends RecyclerView.Adapter<ProductItemsAdapter.ProductItemViewHolder> {
-    public interface Listener{
+    public static final int ACTION_UPDATE_PRICE = 0;
+    public static final int ACTION_DETETE_ITEM = 1;
+
+    public interface Listener {
         void onItemClicked(String url);
     }
+
+    public interface ActionListener {
+        void onActionClicked(int which, ProductItem itemToBeActedOn);
+    }
+
     private Context mContext;
     private int mResId;
     private List<ProductItem> mProductItems = new ArrayList<>();
     private Listener mListener;
+    private ActionListener actionListener;
 
     public ProductItemsAdapter(Context context, int resId) {
         mContext = context;
@@ -71,17 +83,47 @@ public class ProductItemsAdapter extends RecyclerView.Adapter<ProductItemsAdapte
 
         //bind views for product_item layout
         if (mResId == R.layout.product_item) {
-            if (item.getRating() == 0){
+            if (item.getRating() == 0) {
                 holder.iconRating.setImageResource(R.drawable.ic_question_face_12px);
                 holder.tvProductRate.setText("?");
                 holder.tvProductRate.setTextColor(mContext.getResources().getColor(R.color.purple_question));
-            } else{
+            } else {
                 holder.iconRating.setImageResource(R.drawable.ic_star);
                 holder.tvProductRate.setText(NumbersFormatter.formatFloatToString(item.getRating(), 1));
                 holder.tvProductRate.setTextColor(mContext.getResources().getColor(R.color.black));
             }
             holder.tvProductReviewQuantities.setText(mContext.getString(R.string.review_quantities,
                     item.getTotalReview()));
+        } else if (mResId == R.layout.tracked_product_item) {
+            holder.tvWishedPrice.setText("Bạn sẽ nhận được thông báo khi giá thấp hơn " + item.getDesiredPrice());
+            holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    PopupMenu popupMenu = new PopupMenu(mContext, holder.icActionMore);
+                    popupMenu.inflate(R.menu.tracked_product);
+                    popupMenu.show();
+
+                    popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                        @Override
+                        public boolean onMenuItemClick(MenuItem menuItem) {
+                            if (actionListener != null) {
+                                switch (menuItem.getItemId()) {
+                                    case R.id.actionUpdateWishedPrice:
+                                        actionListener.onActionClicked(ACTION_UPDATE_PRICE, item);
+                                        break;
+                                    case R.id.actionDeleteTrackedProduct:
+                                        actionListener.onActionClicked(ACTION_DETETE_ITEM, item);
+                                        break;
+                                }
+                                return true;
+                            }
+                            return false;
+
+                        }
+                    });
+                    return true;
+                }
+            });
         }
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -124,6 +166,10 @@ public class ProductItemsAdapter extends RecyclerView.Adapter<ProductItemsAdapte
         mListener = listener;
     }
 
+    public void setActionListener(ActionListener actionListener) {
+        this.actionListener = actionListener;
+    }
+
     public void setProductItems(List<ProductItem> productItems) {
         mProductItems = productItems;
         notifyDataSetChanged();
@@ -132,11 +178,13 @@ public class ProductItemsAdapter extends RecyclerView.Adapter<ProductItemsAdapte
     public static class ProductItemViewHolder extends RecyclerView.ViewHolder {
         private ImageView imgProduct;
         private ImageView iconRating;
+        private ImageView icActionMore;
         private TextView tvPrice;
         private TextView tvProductTitle;
         private TextView tvProductRate;
         private TextView tvProductReviewQuantities;
         private TextView tvPlatform;
+        private TextView tvWishedPrice;
 
         public ProductItemViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -149,6 +197,10 @@ public class ProductItemsAdapter extends RecyclerView.Adapter<ProductItemsAdapte
             //additional mapping views for product_item.xml
             tvProductRate = (TextView) itemView.findViewById(R.id.tvProductRate);
             tvProductReviewQuantities = (TextView) itemView.findViewById(R.id.tvProductItemReview);
+
+            //additional mapping views for tracked_product_item.xml
+            icActionMore = itemView.findViewById(R.id.imgActionMore);
+            tvWishedPrice = itemView.findViewById(R.id.tvWishedPrice);
         }
     }
 }
