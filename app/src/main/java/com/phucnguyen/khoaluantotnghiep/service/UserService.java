@@ -18,6 +18,7 @@ import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 
@@ -47,10 +48,21 @@ public interface UserService {
     @FormUrlEncoded
     @POST("api/v1/user/tracking-items")
     Call<JsonObject> trackProduct(@FieldMap Map<String, String> productInfoMap,
-                                            @Header("Authorization") String authorizedString);
+                                  @Header("Authorization") String authorizedString);
 
     @DELETE("api/v1/user/tracking-items/{productId}")
     Call<JsonObject> deleteTrackedProduct(@Path("productId") String productId,
                                           @Query("platform") String platform,
                                           @Header("Authorization") String authString);
+
+    @FormUrlEncoded
+    @PUT("api/v1/user/change-password")
+    Call<JsonObject> changePassword(@Field("currentPassword") String currentPassword,
+                                    @Field("newPassword") String newPassword,
+                                    @Header("Authorization") String authorizedString);
+
+    @FormUrlEncoded
+    @PUT("api/v1/user/update-account")
+    Call<JsonObject> changeUsername(@Field("name") String name,
+                                    @Header("Authorization") String authorizedString);
 }

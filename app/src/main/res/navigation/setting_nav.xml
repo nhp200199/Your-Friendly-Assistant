@@ -29,6 +29,9 @@
                 android:name="com.phucnguyen.khoaluantotnghiep.ui.fragment.OnBoardingFragment.IS_REVIEWING"
                 android:defaultValue="true" />
         </action>
+        <action
+            android:id="@+id/action_setting_fragment_to_user_information_fragment"
+            app:destination="@id/user_information_fragment" />
     </fragment>
     <fragment
         android:id="@+id/product_item_fragment"
@@ -85,8 +88,8 @@
         tools:layout="@layout/add_to_favorite_action_dialog">
         <argument
             android:name="wishedPrice"
-            app:argType="integer"
-            android:defaultValue="0" />
+            android:defaultValue="0"
+            app:argType="integer" />
         <argument
             android:name="currentPrice"
             app:argType="integer" />
@@ -100,4 +103,46 @@
             android:defaultValue="false"
             app:argType="boolean" />
     </fragment>
+    <dialog
+        android:id="@+id/user_information_fragment"
+        android:name="com.phucnguyen.khoaluantotnghiep.ui.fragment.UserInformationDialogFragment"
+        tools:layout="@layout/dialog_user_information">
+        <argument
+            android:name="userName"
+            android:defaultValue="MyName"
+            app:argType="string" />
+        <argument
+            android:name="userEmail"
+            android:defaultValue="crawlercart@gmail.com"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_user_information_fragment_to_information_dialog"
+            app:destination="@id/information_dialog" />
+        <action
+            android:id="@+id/action_user_information_fragment_to_change_username_dialog"
+            app:destination="@id/change_username_dialog" />
+    </dialog>
+    <dialog
+        android:id="@+id/information_dialog"
+        android:name="com.phucnguyen.khoaluantotnghiep.ui.fragment.InforDialogFragment">
+
+        <argument
+            android:name="title"
+            app:argType="string" />
+        <argument
+            android:name="message"
+            app:argType="string" />
+        <argument
+            android:name="posMessage"
+            app:argType="string" />
+    </dialog>
+    <dialog
+        android:id="@+id/change_username_dialog"
+        android:name="com.phucnguyen.khoaluantotnghiep.ui.fragment.ChangeUserNameDialogFragment"
+        tools:layout="@layout/dialog_change_username">
+
+        <argument
+            android:name="username"
+            app:argType="string" />
+    </dialog>
 </navigation>

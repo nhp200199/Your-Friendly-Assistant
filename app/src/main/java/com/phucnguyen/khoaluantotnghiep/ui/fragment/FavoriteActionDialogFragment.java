@@ -92,6 +92,34 @@ public class FavoriteActionDialogFragment extends BottomSheetDialogFragment {
                 return true;
             }
         });
+        btnIncrease.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(mWishedPrice < 1.2 * currentPrice){
+                    int numberLength = String.valueOf(mWishedPrice).length();
+                    int increaseAmount = (int) Math.pow(10, numberLength - 2);
+                    mWishedPrice += increaseAmount;
+                    tvPrice.setText(String.valueOf(Utils.formatNumber(mWishedPrice,
+                            0,
+                            true,
+                            '.')));
+                }
+            }
+        });
+        btnDecrease.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(mWishedPrice > 1000){
+                    int numberLength = String.valueOf(mWishedPrice).length();
+                    int decreaseAmount = (int) Math.pow(10, numberLength - 2);
+                    mWishedPrice -= decreaseAmount;
+                    tvPrice.setText(String.valueOf(Utils.formatNumber(mWishedPrice,
+                            0,
+                            true,
+                            '.')));
+                }
+            }
+        });
         return v;
     }
 }
