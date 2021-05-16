@@ -99,9 +99,9 @@ public class ReviewDataSource extends PageKeyedDataSource<Integer, Review> {
                 queryOptions).enqueue(new Callback<ReviewResponse>() {
             @Override
             public void onResponse(Call<ReviewResponse> call, Response<ReviewResponse> response) {
-                int lastPage = response.body().getPagination().getLastPage();
-                Integer nextPageKey = params.key == lastPage ? null : params.key + 1;
                 if (response.isSuccessful()) {
+                    int lastPage = response.body().getPagination().getLastPage();
+                    Integer nextPageKey = params.key == lastPage ? null : params.key + 1;
                     loadingState.postValue(LoadingState.SUCCESS);
                     callback.onResult(response.body().getReviews(), nextPageKey);
                 } else {

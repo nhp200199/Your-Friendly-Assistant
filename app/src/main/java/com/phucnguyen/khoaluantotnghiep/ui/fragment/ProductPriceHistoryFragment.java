@@ -5,6 +5,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -14,6 +15,7 @@ import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.style.ForegroundColorSpan;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -56,6 +58,7 @@ public class ProductPriceHistoryFragment extends Fragment {
     private TextView tvDailyPricesHistoryChange;
     private ListView lvDailyPricesHistoryChange;
     private LinearLayout priceHistoryContainer;
+    private NestedScrollView nestedScrollView;
 
     private ProductItemViewModel mProductItemViewModel;
     private List<Entry> mEntries = new ArrayList<Entry>();
@@ -212,8 +215,25 @@ public class ProductPriceHistoryFragment extends Fragment {
         tvDailyPricesHistoryChange = v.findViewById(R.id.tvDailyPricesHistory);
         priceHistoryContainer = v.findViewById(R.id.priceHistoryContainer);
         lvDailyPricesHistoryChange = (ListView) v.findViewById(R.id.lvDailyPricesHistory);
+        nestedScrollView = (NestedScrollView) v.findViewById(R.id.nestedScrollView);
 
         mDailyPricesAdapter = new DailyPricesAdapter(requireContext(), mDailyPriceList);
+        lvDailyPricesHistoryChange.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                //disable the scroll behavior of the nested scroll view so that the list view can scroll
+                //If we instead set the behavior nestedScrollingEnable(true) in the xml, the list view can
+                //scroll down but cannot scroll up (due to interference of nested scroll view)
+                nestedScrollView.requestDisallowInterceptTouchEvent(true);
+                int action = event.getActionMasked();
+                switch (action) {
+                    case MotionEvent.ACTION_UP:
+                        nestedScrollView.requestDisallowInterceptTouchEvent(false);
+                        return true;
+                }
+                return false;
+            }
+        });
         lvDailyPricesHistoryChange.setAdapter(mDailyPricesAdapter);
     }
 
