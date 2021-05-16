@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">KhoaLuanTotNghiep</string>
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="hello_blank_fragment" translatable="false">Hello blank fragment</string>
     <string name="title_welcome">Chào mừng bạn đến với chúng tôi</string>
     <string name="text_welcome">Cùng nhau đi một vòng với hướng dẫn sử dụng nhé</string>
     <string name="button_text_start_manual">Hãy bắt đầu nào</string>
@@ -36,10 +36,18 @@
     <string name="log_in_instruction">Khi đăng nhập, bạn có thể lưu các sản phẩm yêu thích của mình một cách dễ dàng.</string>
     <string name="prompt_log_in_method">Hãy chọn một trong hai cách dưới đây:</string>
 
+    <!--    Start strings for dialogs-->
     <!--    Strings for the notification dialog-->
     <string name="notification_dialog_text">Đã tắt thông báo. Bạn sẽ không nhận được thông tin về giá của các sản phẩm. Bạn có muốn bật lại không?</string>
     <string name="notification_dialog_positive_text">Nhận thông báo</string>
     <string name="notification_dialog_negative_text">Vẫn tiếp tục</string>
+
+    <!--add_to_favorite_action dialog-->
+    <string name="when_to_notify">Thông báo cho tôi khi giá thấp hơn</string>
+    <string name="substract_sign" translatable="false">-</string>
+    <string name="plus_sign" translatable="false">+</string>
+    <string name="track_product">theo dõi sản phẩm này</string>
+    <!--    End strings for dialogs-->
 
     <!--String for Find fragment-->
     <string name="find_introduction">Hãy tìm kiếm sản phẩm bạn thích từ hai sàn thương mại điện tử Tiki và Shopee nhé</string>
@@ -56,7 +64,7 @@
     <string name="img_product_ava_des">hình sản phẩm</string>
     <string name="img_product_rate_icon_des">đánh giá sản phẩm</string>
     <string name="img_product_reviews_quantities_icon_des">số lượt bình luận</string>
-    <string name="price_currency">đ</string>
+    <string name="price_currency" translatable="false">đ</string>
     <string name="review_quantities">%1$d bình luận</string>
     <string name="price_changes_counter">Sản phẩm có &lt;b>%1$d&lt;/b> lần thay đổi giá với &lt;b>%2$d&lt;/b> mức giá khác nhau</string>
 
@@ -68,5 +76,21 @@
     <string name="guideline_step_5">Xong! Các thông tin cần thiết về sản phẩm sẽ được hiển thị ngay tức thời</string>
 
     <!--General strings-->
-    <string name="default_text_placeholder">---</string>
+    <string name="default_text_placeholder" translatable="false">---</string>
+    <string name="no_product_found">không có sản phẩm</string>
+    <string name="all_options">Tất cả</string>
+    <string name="no_products_followed">Bạn chưa theo dõi sản phẩm nào cả. Thêm sản phẩm ngay để nhận thông báo khi giá giảm</string>
+    <string name="loading_error">Lỗi xảy ra</string>
+    <string name="edt_password_hint">Mật khẩu</string>
+    <string name="btn_login_text">Đăng nhập</string>
+    <string name="loading_placeholder_text">Đang xử lý …</string>
+    <string name="forgot_password_text">Bạn quên mật khẩu?</string>
+    <string name="review_from_customers">Bình luận cùng ảnh thực tế từ khách hàng</string>
+    <string name="contains_videos_or_images">Có hình ảnh/video</string>
+    <string name="summary_title">Tóm tắt</string>
+    <string name="daily_price_title">Lịch sử thay đổi giá trong ngày</string>
+    <string name="username_hint">Tên của bạn</string>
+    <string name="repeat_password_hint">Nhập lại mật khẩu</string>
+    <string name="retrieve_password">Lấy lại mật khẩu</string>
+    <string name="sale_price_title">Giá thay đổi trong chương trình khuyến mãi</string>
 </resources>

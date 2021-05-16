@@ -30,7 +30,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
-                android:text="Tóm tắt"
+                android:text="@string/summary_title"
                 android:textSize="18sp"
                 android:textStyle="bold" />
 
@@ -68,7 +68,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="8dp"
-                android:text="Lịch sử thay đổi giá trong ngày"
+                android:text="@string/daily_price_title"
                 android:textSize="18sp"
                 android:textStyle="bold"
                 android:visibility="invisible" />

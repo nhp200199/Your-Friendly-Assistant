@@ -24,7 +24,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginHorizontal="64dp"
-        android:text="không có sản phẩm"
+        android:text="@string/no_product_found"
         android:textAlignment="center"
         android:textAppearance="?attr/textAppearanceBody1"
         android:textColor="#ACA5A5"

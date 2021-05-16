@@ -23,7 +23,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="32dp"
         android:layout_marginEnd="16dp"
-        android:text="Chào mừng bạn đến với chúng tôi"
+        android:text="@string/title_welcome"
         android:textAlignment="center"
         android:textColor="#ACA5A5"
         android:textAppearance="?attr/textAppearanceBody1" />

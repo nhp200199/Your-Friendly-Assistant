@@ -116,7 +116,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
                 android:layout_weight="2"
-                android:text="Tiki"
                 android:textAlignment="textEnd"
                 android:textAppearance="?attr/textAppearanceBody2" />
 

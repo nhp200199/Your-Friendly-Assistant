@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="8dp"
         android:layout_marginTop="8dp"
-        android:text="Bình luận cùng ảnh thực tế từ khách hàng"
+        android:text="@string/review_from_customers"
         android:textAppearance="?attr/textAppearanceBody1"
         android:textColor="@color/black"
         android:textStyle="bold" />
@@ -34,7 +34,7 @@
             android:enabled="false"
             android:paddingHorizontal="10dp"
             android:tag="all"
-            android:text="Tất cả"
+            android:text="@string/all_options"
             android:textColor="@color/black" />
 
         <TextView
@@ -46,7 +46,7 @@
             android:enabled="false"
             android:paddingHorizontal="10dp"
             android:tag="has_media"
-            android:text="Có hình ảnh/video"
+            android:text="@string/contains_videos_or_images"
             android:textColor="@color/black" />
 
         <TextView

@@ -18,6 +18,17 @@
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right" />
+        <action
+            android:id="@+id/action_setting_fragment_to_on_boarding_fragment"
+            app:destination="@id/on_boarding_fragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right">
+            <argument
+                android:name="com.phucnguyen.khoaluantotnghiep.ui.fragment.OnBoardingFragment.IS_REVIEWING"
+                android:defaultValue="true" />
+        </action>
     </fragment>
     <fragment
         android:id="@+id/product_item_fragment"
@@ -80,4 +91,13 @@
             android:name="currentPrice"
             app:argType="integer" />
     </dialog>
+    <fragment
+        android:id="@+id/on_boarding_fragment"
+        android:name="com.phucnguyen.khoaluantotnghiep.ui.fragment.OnBoardingFragment"
+        android:label="OnBoardingFragment">
+        <argument
+            android:name="com.phucnguyen.khoaluantotnghiep.OnBoardingFragment.IS_REVIEWING"
+            android:defaultValue="false"
+            app:argType="boolean" />
+    </fragment>
 </navigation>

@@ -43,13 +43,6 @@
                 android:name="com.phucnguyen.khoaluantotnghiep.ui.fragment.OnBoardingFragment.IS_REVIEWING"
                 android:defaultValue="true" />
         </action>
-        <action
-            android:id="@+id/action_setting_fragment_to_language_setting_fragment"
-            app:destination="@id/language_setting_fragment"
-            app:enterAnim="@anim/slide_in_right"
-            app:exitAnim="@anim/slide_out_left"
-            app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right" />
     </fragment>
     <fragment
         android:id="@+id/log_in_fragment"
@@ -65,11 +58,6 @@
             android:defaultValue="false"
             app:argType="boolean" />
     </fragment>
-    <fragment
-        android:id="@+id/language_setting_fragment"
-        android:name="com.phucnguyen.khoaluantotnghiep.ui.fragment.LanguageSettingFragment"
-        android:label="Ngôn ngữ"
-        tools:layout="@layout/fragment_language_setting" />
     <fragment
         android:id="@+id/product_item_fragment"
         android:name="com.phucnguyen.khoaluantotnghiep.ui.fragment.ProductItemFragment"

@@ -11,7 +11,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Thông báo cho tôi khi giá thấp hơn"
+        android:text="@string/when_to_notify"
         android:textSize="18sp"
         android:textStyle="bold" />
 
@@ -27,7 +27,7 @@
             android:id="@+id/btnDecrease"
             android:layout_width="50dp"
             android:layout_height="wrap_content"
-            android:text="-"
+            android:text="@string/substract_sign"
             android:textColor="@color/black"
             android:textStyle="bold"
             app:backgroundTint="@color/gray_300" />
@@ -38,14 +38,13 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
-            android:text="200000"
             android:textSize="18sp" />
 
         <Button
             android:id="@+id/btnIncrease"
             android:layout_width="50dp"
             android:layout_height="wrap_content"
-            android:text="+"
+            android:text="@string/plus_sign"
             android:textColor="@color/black"
             android:textStyle="bold"
             app:backgroundTint="@color/gray_300" />
@@ -57,5 +56,5 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:text="theo dõi sản phẩm này" />
+        android:text="@string/track_product" />
 </LinearLayout>

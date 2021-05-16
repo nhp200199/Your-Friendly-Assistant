@@ -4,13 +4,6 @@
 
     <PreferenceCategory android:title="@string/setting_category">
 
-        <Preference
-            app:fragment="com.phucnguyen.khoaluantotnghiep.LanguageSettingFragment"
-            android:icon="@drawable/ic_global"
-            android:key="language_pref"
-            app:defaultValue="Vietnamese"
-            app:useSimpleSummaryProvider="true"
-            android:title="@string/language_item" />
         <SwitchPreference
             android:defaultValue="true"
             android:icon="@drawable/ic_bell"
@@ -22,14 +15,6 @@
             android:icon="@drawable/ic_information"
             app:key="instruction_pref"
             android:title="@string/how_to_use_item" />
-        <Preference
-            android:icon="@drawable/ic_comment"
-            android:title="@string/leave_comment_item"
-            android:key="comment_pref"/>
-        <Preference
-            android:icon="@drawable/ic_share"
-            android:title="@string/share_app_item"
-            android:key="share_pref"/>
 
     </PreferenceCategory>
 </PreferenceScreen>

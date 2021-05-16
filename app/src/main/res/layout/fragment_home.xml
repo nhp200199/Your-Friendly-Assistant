@@ -61,7 +61,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginHorizontal="32dp"
-            android:text="Bạn chưa theo dõi sản phẩm nào cả. Thêm sản phẩm ngay để nhận thông báo khi giá giảm"
+            android:text="@string/no_products_followed"
             android:textAlignment="center"
             android:textSize="18sp"
             android:visibility="invisible" />
@@ -72,7 +72,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginHorizontal="32dp"
-            android:text="Lỗi xảy ra"
+            android:text="@string/loading_error"
             android:textSize="18sp"
             android:visibility="invisible" />
 

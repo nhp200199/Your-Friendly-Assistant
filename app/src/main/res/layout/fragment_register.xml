@@ -12,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:hint="Tên của bạn"
+        android:hint="@string/username_hint"
         app:boxBackgroundColor="@null"
         app:boxBackgroundMode="outline"
         app:boxCornerRadiusBottomEnd="5dp"
@@ -58,7 +58,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:hint="Mật khẩu"
+        android:hint="@string/edt_password_hint"
         app:boxBackgroundColor="@null"
         app:boxBackgroundMode="outline"
         app:boxCornerRadiusBottomEnd="5dp"
@@ -82,7 +82,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:hint="Nhập lại mật khẩu"
+        android:hint="@string/repeat_password_hint"
         app:boxBackgroundColor="@null"
         app:boxBackgroundMode="outline"
         app:boxCornerRadiusBottomEnd="5dp"
@@ -107,7 +107,7 @@
         android:layout_height="50dp"
         android:layout_marginTop="24dp"
         android:enabled="false"
-        android:text="Đăng kí"
+        android:text="@string/btn_login_text"
         android:textAllCaps="false"
         android:textSize="18sp" />
 
@@ -126,7 +126,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Đang xử lý ..." />
+                android:text="@string/loading_placeholder_text" />
 
             <ProgressBar
                 android:layout_width="24dp"
