@@ -117,19 +117,33 @@ public class UserViewModel extends AndroidViewModel {
     }
 
     public void logoutUser() {
-        sharedPreferences.edit()
-                .putString("accessToken", null)
-                .putString("refreshToken", null)
-                .commit();
-        //NONE indicates that no user is currently logged in
-        userLoadingStateMLiveData.setValue(NONE);
-        userRepo.deleteAllProductsFromDatabase();
-        tokenIdMLiveData.setValue(null);
+        String authString = "Bearer " + sharedPreferences.getString("accessToken", null);
+        userRepo.getService().logoutUser(authString)
+                .enqueue(new Callback<JsonObject>() {
+                    @Override
+                    public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                        sharedPreferences.edit()
+                                .putString("accessToken", null)
+                                .putString("refreshToken", null)
+                                .commit();
+                        //NONE indicates that no user is currently logged in
+                        userLoadingStateMLiveData.setValue(NONE);
+                        userRepo.deleteAllProductsFromDatabase();
+                        tokenIdMLiveData.setValue(null);
+                    }
+
+                    @Override
+                    public void onFailure(Call<JsonObject> call, Throwable t) {
+
+                    }
+                });
     }
 
     public void loginUser(String email, String password) {
         userLoadingStateMLiveData.postValue(LOADING);
-        userRepo.getService().loginToUser(email, password)
+        userRepo.getService().loginToUser(email,
+                password,
+                sharedPreferences.getString("deviceToken", null))
                 .enqueue(new Callback<LogInResponse>() {
                     @Override
                     public void onResponse(Call<LogInResponse> call, Response<LogInResponse> response) {

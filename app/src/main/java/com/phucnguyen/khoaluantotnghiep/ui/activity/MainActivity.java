@@ -38,7 +38,8 @@ public class MainActivity extends AppCompatActivity implements ProductItemFragme
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
-        if (intent.getAction().equals(Intent.ACTION_SEND))
+        if (intent.getAction().equals(Intent.ACTION_SEND)||
+                intent.hasExtra("productUrl"))
             moveToProductItem(intent);
     }
 
@@ -150,18 +151,20 @@ public class MainActivity extends AppCompatActivity implements ProductItemFragme
     }
 
     private void moveToProductItem(Intent intent) {
+        String productUrlString = null;
+        Bundle bundle = new Bundle();
         if (intent.getAction() != null && intent.getAction().equals(Intent.ACTION_SEND)
                 && intent.getClipData() != null) {
-
-            String productUrlString = null;
             if (intent.hasExtra(Intent.EXTRA_TEXT)) {
                 productUrlString = intent.getStringExtra(Intent.EXTRA_TEXT);
             }
-            Bundle bundle = new Bundle();
-            bundle.putString("productUrl", productUrlString);
 
-            curNavController.navigate(R.id.action_global_productItemFragment, bundle);
+        } else if (intent.hasExtra("productUrl")){
+            productUrlString = intent.getStringExtra("productUrl");
         }
+
+        bundle.putString("productUrl", productUrlString);
+        curNavController.navigate(R.id.action_global_productItemFragment, bundle);
     }
 
     private void setUpToolbar() {

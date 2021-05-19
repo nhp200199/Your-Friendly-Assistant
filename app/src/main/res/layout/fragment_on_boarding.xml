@@ -30,6 +30,7 @@
             android:layout_height="match_parent"
             android:layout_marginTop="32dp"
             android:layout_below="@+id/tvIgnore"
+            android:layout_above="@id/tl_swipe"
             />
 
         <com.google.android.material.tabs.TabLayout

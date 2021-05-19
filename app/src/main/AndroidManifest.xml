@@ -13,6 +13,21 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.KhoaLuanTotNghiep"
         android:usesCleartextTraffic="true">
+
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_icon"
+            android:resource="@mipmap/ic_launcher" />
+        <!-- Set color used with incoming notification messages. This is used when no color is set for the incoming
+             notification message. See README(https://goo.gl/6BKBk7) for more. -->
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_color"
+            android:resource="@color/black" />
+        <!-- [END fcm_default_icon] -->
+        <!-- [START fcm_default_channel] -->
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_channel_id"
+            android:value="Cập nhật sản phẩm yêu thích" />
+
         <activity android:name=".ui.activity.OnBoardingActivity">
 
         </activity>
@@ -33,6 +48,15 @@
                 <data android:mimeType="text/plain" />
             </intent-filter>
         </activity>
+        <!-- [START firebase_service] -->
+        <service
+            android:name=".services.MyFirebaseMessagingService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+        <!-- [END firebase_service] -->
     </application>
 
 </manifest>

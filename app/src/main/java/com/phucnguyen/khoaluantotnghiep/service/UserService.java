@@ -32,7 +32,11 @@ public interface UserService {
     @FormUrlEncoded
     @POST("api/v1/auth/login")
     Call<LogInResponse> loginToUser(@Field("email") String email,
-                                    @Field("password") String password);
+                                    @Field("password") String password,
+                                    @Field("deviceToken") String deviceToken);
+
+    @GET("api/v1/auth/logout")
+    Call<JsonObject> logoutUser(@Header("Authorization") String authorizedString);
 
     @FormUrlEncoded
     @POST("api/v1/auth/forgot-password")

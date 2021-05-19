@@ -64,7 +64,9 @@ public class ReviewDataSource extends PageKeyedDataSource<Integer, Review> {
                     //instead of a list with 0 value
                     if (response.body().getReviews().size() > 0) {
                         loadingState.postValue(LoadingState.SUCCESS);
-                        callback.onResult(response.body().getReviews(), 0, 15, 0, currentPage + 1);
+                        int lastPage = response.body().getPagination().getLastPage();
+                        Integer nextPageKey = currentPage == lastPage ? null : currentPage + 1;
+                        callback.onResult(response.body().getReviews(), null, nextPageKey);
                     } else {
                         loadingState.postValue(LoadingState.SUCCESS_WITH_NO_VALUES);
                         callback.onResult(new ArrayList<Review>(), null, currentPage);
@@ -94,7 +96,7 @@ public class ReviewDataSource extends PageKeyedDataSource<Integer, Review> {
     public void loadAfter(@NonNull LoadParams<Integer> params, @NonNull LoadCallback<Integer, Review> callback) {
         loadingState.postValue(LoadingState.LOADING);
         int currentPage = params.key;
-        queryOptions.put("page", String.valueOf(currentPage));
+        queryOptions.put("currentPage", String.valueOf(currentPage));
         service.getReview(productId,
                 queryOptions).enqueue(new Callback<ReviewResponse>() {
             @Override
