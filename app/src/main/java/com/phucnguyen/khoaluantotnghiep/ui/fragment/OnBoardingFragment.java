@@ -58,6 +58,7 @@ public class OnBoardingFragment extends Fragment {
                             .putBoolean(OnBoardingActivity.HAS_SEEN_ONBOARDING_REF, true)
                             .apply();
                     startActivity(new Intent(requireActivity(), MainActivity.class));
+                    requireActivity().finish();
                 }
             }
         });

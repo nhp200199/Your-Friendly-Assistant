@@ -78,7 +78,7 @@ public class MainActivity extends AppCompatActivity implements ProductItemFragme
             setUpBotNavigationAssociatedWithNavController();
             setUpToolbar();
             //move to product item screen only when there is a product link coming
-            if (getIntent().getAction().equals(Intent.ACTION_SEND)||
+            if (Intent.ACTION_SEND.equals(getIntent().getAction())||
                     getIntent().hasExtra("productUrl"))
                 moveToProductItem(getIntent());
             handleChangesToDestination();
