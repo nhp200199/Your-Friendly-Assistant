@@ -78,7 +78,9 @@ public class MainActivity extends AppCompatActivity implements ProductItemFragme
             setUpBotNavigationAssociatedWithNavController();
             setUpToolbar();
             //move to product item screen only when there is a product link coming
-            moveToProductItem(getIntent());
+            if (getIntent().getAction().equals(Intent.ACTION_SEND)||
+                    getIntent().hasExtra("productUrl"))
+                moveToProductItem(getIntent());
             handleChangesToDestination();
         }
     }
@@ -153,13 +155,11 @@ public class MainActivity extends AppCompatActivity implements ProductItemFragme
     private void moveToProductItem(Intent intent) {
         String productUrlString = null;
         Bundle bundle = new Bundle();
-        if (intent.getAction() != null && intent.getAction().equals(Intent.ACTION_SEND)
-                && intent.getClipData() != null) {
+        if (intent.getAction() != null && intent.getClipData() != null) {
             if (intent.hasExtra(Intent.EXTRA_TEXT)) {
                 productUrlString = intent.getStringExtra(Intent.EXTRA_TEXT);
             }
-
-        } else if (intent.hasExtra("productUrl")){
+        } else{
             productUrlString = intent.getStringExtra("productUrl");
         }
 
