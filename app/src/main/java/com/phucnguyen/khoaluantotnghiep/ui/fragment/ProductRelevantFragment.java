@@ -78,11 +78,14 @@ public class ProductRelevantFragment extends Fragment {
             @Override
             public void onChanged(ProductItem productItem) {
                 if (productItem != null) {
+                    //encode the name before sending
+                    String productName = productItem.getName();
+                    String encodedProductName = productName.replaceAll("%", "%25");
                     RelavantProductViewModelFactory factory = new RelavantProductViewModelFactory(
                             productItem.getId(),
                             productItem.getPlatform(),
                             productItem.getCategoryId(),
-                            productItem.getName()
+                            encodedProductName
                     );
                     mRelavantProductViewModel = new ViewModelProvider(requireParentFragment(), factory)
                             .get(RelavantProductViewModel.class);
