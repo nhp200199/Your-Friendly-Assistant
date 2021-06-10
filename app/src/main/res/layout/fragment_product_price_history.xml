@@ -76,7 +76,7 @@
             <ListView
                 android:id="@+id/lvDailyPricesHistory"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="150dp"
                 android:listSelector="@android:color/transparent"
                 tools:listitem="@layout/price_item" />
         </LinearLayout>
